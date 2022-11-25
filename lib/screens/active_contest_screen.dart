@@ -14,7 +14,7 @@ class ActiveContestScreen extends StatelessWidget {
       body: thereIsActiveContest
           ? PresentationWidget(type: 'active')
           : Text('there are no active contests :('),
-      drawer: MyDrawer(),
+          drawer: MyDrawer(),
     );
   }
 }
