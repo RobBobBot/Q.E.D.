@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "647158711274",
+    "project_id": "unihackqed",
+    "storage_bucket": "unihackqed.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:647158711274:android:70a25e360ad699567e2893",
+        "android_client_info": {
+          "package_name": "com.example.qed"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "647158711274-ioldtegr1rl2b3lei57d6ac5h2hu2kal.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkE8b0kRgYbC-6CqmqAr9Z72w-sNxl3qo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "647158711274-ioldtegr1rl2b3lei57d6ac5h2hu2kal.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
