@@ -5,6 +5,6 @@ import 'package:qed/qed_user.dart';
 
 class AppState {
   QedUser? currentUser;
-  Set<Contest> contests = Set();
-  Set<Problem> problems = Set();
+  Map<int, Contest> contests = {};
+  Map<int, Problem> problems = {};
 }
