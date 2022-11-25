@@ -46,6 +46,7 @@ void main() async {
       ),
     ));
   });
+  store.dispatch(AddContestActions(await QEDStore.instance.getContests()));
   runApp(App(store: store));
 }
 
@@ -61,7 +62,8 @@ class App extends StatelessWidget {
       child: StoreBuilder<AppState>(
         builder: (context, vm) {
           return MaterialApp(
-            initialRoute: vm.state.currentUser != null ? '/home' : '/signup',
+            initialRoute:
+                vm.state.currentUser != null ? '/home' : '/home', //TODO
             routes: {
               '/home': (context) => HomeScreen(),
               '/upcoming': (context) => UpcomingScreen(),

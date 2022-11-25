@@ -10,9 +10,9 @@ class AddUserAction extends AppAction {
   AddUserAction(this.user);
 }
 
-class AddContestAction extends AppAction {
-  Contest contest;
-  AddContestAction(this.contest);
+class AddContestActions extends AppAction {
+  List<Contest> contests;
+  AddContestActions(this.contests);
 }
 
 class AddProblemAction extends AppAction {
