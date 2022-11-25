@@ -6,6 +6,8 @@ import 'package:qed/redux/app_actions.dart';
 import 'package:qed/screens/homescreen.dart';
 import 'package:qed/screens/pastscreen.dart';
 import 'package:qed/screens/probarchivescreen.dart';
+import 'package:qed/screens/signin.dart';
+import 'package:qed/screens/signup.dart';
 import 'package:qed/screens/upcomingscreen.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:qed/contest.dart';
@@ -54,28 +56,21 @@ class App extends StatelessWidget {
     ///TODO: test pls delete
     return StoreProvider<AppState>(
       store: store,
-      child: StoreBuilder<AppState>(builder: (context, vm) {
-        return StoreBuilder<AppState>(
-          builder: (context, store) {
-            return MaterialApp(
-              initialRoute: vm.state.currentUser != null ? '/home' : '/signup',
-              routes: {
-                '/home': (context) => ActiveContestScreen(
-                        contest: Contest(
-                      id: 1,
-                      name: "Bruh contest",
-                      tags: {"b", "r", "u", "h"},
-                      problemIDs: {1, 2, 3},
-                    )),
-                '/upcoming': (context) => UpcomingScreen(),
-                '/past': (context) => PastScreen(),
-                '/probarchive': (context) => ProbArchiveScreen(),
-                //'/signIn'
-              },
-            );
-          },
-        );
-      }),
+      child: StoreBuilder<AppState>(
+        builder: (context, vm) {
+          return MaterialApp(
+            initialRoute: vm.state.currentUser != null ? '/home' : '/signup',
+            routes: {
+              '/home': (context) => HomeScreen(),
+              '/upcoming': (context) => UpcomingScreen(),
+              '/past': (context) => PastScreen(),
+              '/probarchive': (context) => ProbArchiveScreen(),
+              '/signin': (context) => SignIn(),
+              '/signup': (context) => SignUp(),
+            },
+          );
+        },
+      ),
     );
   }
 }
