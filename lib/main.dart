@@ -1,6 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:qed/screens/homescreen.dart';
+import 'package:qed/screens/pastscreen.dart';
+import 'package:qed/screens/probarchivescreen.dart';
+import 'package:qed/screens/upcomingscreen.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:qed/contest.dart';
 import 'package:qed/contest_screens/active_contest_screen.dart';
@@ -34,6 +38,17 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return 
+    return StoreProvider<AppState>(
+      store: store,
+      child: MaterialApp(
+        initialRoute: '/home',
+        routes: {
+          '/home': (context) => HomeScreen(),
+          '/upcoming': (context) => UpcomingScreen(),
+          '/past': (context) => PastScreen(),
+          '/probarchive': (context) => ProbArchiveScreen(),
+        },
+      ),
+    );
   }
 }
