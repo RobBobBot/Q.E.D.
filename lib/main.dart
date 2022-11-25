@@ -40,13 +40,18 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreProvider<AppState>(
       store: store,
-      child: MaterialApp(
-        initialRoute: '/home',
-        routes: {
-          '/home': (context) => HomeScreen(),
-          '/upcoming': (context) => UpcomingScreen(),
-          '/past': (context) => PastScreen(),
-          '/probarchive': (context) => ProbArchiveScreen(),
+      child: StoreBuilder<AppState>(
+        builder: (context, vm) {
+          return MaterialApp(
+            initialRoute: vm.state.currentUser != null ? '/home' : '/signup',
+            routes: {
+              '/home': (context) => HomeScreen(),
+              '/upcoming': (context) => UpcomingScreen(),
+              '/past': (context) => PastScreen(),
+              '/probarchive': (context) => ProbArchiveScreen(),
+              //'/signIn'
+            },
+          );
         },
       ),
     );
