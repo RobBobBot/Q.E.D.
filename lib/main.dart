@@ -38,7 +38,6 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ///TODO: test pls delete
     return StoreProvider<AppState>(
       store: store,
       child: StoreBuilder<AppState>(builder: (context, store) {
