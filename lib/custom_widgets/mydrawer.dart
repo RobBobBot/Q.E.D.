@@ -8,14 +8,12 @@ class MyDrawer extends StatelessWidget {
     'upcoming',
     'past',
     'probarchive',
-    'active'
   ];
   final nameToString = {
     'home': 'Home Screen',
     'upcoming': 'Upcoming Contests',
     'past': 'Past Contests',
     'probarchive': 'Problem Archive',
-    'active': 'Active Contests',
   };
 
   @override
