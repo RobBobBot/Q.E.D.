@@ -8,7 +8,7 @@ class LoadingListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const ListTile(
-      tileColor: Colors.grey,
+      textColor: Colors.grey,
       title: Text("Loading..."),
     );
   }
