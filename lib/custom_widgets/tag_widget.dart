@@ -9,9 +9,10 @@ class ContestTag extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.amber,
-      decoration:
-          BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20.0))),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        color: Colors.amber,
+      ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text(name),
