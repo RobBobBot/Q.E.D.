@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:qed/problem.dart';
@@ -10,6 +11,8 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:qed/contest.dart';
 import 'package:qed/contest_screens/active_contest_screen.dart';
 import 'package:qed/firebase/firebase_options.dart';
+import 'package:qed/firebase/qedstore.dart';
+import 'package:qed/redux/app_actions.dart';
 import 'package:qed/redux/app_reducer.dart';
 import 'package:qed/redux/app_state.dart';
 import 'package:redux/redux.dart';
@@ -18,6 +21,16 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   Store<AppState> store = Store<AppState>(appReducer, initialState: AppState());
+  FirebaseAuth.instance.authStateChanges().listen(
+    (user) async {
+      if (user == null) {
+        store.dispatch(UserChangedAction(null));
+      } else {
+        store.dispatch(
+            UserChangedAction(await QEDStore.instance.getUserData(user.uid)));
+      }
+    },
+  );
   Future.delayed(Duration(seconds: 3)).then((val) {
     print("finished bro");
     store.dispatch(AddProblemAction(
@@ -41,20 +54,25 @@ class App extends StatelessWidget {
     ///TODO: test pls delete
     return StoreProvider<AppState>(
       store: store,
-      child: StoreBuilder<AppState>(builder: (context, store) {
-        return MaterialApp(
-          initialRoute: '/home',
-          routes: {
-            '/home': (context) => ActiveContestScreen(
-                    contest: Contest(
-                  id: 1,
-                  name: "Bruh contest",
-                  tags: {"b", "r", "u", "h"},
-                  problemIDs: {1, 2, 3},
-                )),
-            '/upcoming': (context) => UpcomingScreen(),
-            '/past': (context) => PastScreen(),
-            '/probarchive': (context) => ProbArchiveScreen(),
+      child: StoreBuilder<AppState>(builder: (context, vm) {
+        return StoreBuilder<AppState>(
+          builder: (context, store) {
+            return MaterialApp(
+              initialRoute: vm.state.currentUser != null ? '/home' : '/signup',
+              routes: {
+                '/home': (context) => ActiveContestScreen(
+                        contest: Contest(
+                      id: 1,
+                      name: "Bruh contest",
+                      tags: {"b", "r", "u", "h"},
+                      problemIDs: {1, 2, 3},
+                    )),
+                '/upcoming': (context) => UpcomingScreen(),
+                '/past': (context) => PastScreen(),
+                '/probarchive': (context) => ProbArchiveScreen(),
+                //'/signIn'
+              },
+            );
           },
         );
       }),
