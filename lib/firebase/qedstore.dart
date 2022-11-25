@@ -49,8 +49,8 @@ class QEDStore {
   }
 
   Future<void> singInWithGoogle() async {
-    //TODO
-    final GoogleSignInAccount? user = await GoogleSignIn().signIn(); //TODO
+    final GoogleSignInAccount? user = await GoogleSignIn().signIn();
+    print("here");
     final GoogleSignInAuthentication? auth = await user?.authentication;
     final cred = GoogleAuthProvider.credential(
         idToken: auth?.idToken, accessToken: auth?.accessToken);
