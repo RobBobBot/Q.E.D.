@@ -50,11 +50,11 @@ class QEDStore {
 
   Future<void> singInWithGoogle() async {
     final GoogleSignInAccount? user = await GoogleSignIn().signIn();
-    print("here");
     final GoogleSignInAuthentication? auth = await user?.authentication;
     final cred = GoogleAuthProvider.credential(
         idToken: auth?.idToken, accessToken: auth?.accessToken);
-    await FirebaseAuth.instance.signInWithCredential(cred);
+    var x = await FirebaseAuth.instance.signInWithCredential(cred);
+    print("d");
   }
 
   Future<List<Contest>> getContests() async {
