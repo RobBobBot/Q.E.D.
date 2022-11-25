@@ -83,6 +83,12 @@ class QEDStore {
     return res;
   }
 
+  Future<String?> getStatementURL(int id) async {
+    String? res;
+
+    return res;
+  }
+
   Future<QedUser> getUserData(String uid) async {
     QedUser res = QedUser();
     return res;
