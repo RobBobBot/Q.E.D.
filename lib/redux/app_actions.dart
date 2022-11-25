@@ -1,4 +1,5 @@
 import 'package:qed/contest.dart';
+import 'package:qed/firebase/qedstore.dart';
 import 'package:qed/problem.dart';
 import 'package:qed/qed_user.dart';
 
@@ -17,4 +18,9 @@ class AddContestAction extends AppAction {
 class AddProblemAction extends AppAction {
   Problem problem;
   AddProblemAction(this.problem);
+}
+
+class UserChangedAction extends AppAction {
+  QedUser? user;
+  UserChangedAction(this.user);
 }

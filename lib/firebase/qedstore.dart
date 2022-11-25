@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:qed/qed_user.dart';
 
 class QEDStore {
   static final QEDStore instance = QEDStore._internal();
@@ -40,6 +41,11 @@ class QEDStore {
           .doc(user!.uid)
           .set({"Name": name, "profilePicture": "Users/.jpeg", "role": "user"});
     }
+    return res;
+  }
+
+  Future<QedUser> getUserData(String uid) async {
+    QedUser res = QedUser();
     return res;
   }
 }
