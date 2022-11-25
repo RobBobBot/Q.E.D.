@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:qed/screens/active_contest_screen.dart';
 import 'package:qed/screens/homescreen.dart';
 import 'package:qed/screens/pastscreen.dart';
 import 'package:qed/screens/probarchivescreen.dart';
@@ -24,6 +25,7 @@ class App extends StatelessWidget {
         '/upcoming': (context) => UpcomingScreen(),
         '/past': (context) => PastScreen(),
         '/probarchive': (context) => ProbArchiveScreen(),
+        '/active': (context) => ActiveContestScreen(thereIsActiveContest: true),
       },
     );
   }

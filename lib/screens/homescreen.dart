@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:qed/custom_widgets/presentation_widget.dart';
+
+import '../custom_widgets/mydrawer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -8,6 +11,16 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  bool thereIsActiveContest = true;
+  List<Widget> widgets = [];
+
+  @override
+  void initState() {
+    super.initState();
+    if (thereIsActiveContest) widgets.add(PresentationWidget(type: 'active'));
+    widgets.add(PresentationWidget(type: 'upcoming'));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,50 +28,17 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text("QED"),
       ),
       body: SafeArea(
-        child: ListView(
-          children: [
-            TextButton(
-              onPressed: () {},
-              child: Container(),
-            )
-          ],
+        child: ListView.builder(
+          itemCount: widgets.length,
+          itemBuilder: (context, index) {
+            return InkWell(
+              onTap: () {},
+              child: widgets[index],
+            );
+          },
         ),
       ),
       drawer: MyDrawer(),
-    );
-  }
-}
-
-class MyDrawer extends StatelessWidget {
-  MyDrawer({super.key});
-
-  final List<String> drawerScreens = [
-    'home',
-    'upcoming',
-    'past',
-    'probarchive'
-  ];
-  final nameToString = {
-    'home': 'Home Screen',
-    'upcoming': 'Upcoming & Active Contests',
-    'past': 'Past Contests',
-    'probarchive': 'Problem Archive',
-  };
-
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      child: ListView.builder(
-        itemCount: drawerScreens.length,
-        itemBuilder: ((context, index) {
-          return ListTile(
-            title: Text(nameToString[drawerScreens[index]]!),
-            onTap: () {
-              Navigator.popAndPushNamed(context, '/${drawerScreens[index]}');
-            },
-          );
-        }),
-      ),
     );
   }
 }
