@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:qed/contest.dart';
 import 'package:qed/qed_user.dart';
@@ -64,11 +66,15 @@ class QEDStore {
         for (var i in doc.data()["tags"]) {
           tags.add(i);
         }
-        res.add(Contest(
-            id: int.parse(doc.id),
-            tags: tags,
-            name: doc.data()["name"],
-            problemIDs: problems));
+        res.add(
+          Contest(
+              id: int.parse(doc.id),
+              tags: tags,
+              name: doc.data()["name"],
+              problemIDs: problems,
+              timeBegin: doc.data()["begin"],
+              timeEnd: doc.data()["end"]),
+        );
       }
     });
     return res;
