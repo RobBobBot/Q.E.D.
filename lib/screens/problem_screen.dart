@@ -18,13 +18,12 @@ class _ProblemScreenState extends State<ProblemScreen> {
   List<File> uploadedFiles = [];
 
   Future<void> uploadSolution() async {
-    setState(() async {
-      FilePickerResult? result =
-          await FilePicker.platform.pickFiles(type: FileType.any);
-      if (result != null) {
-        uploadedFiles.add(File(result.files.first.path!));
-      }
-    });
+    FilePickerResult? result =
+        await FilePicker.platform.pickFiles(type: FileType.any);
+    if (result != null) {
+      uploadedFiles.add(File(result.files.first.path!));
+    }
+    setState(() {});
   }
 
   @override
@@ -36,6 +35,15 @@ class _ProblemScreenState extends State<ProblemScreen> {
           ElevatedButton(
             onPressed: uploadSolution,
             child: Text("Upload"),
+          ),
+          ...uploadedFiles.map(
+            (f) => ListTile(
+              title: Text(f.path),
+              trailing: IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () {},
+              ),
+            ),
           ),
         ],
       ),

@@ -5,6 +5,7 @@ import 'package:qed/custom_widgets/loading_list_tile.dart';
 import 'package:qed/custom_widgets/tag_widget.dart';
 import 'package:qed/problem.dart';
 import 'package:qed/redux/app_state.dart';
+import 'package:qed/screens/problem_screen.dart';
 
 class ActiveContestScreen extends StatelessWidget {
   final Contest contest;
@@ -54,6 +55,13 @@ class ActiveContestProblemListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ProblemScreen(problem: problem)),
+        );
+      },
       leading: Icon(Icons.picture_as_pdf),
       title: Text(problem.name),
       subtitle: Wrap(

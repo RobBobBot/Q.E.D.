@@ -45,13 +45,7 @@ class App extends StatelessWidget {
         return MaterialApp(
           initialRoute: '/home',
           routes: {
-            '/home': (context) => ActiveContestScreen(
-                    contest: Contest(
-                  id: 1,
-                  name: "Bruh contest",
-                  tags: {"b", "r", "u", "h"},
-                  problemIDs: {1, 2, 3},
-                )),
+            '/home': (context) => HomeScreen(),
             '/upcoming': (context) => UpcomingScreen(),
             '/past': (context) => PastScreen(),
             '/probarchive': (context) => ProbArchiveScreen(),
