@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:qed/contest.dart';
+
+import '../contest_screens/active_contest_screen.dart';
 
 class PresentationWidget extends StatelessWidget {
-  PresentationWidget({required this.type, super.key});
+  final void Function()? onTap;
+  final List<Widget> elements;
+  PresentationWidget(
+      {required this.title,
+      super.key,
+      required this.onTap,
+      required this.elements});
 
-  String type;
-  var typeToTitle = {
-    'active': 'Active Contest',
-    'upcoming': 'Upcoming Contests',
-    'past': 'Past Contests',
-    'problems': 'Training Problems'
-  };
+  String title;
 
   //late var data;
 
@@ -17,8 +20,11 @@ class PresentationWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(typeToTitle[type] ?? 'error'),
-        //...data
+        ListTile(
+          title: Text(title),
+          onTap: onTap,
+        ),
+        ...elements
       ],
     );
   }

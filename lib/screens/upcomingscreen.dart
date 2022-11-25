@@ -15,7 +15,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(child: PresentationWidget(type: 'upcoming')),
+      //body: SingleChildScrollView(child: PresentationWidget(type: 'upcoming')),
       appBar: AppBar(),
       drawer: MyDrawer(),
     );
