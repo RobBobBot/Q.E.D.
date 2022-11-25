@@ -46,7 +46,9 @@ void main() async {
       ),
     ));
   });
-  store.dispatch(AddContestActions(await QEDStore.instance.getContests()));
+  QEDStore.instance
+      .getContests()
+      .then((value) => store.dispatch(AddContestActions(value)));
   runApp(App(store: store));
 }
 

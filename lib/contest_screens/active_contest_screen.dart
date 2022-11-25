@@ -43,6 +43,16 @@ class ActiveContestScreen extends StatelessWidget {
               }).toList(),
         );
       }),
+      bottomNavigationBar: BottomAppBar(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            "Time left: 20:00:00",
+            style: Theme.of(context).textTheme.headline3,
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ),
     );
   }
 }
@@ -60,6 +70,10 @@ class ActiveContestProblemListTile extends StatelessWidget {
         children: problem.tags.map((e) => QedTag(name: e)).toList(),
         runSpacing: 8.0,
         spacing: 8.0,
+      ),
+      trailing: ElevatedButton(
+        child: Text("Upload"),
+        onPressed: () {},
       ),
     );
   }
