@@ -10,5 +10,8 @@ AppState appReducer(AppState state, dynamic action) {
   if (action is AddContestAction) {
     state.contests[action.contest.id] = action.contest;
   }
+  if (action is UserChangedAction) {
+    state.currentUser = action.user;
+  }
   return state;
 }

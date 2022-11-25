@@ -20,6 +20,7 @@ class _SignUpState extends State<SignUp> {
           ),
           Expanded(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TextButton(
                     onPressed: () async =>

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:qed/qed_user.dart';
 
 class QEDStore {
@@ -44,7 +45,13 @@ class QEDStore {
     return res;
   }
 
-  Future<void> singInWithGoogle() async {}
+  Future<void> singInWithGoogle() async {
+    final GoogleSignInAccount? user = await GoogleSignIn().signIn();
+    final GoogleSignInAuthentication? auth = await user?.authentication;
+    final cred = GoogleAuthProvider.credential(
+        idToken: auth?.idToken, accessToken: auth?.accessToken);
+    await FirebaseAuth.instance.signInWithCredential(cred);
+  }
 
   Future<QedUser> getUserData(String uid) async {
     QedUser res = QedUser();
