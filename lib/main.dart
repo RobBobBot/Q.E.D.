@@ -23,6 +23,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   Store<AppState> store = Store<AppState>(appReducer, initialState: AppState());
+  await FirebaseAuth.instance.signOut();
   FirebaseAuth.instance.authStateChanges().listen(
     (user) async {
       if (user == null) {
@@ -60,23 +61,22 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     ///TODO: test pls delete
     return StoreProvider<AppState>(
-      store: store,
-      child: StoreBuilder<AppState>(
-        builder: (context, vm) {
-          return MaterialApp(
-            initialRoute:
-                vm.state.currentUser != null ? '/home' : '/home', //TODO
-            routes: {
-              '/home': (context) => HomeScreen(),
-              '/upcoming': (context) => UpcomingScreen(),
-              '/past': (context) => PastScreen(),
-              '/probarchive': (context) => ProbArchiveScreen(),
-              '/signin': (context) => SignIn(),
-              '/signup': (context) => SignUp(),
-            },
-          );
-        },
-      ),
-    );
+        store: store,
+        child: MaterialApp(
+          home: StoreBuilder<AppState>(builder: ((context, vm) {
+            if (vm.state.currentUser != null) {
+              return HomeScreen();
+            }
+            return SignUp();
+          })),
+          routes: {
+            '/home': (context) => HomeScreen(),
+            '/upcoming': (context) => UpcomingScreen(),
+            '/past': (context) => PastScreen(),
+            '/probarchive': (context) => ProbArchiveScreen(),
+            '/signin': (context) => SignIn(),
+            '/signup': (context) => SignUp(),
+          },
+        ));
   }
 }
