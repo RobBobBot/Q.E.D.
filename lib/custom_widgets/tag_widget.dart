@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-class ContestTag extends StatelessWidget {
+class QedTag extends StatelessWidget {
   final String name;
-  const ContestTag({super.key, required this.name});
+  const QedTag({super.key, required this.name});
 
   @override
   Widget build(BuildContext context) {

@@ -25,8 +25,7 @@ class ActiveContestScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Wrap(
-                    children:
-                        contest.tags.map((e) => ContestTag(name: e)).toList(),
+                    children: contest.tags.map((e) => QedTag(name: e)).toList(),
                     runSpacing: 8.0,
                     spacing: 8.0,
                   ),
@@ -53,6 +52,14 @@ class ActiveContestProblemListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile();
+    return ListTile(
+      leading: Icon(Icons.picture_as_pdf),
+      title: Text(problem.name),
+      subtitle: Wrap(
+        children: problem.tags.map((e) => QedTag(name: e)).toList(),
+        runSpacing: 8.0,
+        spacing: 8.0,
+      ),
+    );
   }
 }
