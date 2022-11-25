@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:qed/contest.dart';
+import 'package:qed/custom_widgets/loading_list_tile.dart';
 import 'package:qed/custom_widgets/tag_widget.dart';
 import 'package:qed/problem.dart';
 import 'package:qed/redux/app_state.dart';
@@ -38,7 +39,7 @@ class ActiveContestScreen extends StatelessWidget {
                   return ActiveContestProblemListTile(
                       problem: store.state.problems[value]!);
                 }
-                return Container();
+                return LoadingListTile();
               }).toList(),
         );
       }),

@@ -1,5 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:qed/problem.dart';
+import 'package:qed/redux/app_actions.dart';
 import 'package:qed/screens/homescreen.dart';
 import 'package:qed/screens/pastscreen.dart';
 import 'package:qed/screens/probarchivescreen.dart';
@@ -16,6 +18,17 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   Store<AppState> store = Store<AppState>(appReducer, initialState: AppState());
+  Future.delayed(Duration(seconds: 3)).then((val) {
+    print("finished bro");
+    store.dispatch(AddProblemAction(
+      Problem(
+        id: 1,
+        name: "Bruh Problem",
+        statementLink: "statement",
+        tags: {"bruh"},
+      ),
+    ));
+  });
   runApp(App(store: store));
 }
 
@@ -25,17 +38,26 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ///TODO: test pls delete
     return StoreProvider<AppState>(
       store: store,
-      child: MaterialApp(
-        initialRoute: '/home',
-        routes: {
-          '/home': (context) => HomeScreen(),
-          '/upcoming': (context) => UpcomingScreen(),
-          '/past': (context) => PastScreen(),
-          '/probarchive': (context) => ProbArchiveScreen(),
-        },
-      ),
+      child: StoreBuilder<AppState>(builder: (context, store) {
+        return MaterialApp(
+          initialRoute: '/home',
+          routes: {
+            '/home': (context) => ActiveContestScreen(
+                    contest: Contest(
+                  id: 1,
+                  name: "Bruh contest",
+                  tags: {"b", "r", "u", "h"},
+                  problemIDs: {1, 2, 3},
+                )),
+            '/upcoming': (context) => UpcomingScreen(),
+            '/past': (context) => PastScreen(),
+            '/probarchive': (context) => ProbArchiveScreen(),
+          },
+        );
+      }),
     );
   }
 }
