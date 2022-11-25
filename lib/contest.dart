@@ -1,0 +1,3 @@
+class Contest {
+  //TODO: sterge
+}

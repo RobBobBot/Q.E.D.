@@ -5,11 +5,11 @@ import 'package:qed/screens/homescreen.dart';
 import 'package:qed/screens/pastscreen.dart';
 import 'package:qed/screens/probarchivescreen.dart';
 import 'package:qed/screens/upcomingscreen.dart';
-//import 'package:qed/firebase/firebase_options.dart';
+import 'package:qed/firebase/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  //await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const App());
 }
 
