@@ -44,6 +44,8 @@ class QEDStore {
     return res;
   }
 
+  Future<void> singInWithGoogle() async {}
+
   Future<QedUser> getUserData(String uid) async {
     QedUser res = QedUser();
     return res;

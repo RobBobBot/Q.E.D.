@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:qed/screens/homescreen.dart';
 import 'package:qed/screens/pastscreen.dart';
 import 'package:qed/screens/probarchivescreen.dart';
+import 'package:qed/screens/signin.dart';
+import 'package:qed/screens/signup.dart';
 import 'package:qed/screens/upcomingscreen.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:qed/contest.dart';
@@ -49,7 +51,8 @@ class App extends StatelessWidget {
               '/upcoming': (context) => UpcomingScreen(),
               '/past': (context) => PastScreen(),
               '/probarchive': (context) => ProbArchiveScreen(),
-              //'/signIn'
+              '/signin': (context) => SignIn(),
+              '/signup': (context) => SignUp(),
             },
           );
         },

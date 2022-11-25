@@ -1,15 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:qed/firebase/qedstore.dart';
 
-class SignIn extends StatefulWidget {
-  const SignIn({super.key});
+class SignUp extends StatefulWidget {
+  const SignUp({super.key});
 
   @override
-  State<SignIn> createState() => _SignInState();
+  State<SignUp> createState() => _SignUpState();
 }
 
-class _SignInState extends State<SignIn> {
+class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      body: Row(
+        children: [
+          Expanded(
+            child: Container(),
+            flex: 1,
+          ),
+          Expanded(
+            child: Column(
+              children: [
+                TextButton(
+                    onPressed: () async =>
+                        await QEDStore.instance.singInWithGoogle(),
+                    child: Text("google"))
+              ],
+            ),
+            flex: 2,
+          ),
+          Expanded(
+            child: Container(),
+            flex: 1,
+          ),
+        ],
+      ),
+    );
   }
 }
