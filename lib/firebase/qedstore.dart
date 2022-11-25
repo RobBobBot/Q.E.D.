@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:qed/contest.dart';
 import 'package:qed/qed_user.dart';
 
 class QEDStore {
@@ -46,11 +47,31 @@ class QEDStore {
   }
 
   Future<void> singInWithGoogle() async {
-    final GoogleSignInAccount? user = await GoogleSignIn().signIn();
+    //TODO
+    final GoogleSignInAccount? user = await GoogleSignIn().signIn(); //TODO
     final GoogleSignInAuthentication? auth = await user?.authentication;
     final cred = GoogleAuthProvider.credential(
         idToken: auth?.idToken, accessToken: auth?.accessToken);
     await FirebaseAuth.instance.signInWithCredential(cred);
+  }
+
+  Future<List<Contest>> getContests() async {
+    List<Contest> res = [];
+    await FirebaseFirestore.instance.collection("Contests").get().then((value) {
+      for (var doc in value.docs) {
+        Set<int> problems = Set<int>();
+        Set<String> tags = Set<String>();
+        for (var i in doc.data()["tags"]) {
+          tags.add(i);
+        }
+        res.add(Contest(
+            id: int.parse(doc.id),
+            tags: tags,
+            name: doc.data()["name"],
+            problemIDs: problems));
+      }
+    });
+    return res;
   }
 
   Future<QedUser> getUserData(String uid) async {
