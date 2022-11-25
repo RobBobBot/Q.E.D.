@@ -1,3 +1,3 @@
-class Problems {
+class Problem {
   //TODO: sterge
 }
