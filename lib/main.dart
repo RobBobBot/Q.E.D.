@@ -34,19 +34,6 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StoreProvider<AppState>(
-        store: store,
-        child:
-            MaterialApp(home: StoreBuilder<AppState>(builder: ((context, vm) {
-          AppState st = vm.state;
-          if (st.currentUser != null) {
-            return ActiveContestScreen(
-                contest: Contest(
-                    name: "Test Contest (Testest)",
-                    problemIDs: {1, 2, 3},
-                    tags: {"heart-warming", "linear algebra", "matrices"}));
-          }
-          return Text("sd");
-        }))));
+    return 
   }
 }
