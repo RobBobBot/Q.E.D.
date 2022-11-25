@@ -1,19 +1,10 @@
 import 'package:flutter_redux/flutter_redux.dart';
-
-class QedUser {
-  //TODO: sterge smecheria
-}
-
-class Contest {
-  //TODO: sterge
-}
-
-class Problems {
-  //TODO: sterge
-}
+import 'package:qed/contest.dart';
+import 'package:qed/problem.dart';
+import 'package:qed/qed_user.dart';
 
 class AppState {
   QedUser? currentUser;
-  Set<Contest> contests = Set();
-  Set<Problems> problems = Set();
+  Map<int, Contest> contests = {};
+  Map<int, Problem> problems = {};
 }
