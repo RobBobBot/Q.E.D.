@@ -66,6 +66,9 @@ class QEDStore {
         for (var i in doc.data()["tags"]) {
           tags.add(i);
         }
+        for (var i in doc.data()["problemIDs"]) {
+          problems.add(i);
+        }
         res.add(
           Contest(
               id: int.parse(doc.id),
