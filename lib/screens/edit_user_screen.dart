@@ -7,14 +7,15 @@ import 'package:qed/redux/app_actions.dart';
 import 'package:qed/redux/app_state.dart';
 
 class RoleInfo extends StatelessWidget {
-  final String role, uid, name;
+  final String uid, name;
+  final int role;
   const RoleInfo(
       {super.key, required this.role, required this.name, required this.uid});
 
   @override
   Widget build(BuildContext context) {
     switch (role) {
-      case 'student':
+      case 0:
         return Row(
           children: [
             const Text('Request teacher role?'),
@@ -25,9 +26,9 @@ class RoleInfo extends StatelessWidget {
             )
           ],
         );
-      case 'teacher':
+      case 1:
         return const Text('You are a teacher!');
-      case 'admin':
+      case 2:
         return const Text('You are an admin!');
       default:
         return const Text("You are an error!");

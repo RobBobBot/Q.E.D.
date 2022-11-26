@@ -1,66 +1,73 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:qed/redux/app_state.dart';
 import 'package:qed/theme_data.dart';
+
+class _drawerScreenData {
+  String name;
+  String route;
+  int minPermissionLevel;
+  _drawerScreenData(this.name, this.route, this.minPermissionLevel);
+}
 
 class MyDrawer extends StatelessWidget {
   MyDrawer({super.key});
 
-  final List<String> drawerScreens = [
-    'home',
-    'activelist',
-    'upcominglist',
-    'pastlist',
-    'probarchive',
+  final drawerScreens = [
+    _drawerScreenData('home', '/home', 0),
+    _drawerScreenData('active contest list', '/activelist', 0),
+    _drawerScreenData('upcoming contest list', '/upcominglist', 0),
+    _drawerScreenData('past contest list', '/pastlist', 0),
+    _drawerScreenData('problem archive', '/probarchive', 0),
+    _drawerScreenData('make a contest', '/createcontest', 2),
   ];
-  final nameToString = {
-    'home': 'Home Screen',
-    'activelist': 'Active Contests',
-    'upcominglist': 'Upcoming Contests',
-    'pastlist': 'Past Contests',
-    'probarchive': 'Problem Archive',
-  };
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
       backgroundColor: Theme.of(context).bannerTheme.backgroundColor,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Center(
-            child: Image.asset(
-              'assets/images/logo.png',
-              width: 180,
+      child: StoreBuilder<AppState>(builder: (context, store) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: Image.asset(
+                'assets/images/logo.png',
+                width: 180,
+              ),
             ),
-          ),
-          ...drawerScreens
-              .map(
-                (e) => Container(
-                  margin: EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Theme.of(context).hintColor,
-                  ),
-                  child: ListTileTheme(
-                    data: drawerTile,
-                    child: ListTile(
-                      title: Text(
-                        nameToString[e]!,
-                        style: TextStyle(fontWeight: FontWeight.bold),
+            ...drawerScreens
+                .where((element) =>
+                    store.state.currentUser!.role >= element.minPermissionLevel)
+                .map(
+                  (e) => Container(
+                    margin: EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Theme.of(context).hintColor,
+                    ),
+                    child: ListTileTheme(
+                      data: drawerTile,
+                      child: ListTile(
+                        title: Text(
+                          e.name,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        onTap: () {
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            e.route,
+                            (route) => false,
+                          );
+                        },
                       ),
-                      onTap: () {
-                      Navigator.pushNamedAndRemoveUntil(
-                        context,
-                        '/${e}',
-                        (route) => false,
-                      );
-                      },
                     ),
                   ),
-                ),
-              )
-              .toList(),
-        ],
-      ),
+                )
+                .toList(),
+          ],
+        );
+      }),
     );
   }
 }

@@ -66,6 +66,7 @@ class App extends StatelessWidget {
         store: store,
         child: MaterialApp(
           theme: myTheme,
+          darkTheme: myTheme,
           home: ScreenRouter(),
           routes: {
             '/home': (context) => const HomeScreen(),
@@ -78,6 +79,7 @@ class App extends StatelessWidget {
             '/edituser': (context) => const EditUserScreen(),
             '/activelist': (context) => ContestListScreen(type: 'active'),
             '/loading': (context) => const LoadingScreen(),
+            '/createcontest': (context) => const CreateContestScreen(),
           },
         ));
   }
