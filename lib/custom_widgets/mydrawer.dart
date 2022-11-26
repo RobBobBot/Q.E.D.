@@ -12,7 +12,7 @@ class MyDrawer extends StatelessWidget {
   ];
   final nameToString = {
     'home': 'Home Screen',
-    'activelist':'Active Contests',
+    'activelist': 'Active Contests',
     'upcominglist': 'Upcoming Contests',
     'pastlist': 'Past Contests',
     'probarchive': 'Problem Archive',
