@@ -173,6 +173,7 @@ class QEDStore {
     });
   }
 
+  ///Returns links to all problem statements and if they're pdf or img
   Future<List<Rfile>> getProblemStatements(int id) async {
     List<Rfile> res = [];
     await storeageref
@@ -186,5 +187,12 @@ class QEDStore {
       }
     });
     return res;
+  }
+
+  Future<void> addRequest(String uid, String name) async {
+    await FirebaseFirestore.instance
+        .collection("Requests")
+        .doc(uid)
+        .set({"name": name});
   }
 }

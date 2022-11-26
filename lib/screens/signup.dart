@@ -22,6 +22,7 @@ class _SignUpState extends State<SignUp> {
 
   String? emailValidator(String? value) {
     if (value == null) return 'Please enter an email';
+    return null;
     int posa = value.indexOf('@');
     int posd = value.indexOf('.');
     if (posa == -1 || posd == -1 || posa > posd)

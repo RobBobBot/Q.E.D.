@@ -23,6 +23,7 @@ class _SignInState extends State<SignIn> {
   Future<void> validateData() async {
     emailError = passError = null;
     hasError = false;
+    setState(() {});
     emailError =
         (emailController.text == "" ? "This field is required!" : null);
     passError = (passController.text == "" ? "This field is required!" : null);
@@ -58,8 +59,6 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //appBar: AppBar(),
-
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Form(

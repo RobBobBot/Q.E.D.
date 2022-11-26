@@ -19,8 +19,11 @@ class _AccountScreenState extends State<AccountScreen> {
           title: const Text('Profile'),
           centerTitle: true,
           actions: [
-            IconButton(
-                onPressed: () {}, icon: const Icon(Icons.admin_panel_settings)),
+            store.state.currentUser!.role == 'admin'
+                ? IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.admin_panel_settings))
+                : const Text(""),
             IconButton(
                 onPressed: () {
                   Navigator.pushNamed(context, '/edituser');
