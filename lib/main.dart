@@ -21,6 +21,7 @@ import 'package:qed/firebase/qedstore.dart';
 import 'package:qed/redux/app_actions.dart';
 import 'package:qed/redux/app_reducer.dart';
 import 'package:qed/redux/app_state.dart';
+import 'package:qed/theme_data.dart';
 import 'package:redux/redux.dart';
 
 void main() async {
@@ -64,18 +65,19 @@ class App extends StatelessWidget {
     return StoreProvider<AppState>(
         store: store,
         child: MaterialApp(
+          theme: myTheme,
           home: ScreenRouter(),
           routes: {
-            '/home': (context) => HomeScreen(),
+            '/home': (context) => const HomeScreen(),
             '/upcominglist': (context) => ContestListScreen(type: 'upcoming'),
             '/pastlist': (context) => ContestListScreen(type: 'past'),
-            '/probarchive': (context) => ProbArchiveScreen(),
-            '/signin': (context) => SignIn(),
-            '/signup': (context) => SignUp(),
-            '/account': (context) => AccountScreen(),
-            '/edituser': (context) => EditUserScreen(),
+            '/probarchive': (context) => const ProbArchiveScreen(),
+            '/signin': (context) => const SignIn(),
+            '/signup': (context) => const SignUp(),
+            '/account': (context) => const AccountScreen(),
+            '/edituser': (context) => const EditUserScreen(),
             '/activelist': (context) => ContestListScreen(type: 'active'),
-            '/loading': (context) => LoadingScreen(),
+            '/loading': (context) => const LoadingScreen(),
           },
         ));
   }

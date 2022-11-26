@@ -20,13 +20,7 @@ class PresentationWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       child: Column(
-        children: [
-          ListTile(
-            title: Text(title),
-            onTap: onTap,
-          ),
-          ...elements
-        ],
+        children: elements,
       ),
     );
   }
