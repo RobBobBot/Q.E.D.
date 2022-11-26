@@ -6,6 +6,35 @@ import 'package:qed/firebase/qedstore.dart';
 import 'package:qed/redux/app_actions.dart';
 import 'package:qed/redux/app_state.dart';
 
+class RoleInfo extends StatelessWidget {
+  final String role, uid, name;
+  const RoleInfo(
+      {super.key, required this.role, required this.name, required this.uid});
+
+  @override
+  Widget build(BuildContext context) {
+    switch (role) {
+      case 'student':
+        return Row(
+          children: [
+            const Text('Request teacher role?'),
+            SizedBox(width: 32),
+            ElevatedButton(
+              onPressed: () => QEDStore.instance.addRequest(uid, name),
+              child: Text('Request'),
+            )
+          ],
+        );
+      case 'teacher':
+        return const Text('You are a teacher!');
+      case 'admin':
+        return const Text('You are an admin!');
+      default:
+        return const Text("You are an error!");
+    }
+  }
+}
+
 class EditUserScreen extends StatefulWidget {
   const EditUserScreen({super.key});
 
@@ -47,18 +76,11 @@ class _EditUserScreenState extends State<EditUserScreen> {
                     controller: descriptionController,
                     decoration: const InputDecoration(labelText: 'Description'),
                   ),
-                  (store.state.currentUser!.role != 'student')
-                      ? const Text('You already have the teacher Role.')
-                      : Row(
-                          children: [
-                            const Text('Request teacher role?'),
-                            SizedBox(width: 32),
-                            ElevatedButton(
-                              onPressed: () {},
-                              child: Text('Request'),
-                            )
-                          ],
-                        ),
+                  RoleInfo(
+                    role: store.state.currentUser!.role,
+                    name: store.state.currentUser!.name,
+                    uid: store.state.currentUser!.firebaseUser.uid,
+                  ),
                   Divider(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
