@@ -23,6 +23,7 @@ class _SignInState extends State<SignIn> {
   Future<void> validateData() async {
     emailError = passError = null;
     hasError = false;
+    setState(() {});
     emailError =
         (emailController.text == "" ? "This field is required!" : null);
     passError = (passController.text == "" ? "This field is required!" : null);
