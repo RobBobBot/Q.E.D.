@@ -158,4 +158,9 @@ class QEDStore {
 
     return res;
   }
+
+  ///Signs out a user
+  Future<void> signOutUser() async {
+    await FirebaseAuth.instance.signOut();
+  }
 }
