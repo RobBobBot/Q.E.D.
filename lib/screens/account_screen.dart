@@ -14,19 +14,18 @@ class _AccountScreenState extends State<AccountScreen> {
   @override
   Widget build(BuildContext context) {
     return StoreBuilder<AppState>(builder: (context, store) {
-      print(store.state.currentUser);
       return Scaffold(
         appBar: AppBar(
           title: const Text('Profile'),
           centerTitle: true,
           actions: [
             IconButton(
-                onPressed: () {}, icon: Icon(Icons.admin_panel_settings)),
+                onPressed: () {}, icon: const Icon(Icons.admin_panel_settings)),
             IconButton(
                 onPressed: () {
                   Navigator.pushNamed(context, '/edituser');
                 },
-                icon: Icon(Icons.settings)),
+                icon: const Icon(Icons.settings)),
           ],
         ),
         drawer: MyDrawer(),
@@ -41,11 +40,10 @@ class _AccountScreenState extends State<AccountScreen> {
                     CircleAvatar(
                       backgroundColor: Colors.black,
                       radius: 50,
-                      backgroundImage: NetworkImage(store.state.currentUser!.profilePictureURL),
+                      backgroundImage: NetworkImage(
+                          store.state.currentUser!.profilePictureURL),
                     ),
-                    SizedBox(
-                      width: 20,
-                    ),
+                    const SizedBox(width: 20),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
