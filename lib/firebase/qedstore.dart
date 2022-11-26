@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -203,12 +204,20 @@ class QEDStore {
 
   ///Uploads the solutions to a problem
   Future<void> uploadSolution(
-      List<File> files, String problemID, String uid) async {
+      List<PlatformFile> files, String problemID, String uid) async {
+    if (files.isEmpty) return;
+
+    storeageref.child("/Problems/$problemID/Submissions/$uid").delete();
+
     for (var file in files) {
-      storeageref
-          .child("/Problems/$problemID/Submissions/$uid/${file.hashCode}")
-          .putFile(file);
+      await storeageref
+          .child("/Problems/$problemID/Submissions/$uid/${file.name}")
+          .putFile(File(file.path!));
     }
+
+    await FirebaseFirestore.instance.collection("Users").doc(uid).update({
+      "triedProblems": FieldValue.arrayUnion([int.parse(problemID)]),
+    });
   }
 
   Future<void> createContest(String name, List<problemInfo> problems,

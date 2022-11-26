@@ -21,13 +21,13 @@ class ProblemScreen extends StatefulWidget {
 }
 
 class _ProblemScreenState extends State<ProblemScreen> {
-  List<File> uploadedFiles = [];
+  List<PlatformFile> uploadedFiles = [];
 
   Future<void> uploadSolution() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom, allowedExtensions: ['pdf', 'jpg', 'png']);
     if (result != null) {
-      uploadedFiles.add(File(result.files.first.path!));
+      uploadedFiles.add(result.files.first);
     }
     setState(() {});
   }
@@ -89,8 +89,8 @@ class _ProblemScreenState extends State<ProblemScreen> {
                         ),
                         ...uploadedFiles.map(
                           (f) => ListTile(
-                            title: Text(
-                                f.path.substring(f.path.lastIndexOf('/') + 1)),
+                            title: Text(f.path!
+                                .substring(f.path!.lastIndexOf('/') + 1)),
                             trailing: IconButton(
                               icon: Icon(Icons.delete),
                               onPressed: () {},
