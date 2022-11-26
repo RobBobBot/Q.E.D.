@@ -220,6 +220,10 @@ class QEDStore {
     });
   }
 
+  Future<bool> hasSubmitted(String uid, String problemID) async {
+    bool res = true;
+    return res;
+  }
   Future<void> createContest(String name, List<problemInfo> problems,
       Timestamp begin, Timestamp end) async {}
 }

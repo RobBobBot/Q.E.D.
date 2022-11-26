@@ -13,11 +13,14 @@ class ProblemListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      contentPadding: EdgeInsets.all(12),
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => ProblemScreen(problem: problem)),
+              builder: (context) => type == 'finished'
+                  ? SubmissionListScreen(problem: problem)
+                  : ProblemScreen(problem: problem)),
         );
       },
       leading: Image.asset(
@@ -26,9 +29,9 @@ class ProblemListTile extends StatelessWidget {
       ),
       title: Text(problem.name),
       subtitle: Wrap(
-        children: problem.tags.map((e) => QedTag(name: e)).toList(),
         runSpacing: 8.0,
         spacing: 8.0,
+        children: problem.tags.map((e) => QedTag(name: e)).take(3).toList(),
       ),
       trailing: type == 'finished'
           ? SubmissionsButton(problem: problem)

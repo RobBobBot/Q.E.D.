@@ -111,6 +111,9 @@ class _EditUserScreenState extends State<EditUserScreen> {
                                 realNameController.text,
                                 usernameController.text,
                                 descriptionController.text));
+
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: const Text('Saved Changes!')));
                           },
                           child: Text('Save')),
                     ],
