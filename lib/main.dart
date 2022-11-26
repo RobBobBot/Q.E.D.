@@ -10,6 +10,7 @@ import 'package:qed/screens/contest_list_screen.dart';
 import 'package:qed/screens/homescreen.dart';
 import 'package:qed/screens/loading_screen.dart';
 import 'package:qed/screens/probarchive_screen.dart';
+import 'package:qed/screens/screen_router.dart';
 import 'package:qed/screens/signin.dart';
 import 'package:qed/screens/signup.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -27,7 +28,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   Store<AppState> store = Store<AppState>(appReducer, initialState: AppState());
-  await FirebaseAuth.instance.signOut();
   FirebaseAuth.instance.authStateChanges().listen(
     (user) async {
       if (user == null) {
@@ -41,7 +41,6 @@ void main() async {
 
   ///dummy problem
   Future.delayed(Duration(seconds: 3)).then((val) {
-    print("finished bro");
     store.dispatch(AddProblemAction(
       Problem(
         id: 1,
@@ -67,12 +66,7 @@ class App extends StatelessWidget {
         store: store,
         child: MaterialApp(
           theme: myTheme,
-          home: StoreBuilder<AppState>(builder: ((context, vm) {
-            if (vm.state.currentUser != null) {
-              return HomeScreen();
-            }
-            return SignIn();
-          })),
+          home: ScreenRouter(),
           routes: {
             '/home': (context) => const HomeScreen(),
             '/upcominglist': (context) => ContestListScreen(type: 'upcoming'),

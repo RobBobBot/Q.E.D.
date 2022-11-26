@@ -48,7 +48,11 @@ class MyDrawer extends StatelessWidget {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       onTap: () {
-                        Navigator.popAndPushNamed(context, '/$e');
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        '/${e}',
+                        (route) => false,
+                      );
                       },
                     ),
                   ),

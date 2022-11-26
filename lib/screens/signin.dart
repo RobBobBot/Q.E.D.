@@ -15,38 +15,39 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   TextEditingController passController = TextEditingController();
-  TextEditingController userController = TextEditingController();
-  String? userError, passError;
+  TextEditingController emailController = TextEditingController();
+  String? emailError, passError;
   bool hasError = false;
   final _formKey = GlobalKey<FormState>();
 
   Future<void> validateData() async {
-    userError = passError = null;
+    emailError = passError = null;
     hasError = false;
-    userError = (userController.text == "" ? "This field is required!" : null);
+    emailError =
+        (emailController.text == "" ? "This field is required!" : null);
     passError = (passController.text == "" ? "This field is required!" : null);
-    if (userError != null || passError != null) {
+    if (emailError != null || passError != null) {
       hasError = true;
       setState(() {});
       return;
     }
     await QEDStore.instance
-        .signInUser(email: userController.text, password: userController.text)
+        .signInUser(email: emailController.text, password: emailController.text)
         .then((value) {
       if (value != null) {
         hasError = true;
         switch (value) {
           case 'invalid-email':
-            userError = 'The email is Invalid!';
+            emailError = 'The email is Invalid!';
             break;
           case 'user-not-found':
-            userError = 'The user does not exist!';
+            emailError = 'The user does not exist!';
             break;
           case 'wrong-password':
             passError = 'The password is wrong!';
             break;
           case 'unknown':
-            passError = userError = "I don't know man...";
+            passError = emailError = "I don't know man...";
             break;
         }
         setState(() {});
@@ -58,6 +59,7 @@ class _SignInState extends State<SignIn> {
   Widget build(BuildContext context) {
     return Scaffold(
       //appBar: AppBar(),
+
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Form(
@@ -77,7 +79,8 @@ class _SignInState extends State<SignIn> {
                     color: Color.fromARGB(255, 164, 139, 233),
                   ),
                 ),
-                controller: userController,
+                controller: emailController,
+                keyboardType: TextInputType.emailAddress,
               ),
               TextField(
                 decoration: InputDecoration(
@@ -89,6 +92,7 @@ class _SignInState extends State<SignIn> {
                 ),
                 controller: passController,
                 obscureText: true,
+                keyboardType: TextInputType.visiblePassword,
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -103,6 +107,11 @@ class _SignInState extends State<SignIn> {
                                 ? 'Something went wrong...'
                                 : 'Loading...')),
                       );
+                      var error = await QEDStore.instance.signInUser(
+                        email: emailController.text,
+                        password: passController.text,
+                      );
+                      print(error);
                     }
                   },
                   padding: EdgeInsets.all(16.0),
@@ -125,12 +134,11 @@ class _SignInState extends State<SignIn> {
               Divider(),
               TextButton(
                 child: Text(" New user? Sign up here!"),
-                onPressed: () => Navigator.pushAndRemoveUntil(
+                onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => SignUp(),
                   ),
-                  (a) => false,
                 ),
               ),
             ],
