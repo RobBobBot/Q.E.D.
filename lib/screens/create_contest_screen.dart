@@ -52,6 +52,18 @@ class _CreateContestScreenState extends State<CreateContestScreen> {
           )
         ],
       ),
+      bottomNavigationBar: BottomAppBar(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ElevatedButton(
+            child: Padding(
+              padding: const EdgeInsets.all(32.0),
+              child: Text("Upload"),
+            ),
+            onPressed: () {},
+          ),
+        ),
+      ),
     );
   }
 }
@@ -96,24 +108,35 @@ class _ProblemCreatorListTile extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Icon(Icons.picture_as_pdf_rounded),
-          TextField(
-            onSubmitted: onNameChanged,
-            decoration: InputDecoration(
-              hintText: "Problem name...",
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Icon(Icons.picture_as_pdf_rounded),
+          ),
+          Flexible(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                onSubmitted: onNameChanged,
+                decoration: InputDecoration(
+                  hintText: "Problem name...",
+                ),
+              ),
             ),
           ),
-          Column(
-            children: [
-              ElevatedButton(
-                child: Text("Choose statement"),
-                onPressed: onStatementSelectTap,
-              ),
-              ElevatedButton(
-                child: Text("Choose solution"),
-                onPressed: onSolutionSelectTap,
-              ),
-            ],
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                ElevatedButton(
+                  child: Text("Choose statement"),
+                  onPressed: onStatementSelectTap,
+                ),
+                ElevatedButton(
+                  child: Text("Choose solution"),
+                  onPressed: onSolutionSelectTap,
+                ),
+              ],
+            ),
           ),
         ],
       ),

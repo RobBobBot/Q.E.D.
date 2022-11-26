@@ -33,6 +33,5 @@ TextStyle presentationTitle = TextStyle(
   fontWeight: FontWeight.bold,
 );
 ListTileThemeData presentationContent = ListTileThemeData(
-  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-  tileColor: Color.fromARGB(255, 21, 17, 48)
-);
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+    tileColor: Color.fromARGB(255, 21, 17, 48));
