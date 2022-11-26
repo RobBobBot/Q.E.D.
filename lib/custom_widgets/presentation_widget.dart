@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qed/contest.dart';
 
-import '../contest_screens/active_contest_screen.dart';
+import '../contest_screens/contest_screen.dart';
 
 class PresentationWidget extends StatelessWidget {
   final void Function()? onTap;

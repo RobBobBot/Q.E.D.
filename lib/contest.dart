@@ -15,4 +15,13 @@ class Contest {
       required this.tags,
       required this.name,
       required this.problemIDs});
+  bool isFinished() {
+    Timestamp currentTime = Timestamp.fromDate(DateTime.now());
+    return timeEnd.compareTo(currentTime) < 0;
+  }
+
+  bool isUpcoming() {
+    Timestamp currentTime = Timestamp.fromDate(DateTime.now());
+    return timeBegin.compareTo(currentTime) > 0;
+  }
 }

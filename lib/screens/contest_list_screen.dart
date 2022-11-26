@@ -24,10 +24,10 @@ class _ContestListScreenState extends State<ContestListScreen> {
         List<Contest> contestsToShow = [];
         Timestamp currentTime = Timestamp.fromDate(DateTime.now());
         for (var contest in store.state.contests.values) {
-          if (contest.timeEnd.compareTo(currentTime) < 0) {
-            if(widget.type == 'past') contestsToShow.add(contest);
-          } else if (contest.timeBegin.compareTo(currentTime) > 0) {
-            if(widget.type == 'upcoming') contestsToShow.add(contest);
+          if (contest.isFinished()) {
+            if (widget.type == 'past') contestsToShow.add(contest);
+          } else if (contest.isUpcoming()) {
+            if (widget.type == 'upcoming') contestsToShow.add(contest);
           } else if (widget.type == 'active') {
             contestsToShow.add(contest);
           }
@@ -43,10 +43,12 @@ class _ContestListScreenState extends State<ContestListScreen> {
                   title: '${widget.type} Contests',
                 ),
               );
-      }),
+      },),
       appBar: AppBar(
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-        title: Text(widget.type.substring(0,1).toUpperCase() + widget.type.substring(1) + ' Contests'),
+        title: Text(widget.type.substring(0, 1).toUpperCase() +
+            widget.type.substring(1) +
+            ' Contests'),
       ),
       drawer: MyDrawer(),
     );
