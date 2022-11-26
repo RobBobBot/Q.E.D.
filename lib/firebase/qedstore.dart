@@ -53,8 +53,7 @@ class QEDStore {
     final GoogleSignInAuthentication? auth = await user?.authentication;
     final cred = GoogleAuthProvider.credential(
         idToken: auth?.idToken, accessToken: auth?.accessToken);
-    var x = await FirebaseAuth.instance.signInWithCredential(cred);
-    print("d");
+    await FirebaseAuth.instance.signInWithCredential(cred);
   }
 
   Future<List<Contest>> getContests() async {
@@ -91,6 +90,7 @@ class QEDStore {
 
   Future<QedUser> getUserData(String uid) async {
     QedUser res = QedUser();
+
     return res;
   }
 }
