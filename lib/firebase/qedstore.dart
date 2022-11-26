@@ -4,7 +4,9 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:mime/mime.dart';
 import 'package:qed/contest.dart';
+import 'package:qed/firebase/rfile.dart';
 import 'package:qed/qed_user.dart';
 
 class QEDStore {
@@ -153,17 +155,12 @@ class QEDStore {
     return res;
   }
 
-  Future<String?> getStatementURL(int id) async {
-    String? res;
-
-    return res;
-  }
-
   ///Signs out a user
   Future<void> signOutUser() async {
     await FirebaseAuth.instance.signOut();
   }
 
+  ///Updates the data of a user
   Future<void> updateUser(
       {required String nickname,
       required String name,
@@ -174,5 +171,20 @@ class QEDStore {
       "name": name,
       "nickname": nickname,
     });
+  }
+
+  Future<List<Rfile>> getProblemStatements(int id) async {
+    List<Rfile> res = [];
+    await storeageref
+        .child('/Problems/$id/Statement')
+        .listAll()
+        .then((value) async {
+      for (var i in value.items) {
+        res.add(Rfile(
+            url: await i.getDownloadURL(),
+            isPDF: lookupMimeType(i.fullPath) == "application/pdf"));
+      }
+    });
+    return res;
   }
 }

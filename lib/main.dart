@@ -26,7 +26,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   Store<AppState> store = Store<AppState>(appReducer, initialState: AppState());
-  await FirebaseAuth.instance.signOut();
   FirebaseAuth.instance.authStateChanges().listen(
     (user) async {
       if (user == null) {
@@ -40,7 +39,6 @@ void main() async {
 
   ///dummy problem
   Future.delayed(Duration(seconds: 3)).then((val) {
-    print("finished bro");
     store.dispatch(AddProblemAction(
       Problem(
         id: 1,

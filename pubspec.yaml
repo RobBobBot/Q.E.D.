@@ -48,6 +48,7 @@ dependencies:
   flutter_signin_button: ^2.0.0
   flutter_spinkit: ^5.1.0
   syncfusion_flutter_pdfviewer: ^20.3.58
+  mime: ^1.0.2
 
 dev_dependencies:
   flutter_test:
