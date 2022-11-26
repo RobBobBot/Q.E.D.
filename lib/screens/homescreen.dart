@@ -59,19 +59,25 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               PresentationWidget(
                   title: 'Active Contests',
-                  onTap: null,
+                  onTap: () {
+                    Navigator.pushNamed(context, '/activelist');
+                  },
                   elements: activeContests
                       .map((e) => ContestListTile(contest: e))
                       .toList()),
               PresentationWidget(
                   title: 'Upcoming contests',
-                  onTap: null,
+                  onTap: () {
+                    Navigator.pushNamed(context, '/upcominglist');
+                  },
                   elements: upcomingContests
                       .map((e) => ContestListTile(contest: e))
                       .toList()),
               PresentationWidget(
                   title: 'Old contests',
-                  onTap: null,
+                  onTap: () {
+                    Navigator.pushNamed(context, '/pastlist');
+                  },
                   elements: pastContests
                       .map((e) => ContestListTile(contest: e))
                       .toList()),
