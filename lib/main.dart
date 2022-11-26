@@ -15,7 +15,7 @@ import 'package:qed/screens/signin.dart';
 import 'package:qed/screens/signup.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:qed/contest.dart';
-import 'package:qed/contest_screens/contest_screen.dart';
+import 'package:qed/contest_screens/active_contest_screen.dart';
 import 'package:qed/firebase/firebase_options.dart';
 import 'package:qed/firebase/qedstore.dart';
 import 'package:qed/redux/app_actions.dart';

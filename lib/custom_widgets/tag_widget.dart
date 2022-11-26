@@ -11,7 +11,7 @@ class QedTag extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(20.0)),
-        color: Colors.amber,
+        color: Theme.of(context).colorScheme.secondary,
       ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),

@@ -36,6 +36,7 @@ class MyDrawer extends StatelessWidget {
                 width: 180,
               ),
             ),
+            SizedBox(height: 20),
             ...drawerScreens
                 .where((element) =>
                     store.state.currentUser!.role >= element.minPermissionLevel)
