@@ -44,7 +44,10 @@ class _ContestListScreenState extends State<ContestListScreen> {
                 ),
               );
       }),
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+        title: Text(widget.type.substring(0,1).toUpperCase() + widget.type.substring(1) + ' Contests'),
+      ),
       drawer: MyDrawer(),
     );
   }

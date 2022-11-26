@@ -6,6 +6,7 @@ import 'package:qed/custom_widgets/presentation_widget.dart';
 import 'package:qed/redux/app_state.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:qed/theme_data.dart';
 
 import '../contest_screens/active_contest_screen.dart';
 import '../custom_widgets/mydrawer.dart';
@@ -23,11 +24,31 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
   }
 
+  Widget TitleWidget(String title) {
+    return ListTile(
+      title: Text(
+        '${title[0].toUpperCase()}${title.substring(1)} Contests',
+        style: presentationTitle,
+      ),
+      onTap: () => Navigator.pushNamed(context, '/${title}list'),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("QED"),
+        backgroundColor: Theme.of(context).primaryColor,
+        title: Row(
+          children: [
+            Image.asset(
+              'assets/images/logo.png',
+              width: 40,
+            ),
+            SizedBox(width: 10),
+            Text("QED"),
+          ],
+        ),
         actions: [
           IconButton(
             icon: Icon(Icons.account_circle),
@@ -57,30 +78,39 @@ class _HomeScreenState extends State<HomeScreen> {
 
           return ListView(
             children: [
+              TitleWidget('active'),
               PresentationWidget(
-                  title: 'Active Contests',
-                  onTap: () {
-                    Navigator.pushNamed(context, '/activelist');
-                  },
-                  elements: activeContests
-                      .map((e) => ContestListTile(contest: e))
-                      .toList()),
+                title: 'Active Contests',
+                onTap: () {
+                  Navigator.pushNamed(context, '/activelist');
+                },
+                elements: activeContests
+                    .map((e) => ContestListTile(contest: e))
+                    .take(3)
+                    .toList(),
+              ),
+              TitleWidget('upcoming'),
               PresentationWidget(
-                  title: 'Upcoming contests',
-                  onTap: () {
-                    Navigator.pushNamed(context, '/upcominglist');
-                  },
-                  elements: upcomingContests
-                      .map((e) => ContestListTile(contest: e))
-                      .toList()),
+                title: 'Upcoming contests',
+                onTap: () {
+                  Navigator.pushNamed(context, '/upcominglist');
+                },
+                elements: upcomingContests
+                    .map((e) => ContestListTile(contest: e))
+                    .take(3)
+                    .toList(),
+              ),
+              TitleWidget('past'),
               PresentationWidget(
-                  title: 'Old contests',
-                  onTap: () {
-                    Navigator.pushNamed(context, '/pastlist');
-                  },
-                  elements: pastContests
-                      .map((e) => ContestListTile(contest: e))
-                      .toList()),
+                title: 'Past contests',
+                onTap: () {
+                  Navigator.pushNamed(context, '/pastlist');
+                },
+                elements: pastContests
+                    .map((e) => ContestListTile(contest: e))
+                    .take(3)
+                    .toList(),
+              ),
             ],
           );
         }),
