@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 ThemeData myTheme = ThemeData(
-  colorScheme: ColorScheme.dark(),
+  colorScheme: ColorScheme.dark().copyWith(
+    secondary: Color.fromARGB(255, 254, 168, 0),
+    primary: Color.fromARGB(255, 42, 15, 116),
+  ),
   drawerTheme: const DrawerThemeData(
     backgroundColor: Color.fromARGB(255, 42, 15, 116),
   ),
@@ -27,7 +30,7 @@ ListTileThemeData drawerTile = ListTileThemeData(
   tileColor: Color.fromARGB(255, 21, 17, 48),
   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
 );
-TextStyle presentationTitle = TextStyle(
+TextStyle presentationTitle = const TextStyle(
   fontSize: 24,
   fontStyle: FontStyle.italic,
   fontWeight: FontWeight.bold,
