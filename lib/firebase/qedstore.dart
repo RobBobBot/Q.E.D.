@@ -95,7 +95,7 @@ class QEDStore {
           "name": u.displayName,
           "nickname": u.displayName,
           "profilePicture": u.photoURL,
-          "role": "student",
+          "role": 0,
           "description": "",
           "rating": 0.0,
           "problemsSolved": 0

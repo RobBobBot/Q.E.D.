@@ -66,6 +66,7 @@ class App extends StatelessWidget {
         store: store,
         child: MaterialApp(
           theme: myTheme,
+          darkTheme: myTheme,
           home: ScreenRouter(),
           routes: {
             '/home': (context) => const HomeScreen(),
