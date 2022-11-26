@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:qed/problem.dart';
 import 'package:qed/redux/app_actions.dart';
 import 'package:qed/screens/account.dart';
+import 'package:qed/screens/create_contest_screen.dart';
 import 'package:qed/screens/homescreen.dart';
 import 'package:qed/screens/pastscreen.dart';
 import 'package:qed/screens/probarchivescreen.dart';
@@ -70,7 +71,8 @@ class App extends StatelessWidget {
             return SignUp();
           })),
           routes: {
-            '/home': (context) => HomeScreen(),
+            //TODO: te rog nu aproba asta
+            '/home': (context) => CreateContestScreen(),
             '/upcoming': (context) => UpcomingScreen(),
             '/past': (context) => PastScreen(),
             '/probarchive': (context) => ProbArchiveScreen(),
