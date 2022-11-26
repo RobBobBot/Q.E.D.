@@ -5,12 +5,11 @@ import 'package:qed/problem.dart';
 import 'package:qed/redux/app_actions.dart';
 import 'package:qed/screens/account_screen.dart';
 import 'package:qed/screens/edit_user_screen.dart';
+import 'package:qed/screens/contest_list_screen.dart';
 import 'package:qed/screens/homescreen.dart';
-import 'package:qed/screens/pastscreen.dart';
-import 'package:qed/screens/probarchivescreen.dart';
+import 'package:qed/screens/probarchive_screen.dart';
 import 'package:qed/screens/signin.dart';
 import 'package:qed/screens/signup.dart';
-import 'package:qed/screens/upcomingscreen.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:qed/contest.dart';
 import 'package:qed/contest_screens/active_contest_screen.dart';
@@ -32,7 +31,7 @@ void main() async {
         store.dispatch(UserChangedAction(null));
       } else {
         store.dispatch(
-            UserChangedAction(await QEDStore.instance.getUserData(user.uid)));
+            UserChangedAction(await QEDStore.instance.getUserData(user)));
       }
     },
   );
@@ -72,13 +71,14 @@ class App extends StatelessWidget {
           })),
           routes: {
             '/home': (context) => HomeScreen(),
-            '/upcoming': (context) => UpcomingScreen(),
-            '/past': (context) => PastScreen(),
+            '/upcominglist': (context) => ContestListScreen(type: 'upcoming'),
+            '/pastlist': (context) => ContestListScreen(type: 'past'),
             '/probarchive': (context) => ProbArchiveScreen(),
             '/signin': (context) => SignIn(),
             '/signup': (context) => SignUp(),
             '/account': (context) => AccountScreen(),
             '/edituser':(context) => EditUserScreen(),
+            '/activelist': (context) => ContestListScreen(type: 'active'),
           },
         ));
   }
