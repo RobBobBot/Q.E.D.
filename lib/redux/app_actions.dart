@@ -24,3 +24,10 @@ class UserChangedAction extends AppAction {
   QedUser? user;
   UserChangedAction(this.user);
 }
+
+class UserUpdateAction extends AppAction {
+  String name;
+  String nickname;
+  String desc;
+  UserUpdateAction(this.name, this.nickname, this.desc);
+}

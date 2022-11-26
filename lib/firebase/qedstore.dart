@@ -24,8 +24,9 @@ class QEDStore {
   /// - invalid-email
   /// - weak-password
   /// - unknown(if the error is not known)
-  Future<String?> createUser(
+  Future<String?> signUpUser(
       {required String name,
+      required String nickname,
       required String email,
       required String password}) async {
     String? res;
@@ -42,17 +43,43 @@ class QEDStore {
     if (user != null) {
       await FirebaseFirestore.instance.collection("Users").doc(user!.uid).set({
         "name": name,
+        "nickname": nickname,
         "profilePicture": "Users/DefaultProfilePicture.jpeg",
-        "role": "user"
+        "role": "student",
+        "description": "",
+        "rating": 0.0,
+        "problemsSolved": 0
       });
     }
     return res;
   }
 
+  ///Sign in a user with email and password
+  ///
+  ///Error codes:
+  /// - invalid-email
+  /// - user-not-found
+  /// - wrong-password
+  /// - unknown
+  Future<String?> signInUser(
+      {required String email, required String password}) async {
+    String? res;
+    try {
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+    } on FirebaseAuthException catch (e) {
+      res = e.code;
+    } catch (e) {
+      res = "unknown";
+    }
+    return res;
+  }
+
+  /// Creates a account with Google or sign in with Google
   Future<void> singInWithGoogle() async {
     final GoogleSignInAccount? user = await GoogleSignIn().signIn();
     if (user == null) return;
-    final GoogleSignInAuthentication? auth = await user?.authentication;
+    final GoogleSignInAuthentication? auth = await user.authentication;
     final cred = GoogleAuthProvider.credential(
         idToken: auth?.idToken, accessToken: auth?.accessToken);
     User u = (await FirebaseAuth.instance.signInWithCredential(cred)).user!;
@@ -64,8 +91,12 @@ class QEDStore {
       if (!value.exists) {
         await FirebaseFirestore.instance.collection("Users").doc(u.uid).set({
           "name": u.displayName,
+          "nickname": u.displayName,
           "profilePicture": u.photoURL,
-          "role": "user"
+          "role": "student",
+          "description": "",
+          "rating": 0.0,
+          "problemsSolved": 0
         });
       }
     });
@@ -73,6 +104,7 @@ class QEDStore {
     await FirebaseAuth.instance.signInWithCredential(cred);
   }
 
+  //Returns all contests in firebase
   Future<List<Contest>> getContests() async {
     List<Contest> res = [];
     await FirebaseFirestore.instance.collection("Contests").get().then((value) {
@@ -99,6 +131,7 @@ class QEDStore {
     return res;
   }
 
+  //Gets the data of a given user
   Future<QedUser> getUserData(User user) async {
     late QedUser res;
     await FirebaseFirestore.instance
@@ -106,10 +139,16 @@ class QEDStore {
         .doc(user.uid)
         .get()
         .then((value) {
+      var data = value.data()!;
       res = QedUser(
-          name: value.data()!["name"],
-          profilePictureURL: value.data()!["profilePicture"],
-          firebaseUser: user);
+          name: data["name"],
+          profilePictureURL: data["profilePicture"],
+          firebaseUser: user,
+          description: data["description"],
+          nickname: data["nickname"],
+          role: data["role"],
+          problemsSolved: data["problemsSolved"],
+          rating: data["rating"]);
     });
     return res;
   }
@@ -118,5 +157,22 @@ class QEDStore {
     String? res;
 
     return res;
+  }
+
+  ///Signs out a user
+  Future<void> signOutUser() async {
+    await FirebaseAuth.instance.signOut();
+  }
+
+  Future<void> updateUser(
+      {required String nickname,
+      required String name,
+      required String desc,
+      required String uid}) async {
+    FirebaseFirestore.instance.collection("Users").doc(uid).update({
+      "description": desc,
+      "name": name,
+      "nickname": nickname,
+    });
   }
 }

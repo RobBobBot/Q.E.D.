@@ -15,5 +15,10 @@ AppState appReducer(AppState state, dynamic action) {
   if (action is UserChangedAction) {
     state.currentUser = action.user;
   }
+  if (action is UserUpdateAction) {
+    state.currentUser!.name = action.name;
+    state.currentUser!.nickname = action.nickname;
+    state.currentUser!.description = action.desc;
+  }
   return state;
 }
