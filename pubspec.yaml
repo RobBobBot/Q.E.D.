@@ -50,6 +50,8 @@ dependencies:
   syncfusion_flutter_pdfviewer: ^20.3.58
   mime: ^1.0.2
   photo_view: ^0.14.0
+  syncfusion_flutter_datepicker: ^20.3.58
+  flutter_datetime_picker: ^1.5.1
 
 dev_dependencies:
   flutter_test:
