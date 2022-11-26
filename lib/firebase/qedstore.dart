@@ -24,7 +24,7 @@ class QEDStore {
   /// - invalid-email
   /// - weak-password
   /// - unknown(if the error is not known)
-  Future<String?> createUser(
+  Future<String?> signUpUser(
       {required String name,
       required String nickname,
       required String email,
@@ -54,6 +54,28 @@ class QEDStore {
     return res;
   }
 
+  ///Sign in a user with email and password
+  ///
+  ///Error codes:
+  /// - invalid-email
+  /// - user-not-found
+  /// - wrong-password
+  /// - unknown
+  Future<String?> signInUser(
+      {required String email, required String password}) async {
+    String? res;
+    try {
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+    } on FirebaseAuthException catch (e) {
+      res = e.code;
+    } catch (e) {
+      res = "unknown";
+    }
+    return res;
+  }
+
+  /// Creates a account with Google or sign in with Google
   Future<void> singInWithGoogle() async {
     final GoogleSignInAccount? user = await GoogleSignIn().signIn();
     if (user == null) return;
@@ -82,6 +104,7 @@ class QEDStore {
     await FirebaseAuth.instance.signInWithCredential(cred);
   }
 
+  //Returns all contests in firebase
   Future<List<Contest>> getContests() async {
     List<Contest> res = [];
     await FirebaseFirestore.instance.collection("Contests").get().then((value) {
@@ -108,6 +131,7 @@ class QEDStore {
     return res;
   }
 
+  //Gets the data of a given user
   Future<QedUser> getUserData(User user) async {
     late QedUser res;
     await FirebaseFirestore.instance
