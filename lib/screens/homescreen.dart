@@ -28,6 +28,14 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("QED"),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/account');
+            },
+            icon: Icon(Icons.account_box),
+          )
+        ],
       ),
       body: SafeArea(
         child: StoreBuilder<AppState>(builder: (context, store) {
