@@ -46,6 +46,7 @@ dependencies:
   flutter_pdfview: ^1.2.5
   advance_pdf_viewer: ^2.0.1
   flutter_spinkit: ^5.1.0
+  syncfusion_flutter_pdfviewer: ^20.3.58
 
 dev_dependencies:
   flutter_test:
