@@ -16,9 +16,12 @@ class _AccountScreenState extends State<AccountScreen> {
         title: Text('User'),
         centerTitle: true,
         actions: [
+          IconButton(onPressed: () {}, icon: Icon(Icons.admin_panel_settings)),
           IconButton(
-              onPressed: () {}, icon: Icon(Icons.admin_panel_settings)),
-          IconButton(onPressed: () {}, icon: Icon(Icons.settings)),
+              onPressed: () {
+                Navigator.pushNamed(context, '/edituser');
+              },
+              icon: Icon(Icons.settings)),
         ],
       ),
       drawer: MyDrawer(),

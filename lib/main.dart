@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:qed/problem.dart';
 import 'package:qed/redux/app_actions.dart';
 import 'package:qed/screens/account_screen.dart';
+import 'package:qed/screens/edit_user_screen.dart';
 import 'package:qed/screens/homescreen.dart';
 import 'package:qed/screens/pastscreen.dart';
 import 'package:qed/screens/probarchivescreen.dart';
@@ -77,6 +78,7 @@ class App extends StatelessWidget {
             '/signin': (context) => SignIn(),
             '/signup': (context) => SignUp(),
             '/account': (context) => AccountScreen(),
+            '/edituser':(context) => EditUserScreen(),
           },
         ));
   }
