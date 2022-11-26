@@ -8,6 +8,7 @@ import 'package:qed/screens/account_screen.dart';
 import 'package:qed/screens/edit_user_screen.dart';
 import 'package:qed/screens/contest_list_screen.dart';
 import 'package:qed/screens/homescreen.dart';
+import 'package:qed/screens/loading_screen.dart';
 import 'package:qed/screens/probarchive_screen.dart';
 import 'package:qed/screens/signin.dart';
 import 'package:qed/screens/signup.dart';
@@ -78,8 +79,9 @@ class App extends StatelessWidget {
             '/signin': (context) => SignIn(),
             '/signup': (context) => SignUp(),
             '/account': (context) => AccountScreen(),
-            '/edituser':(context) => EditUserScreen(),
+            '/edituser': (context) => EditUserScreen(),
             '/activelist': (context) => ContestListScreen(type: 'active'),
+            '/loading': (context) => LoadingScreen(),
           },
         ));
   }
