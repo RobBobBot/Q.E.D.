@@ -73,7 +73,7 @@ class _SignInState extends State<SignIn> {
               TextField(
                 decoration: InputDecoration(
                   labelText: "Email",
-                  errorText: userError,
+                  errorText: emailError,
                   labelStyle: Theme.of(context).inputDecorationTheme.labelStyle,
                 ),
                 controller: emailController,
