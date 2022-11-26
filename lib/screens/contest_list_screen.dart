@@ -44,7 +44,9 @@ class _ContestListScreenState extends State<ContestListScreen> {
                 ),
               );
       }),
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(widget.type.substring(0,1).toUpperCase() + widget.type.substring(1) + ' Contests'),
+      ),
       drawer: MyDrawer(),
     );
   }

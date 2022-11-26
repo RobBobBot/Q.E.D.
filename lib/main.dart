@@ -65,6 +65,18 @@ class App extends StatelessWidget {
     return StoreProvider<AppState>(
         store: store,
         child: MaterialApp(
+          theme: ThemeData(
+            bannerTheme: MaterialBannerThemeData(
+                backgroundColor: Color.fromARGB(255, 59, 22, 161)),
+            colorScheme: ColorScheme.dark(),
+            primaryColor: Color.fromARGB(255, 42, 15, 116),
+            hintColor: Color.fromARGB(255, 92, 60, 180),
+            textTheme: const TextTheme(
+              headline1: TextStyle(fontSize: 56.0, fontWeight: FontWeight.bold),
+              headline6: TextStyle(fontSize: 32.0, fontStyle: FontStyle.italic),
+              bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+            ),
+          ),
           home: StoreBuilder<AppState>(builder: ((context, vm) {
             if (vm.state.currentUser != null) {
               return HomeScreen();

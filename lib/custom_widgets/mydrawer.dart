@@ -12,7 +12,7 @@ class MyDrawer extends StatelessWidget {
   ];
   final nameToString = {
     'home': 'Home Screen',
-    'activelist':'Active Contests',
+    'activelist': 'Active Contests',
     'upcominglist': 'Upcoming Contests',
     'pastlist': 'Past Contests',
     'probarchive': 'Problem Archive',
@@ -21,16 +21,34 @@ class MyDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: ListView.builder(
-        itemCount: drawerScreens.length,
-        itemBuilder: ((context, index) {
-          return ListTile(
-            title: Text(nameToString[drawerScreens[index]]!),
-            onTap: () {
-              Navigator.popAndPushNamed(context, '/${drawerScreens[index]}');
-            },
-          );
-        }),
+      backgroundColor: Theme.of(context).bannerTheme.backgroundColor,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: Image.asset(
+              'assets/images/logo.png',
+              width: 180,
+            ),
+          ),
+          ...drawerScreens
+              .map(
+                (e) => Container(
+                  margin: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Theme.of(context).hintColor,
+                  ),
+                  child: ListTile(
+                    title: Text(nameToString[e]!),
+                    onTap: () {
+                      Navigator.popAndPushNamed(context, '/$e');
+                    },
+                  ),
+                ),
+              )
+              .toList(),
+        ],
       ),
     );
   }

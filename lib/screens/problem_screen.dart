@@ -61,7 +61,7 @@ class _ProblemScreenState extends State<ProblemScreen> {
             Flexible(
               flex: 1,
               child: SfPdfViewer.network(
-                'https://www.africau.edu/images/default/sample.pdf',
+                'https://firebasestorage.googleapis.com/v0/b/unihackqed.appspot.com/o/Problems%2F1%2FStatement%2FStatement.pdf?alt=media&token=bfd51eb6-e226-428f-892a-2b669f72be39',
                 key: _pdfViewerKey,
               ),
             ),
