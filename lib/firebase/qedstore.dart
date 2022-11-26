@@ -11,6 +11,8 @@ import 'package:qed/contest.dart';
 import 'package:qed/firebase/rfile.dart';
 import 'package:qed/qed_user.dart';
 
+import '../probleminfo.dart';
+
 class QEDStore {
   static final QEDStore instance = QEDStore._internal();
   final Reference storeageref = FirebaseStorage.instance.ref();
@@ -204,7 +206,7 @@ class QEDStore {
       List<File> files, String problemID, String uid) async {
     for (var file in files) {
       storeageref
-          .child("/Problems/$problemID/Solutions/$uid/${file.hashCode}")
+          .child("/Problems/$problemID/Submissions/$uid/${file.hashCode}")
           .putFile(file);
     }
   }
@@ -213,4 +215,6 @@ class QEDStore {
     bool res = true;
     return res;
   }
+  Future<void> createContest(String name, List<problemInfo> problems,
+      Timestamp begin, Timestamp end) async {}
 }

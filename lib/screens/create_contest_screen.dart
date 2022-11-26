@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:qed/custom_widgets/mydrawer.dart';
+
+import '../probleminfo.dart';
 
 class CreateContestScreen extends StatefulWidget {
   const CreateContestScreen({super.key});
@@ -9,13 +13,8 @@ class CreateContestScreen extends StatefulWidget {
   State<CreateContestScreen> createState() => _CreateContestScreenState();
 }
 
-class _problemInfo {
-  FilePickerResult? files;
-  String? name;
-}
-
 class _CreateContestScreenState extends State<CreateContestScreen> {
-  List<_problemInfo> problemInfos = [];
+  List<problemInfo> problemInfos = [];
   TextEditingController contestTitle = TextEditingController();
 
   @override
@@ -37,8 +36,28 @@ class _CreateContestScreenState extends State<CreateContestScreen> {
           Divider(),
           ...problemInfos
               .map((e) => _ProblemCreatorListTile(
-                  onStatementSelectTap: () {},
-                  onSolutionSelectTap: () {},
+                  onStatementSelectTap: () async => {
+                        await FilePicker.platform.pickFiles(
+                            type: FileType.custom,
+                            allowedExtensions: ['pdf']).then((value) {
+                          if (value != null) {
+                            setState(() {
+                              e.statement = value.files.first;
+                            });
+                          }
+                        })
+                      },
+                  onSolutionSelectTap: () async => {
+                        await FilePicker.platform.pickFiles(
+                            type: FileType.custom,
+                            allowedExtensions: ['pdf']).then((value) {
+                          if (value != null) {
+                            setState(() {
+                              e.solution = value.files.first;
+                            });
+                          }
+                        })
+                      },
                   onNameChanged: (name) {
                     e.name = name;
                   },
@@ -47,7 +66,7 @@ class _CreateContestScreenState extends State<CreateContestScreen> {
           ListTile(
             title: Icon(Icons.add_box_outlined),
             onTap: () => setState(() {
-              problemInfos.add(_problemInfo());
+              problemInfos.add(problemInfo());
             }),
           )
         ],
@@ -60,7 +79,9 @@ class _CreateContestScreenState extends State<CreateContestScreen> {
               padding: const EdgeInsets.all(32.0),
               child: Text("Upload"),
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.popAndPushNamed(context, '/home');
+            },
           ),
         ),
       ),
@@ -69,7 +90,7 @@ class _CreateContestScreenState extends State<CreateContestScreen> {
 }
 
 class _ProblemCreatorListTile extends StatelessWidget {
-  final _problemInfo info;
+  final problemInfo info;
   final void Function() onStatementSelectTap;
   final void Function() onSolutionSelectTap;
   final void Function(String) onNameChanged;
@@ -128,11 +149,15 @@ class _ProblemCreatorListTile extends StatelessWidget {
             child: Column(
               children: [
                 ElevatedButton(
-                  child: Text("Choose statement"),
+                  child: Text(info.statement == null
+                      ? "Choose statement"
+                      : info.statement!.name),
                   onPressed: onStatementSelectTap,
                 ),
                 ElevatedButton(
-                  child: Text("Choose solution"),
+                  child: Text(info.solution == null
+                      ? "Choose solution"
+                      : info.solution!.name),
                   onPressed: onSolutionSelectTap,
                 ),
               ],
