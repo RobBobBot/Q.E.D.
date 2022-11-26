@@ -18,14 +18,16 @@ class PresentationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ListTile(
-          title: Text(title),
-          onTap: onTap,
-        ),
-        ...elements
-      ],
+    return Material(
+      child: Column(
+        children: [
+          ListTile(
+            title: Text(title),
+            onTap: onTap,
+          ),
+          ...elements
+        ],
+      ),
     );
   }
 }

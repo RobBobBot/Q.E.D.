@@ -25,7 +25,7 @@ class _SignUpState extends State<SignUp> {
                 TextButton(
                     onPressed: () async =>
                         await QEDStore.instance.singInWithGoogle(),
-                    child: Text("google"))
+                    child: Text("Continue with google"))
               ],
             ),
             flex: 2,
