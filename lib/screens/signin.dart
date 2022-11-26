@@ -124,12 +124,11 @@ class _SignInState extends State<SignIn> {
               Divider(),
               TextButton(
                 child: Text(" New user? Sign up here!"),
-                onPressed: () => Navigator.pushAndRemoveUntil(
+                onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => SignUp(),
                   ),
-                  (a) => false,
                 ),
               ),
             ],

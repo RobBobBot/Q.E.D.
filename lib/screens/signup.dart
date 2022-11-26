@@ -97,12 +97,8 @@ class _SignUpState extends State<SignUp> {
                     child: Text("Sign up"),
                   ),
                   ElevatedButton(
-                    onPressed: () => Navigator.pushAndRemoveUntil(
+                    onPressed: () => Navigator.pop(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => SignIn(),
-                      ),
-                      (a) => false,
                     ),
                     child: Text("Return"),
                   ),
