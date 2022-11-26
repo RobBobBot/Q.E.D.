@@ -64,7 +64,7 @@ class _ProblemCreatorListTile extends StatelessWidget {
       title: TextField(
         onSubmitted: onNameChanged,
         decoration: InputDecoration(
-          hintText: "Problem name..",
+          hintText: "Problem name...",
         ),
       ),
       trailing: ElevatedButton(
