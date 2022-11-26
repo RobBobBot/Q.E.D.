@@ -26,6 +26,7 @@ class QEDStore {
   /// - unknown(if the error is not known)
   Future<String?> createUser(
       {required String name,
+      required String nickname,
       required String email,
       required String password}) async {
     String? res;
@@ -42,8 +43,12 @@ class QEDStore {
     if (user != null) {
       await FirebaseFirestore.instance.collection("Users").doc(user!.uid).set({
         "name": name,
+        "nickname": nickname,
         "profilePicture": "Users/DefaultProfilePicture.jpeg",
-        "role": "user"
+        "role": "student",
+        "description": "",
+        "rating": 0.0,
+        "problemsSolved": 0
       });
     }
     return res;
@@ -52,7 +57,7 @@ class QEDStore {
   Future<void> singInWithGoogle() async {
     final GoogleSignInAccount? user = await GoogleSignIn().signIn();
     if (user == null) return;
-    final GoogleSignInAuthentication? auth = await user?.authentication;
+    final GoogleSignInAuthentication? auth = await user.authentication;
     final cred = GoogleAuthProvider.credential(
         idToken: auth?.idToken, accessToken: auth?.accessToken);
     User u = (await FirebaseAuth.instance.signInWithCredential(cred)).user!;
@@ -64,8 +69,12 @@ class QEDStore {
       if (!value.exists) {
         await FirebaseFirestore.instance.collection("Users").doc(u.uid).set({
           "name": u.displayName,
+          "nickname": u.displayName,
           "profilePicture": u.photoURL,
-          "role": "user"
+          "role": "student",
+          "description": "",
+          "rating": 0.0,
+          "problemsSolved": 0
         });
       }
     });
@@ -106,10 +115,16 @@ class QEDStore {
         .doc(user.uid)
         .get()
         .then((value) {
+      var data = value.data()!;
       res = QedUser(
-          name: value.data()!["name"],
-          profilePictureURL: value.data()!["profilePicture"],
-          firebaseUser: user);
+          name: data["name"],
+          profilePictureURL: data["profilePicture"],
+          firebaseUser: user,
+          description: data["description"],
+          nickname: data["nickname"],
+          role: data["role"],
+          problemsSolved: data["problemsSolved"],
+          rating: data["rating"]);
     });
     return res;
   }

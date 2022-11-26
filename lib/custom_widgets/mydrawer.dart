@@ -5,14 +5,16 @@ class MyDrawer extends StatelessWidget {
 
   final List<String> drawerScreens = [
     'home',
-    'upcoming',
-    'past',
+    'activelist',
+    'upcominglist',
+    'pastlist',
     'probarchive',
   ];
   final nameToString = {
     'home': 'Home Screen',
-    'upcoming': 'Upcoming Contests',
-    'past': 'Past Contests',
+    'activelist':'Active Contests',
+    'upcominglist': 'Upcoming Contests',
+    'pastlist': 'Past Contests',
     'probarchive': 'Problem Archive',
   };
 
