@@ -16,7 +16,44 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   TextEditingController passController = TextEditingController();
   TextEditingController userController = TextEditingController();
+  String? userError, passError;
+  bool hasError = false;
   final _formKey = GlobalKey<FormState>();
+
+  Future<void> validateData() async {
+    userError = passError = null;
+    hasError = false;
+    userError = (userController.text == "" ? "This field is required!" : null);
+    passError = (passController.text == "" ? "This field is required!" : null);
+    if (userError != null || passError != null) {
+      hasError = true;
+      setState(() {});
+      return;
+    }
+    await QEDStore.instance
+        .signInUser(email: userController.text, password: userController.text)
+        .then((value) {
+      if (value != null) {
+        hasError = true;
+        switch (value) {
+          case 'invalid-email':
+            userError = 'The email is Invalid!';
+            break;
+          case 'user-not-found':
+            userError = 'The user does not exist!';
+            break;
+          case 'wrong-password':
+            passError = 'The password is wrong!';
+            break;
+          case 'unknown':
+            passError = userError = "I don't know man...";
+            break;
+        }
+        setState(() {});
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,11 +70,13 @@ class _SignInState extends State<SignIn> {
                   child: Text("Welcome to QED!",
                       style: Theme.of(context).textTheme.headline2)),
               TextField(
-                decoration: InputDecoration(hintText: "Username"),
+                decoration:
+                    InputDecoration(hintText: "Username", errorText: userError),
                 controller: userController,
               ),
               TextField(
-                decoration: InputDecoration(hintText: "Password"),
+                decoration:
+                    InputDecoration(hintText: "Password", errorText: passError),
                 controller: passController,
                 obscureText: true,
               ),
@@ -45,12 +84,14 @@ class _SignInState extends State<SignIn> {
                 padding: const EdgeInsets.all(8.0),
                 child: SignInButton(
                   Buttons.Email,
-                  onPressed: () {
+                  onPressed: () async {
+                    await validateData();
                     if (_formKey.currentState!.validate()) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                            content: Text(
-                                'Processing Data ${userController.text} ${passController.text}')),
+                            content: Text(hasError
+                                ? 'Something went wrong...'
+                                : 'Loading...')),
                       );
                     }
                   },
