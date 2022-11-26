@@ -41,7 +41,7 @@ class QEDStore {
     }
     if (user != null) {
       await FirebaseFirestore.instance.collection("Users").doc(user!.uid).set({
-        "Name": name,
+        "name": name,
         "profilePicture": "Users/DefaultProfilePicture.jpeg",
         "role": "user"
       });
@@ -63,12 +63,14 @@ class QEDStore {
         .then((value) async {
       if (!value.exists) {
         await FirebaseFirestore.instance.collection("Users").doc(u.uid).set({
-          "Name": u.displayName,
-          "profilePicture": "Users/DefaultProfilePicture.jpeg",
+          "name": u.displayName,
+          "profilePicture": u.photoURL,
           "role": "user"
         });
       }
     });
+    await FirebaseAuth.instance.signOut();
+    await FirebaseAuth.instance.signInWithCredential(cred);
   }
 
   Future<List<Contest>> getContests() async {
@@ -93,6 +95,21 @@ class QEDStore {
               timeEnd: doc.data()["end"]),
         );
       }
+    });
+    return res;
+  }
+
+  Future<QedUser> getUserData(User user) async {
+    late QedUser res;
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(user.uid)
+        .get()
+        .then((value) {
+      res = QedUser(
+          name: value.data()!["name"],
+          profilePictureURL: value.data()!["profilePicture"],
+          firebaseUser: user);
     });
     return res;
   }
