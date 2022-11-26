@@ -59,6 +59,7 @@ class _SignInState extends State<SignIn> {
   Widget build(BuildContext context) {
     return Scaffold(
       //appBar: AppBar(),
+
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Form(
@@ -96,6 +97,11 @@ class _SignInState extends State<SignIn> {
                                 ? 'Something went wrong...'
                                 : 'Loading...')),
                       );
+                      var error = await QEDStore.instance.signInUser(
+                        email: emailController.text,
+                        password: passController.text,
+                      );
+                      print(error);
                     }
                   },
                   padding: EdgeInsets.all(16.0),
@@ -118,12 +124,11 @@ class _SignInState extends State<SignIn> {
               Divider(),
               TextButton(
                 child: Text(" New user? Sign up here!"),
-                onPressed: () => Navigator.pushAndRemoveUntil(
+                onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => SignUp(),
                   ),
-                  (a) => false,
                 ),
               ),
             ],
