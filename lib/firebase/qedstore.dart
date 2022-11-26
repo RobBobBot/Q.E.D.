@@ -40,20 +40,35 @@ class QEDStore {
       res = "unknown";
     }
     if (user != null) {
-      await FirebaseFirestore.instance
-          .collection("Users")
-          .doc(user!.uid)
-          .set({"Name": name, "profilePicture": "Users/.jpeg", "role": "user"});
+      await FirebaseFirestore.instance.collection("Users").doc(user!.uid).set({
+        "Name": name,
+        "profilePicture": "Users/DefaultProfilePicture.jpeg",
+        "role": "user"
+      });
     }
     return res;
   }
 
   Future<void> singInWithGoogle() async {
     final GoogleSignInAccount? user = await GoogleSignIn().signIn();
+    if (user == null) return;
     final GoogleSignInAuthentication? auth = await user?.authentication;
     final cred = GoogleAuthProvider.credential(
         idToken: auth?.idToken, accessToken: auth?.accessToken);
-    await FirebaseAuth.instance.signInWithCredential(cred);
+    User u = (await FirebaseAuth.instance.signInWithCredential(cred)).user!;
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(u.uid)
+        .get()
+        .then((value) async {
+      if (!value.exists) {
+        await FirebaseFirestore.instance.collection("Users").doc(u.uid).set({
+          "Name": u.displayName,
+          "profilePicture": "Users/DefaultProfilePicture.jpeg",
+          "role": "user"
+        });
+      }
+    });
   }
 
   Future<List<Contest>> getContests() async {
@@ -84,12 +99,6 @@ class QEDStore {
 
   Future<String?> getStatementURL(int id) async {
     String? res;
-
-    return res;
-  }
-
-  Future<QedUser> getUserData(String uid) async {
-    QedUser res = QedUser();
 
     return res;
   }

@@ -29,8 +29,7 @@ void main() async {
       if (user == null) {
         store.dispatch(UserChangedAction(null));
       } else {
-        store.dispatch(
-            UserChangedAction(await QEDStore.instance.getUserData(user.uid)));
+        //store.dispatch(UserChangedAction(await QEDStore.instance.getUserData(user)));
       }
     },
   );
