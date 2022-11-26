@@ -37,6 +37,7 @@ class _ProblemScreenState extends State<ProblemScreen> {
   void submitSolutions(String uid) async {
     await QEDStore.instance
         .uploadSolution(uploadedFiles, widget.problem.id.toString(), uid);
+    Navigator.pop(context);
   }
 
   @override

@@ -203,7 +203,9 @@ class QEDStore {
   Future<void> uploadSolution(
       List<File> files, String problemID, String uid) async {
     for (var file in files) {
-      storeageref.child("/Problems/$problemID/Solutions/$uid").putFile(file);
+      storeageref
+          .child("/Problems/$problemID/Solutions/$uid/${file.hashCode}")
+          .putFile(file);
     }
   }
 }
