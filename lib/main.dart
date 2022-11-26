@@ -5,6 +5,7 @@ import 'package:qed/problem.dart';
 import 'package:qed/redux/app_actions.dart';
 import 'package:qed/screens/account_screen.dart';
 import 'package:qed/screens/contest_list_screen.dart';
+import 'package:qed/screens/account.dart';
 import 'package:qed/screens/homescreen.dart';
 import 'package:qed/screens/probarchive_screen.dart';
 import 'package:qed/screens/signin.dart';
@@ -30,7 +31,7 @@ void main() async {
         store.dispatch(UserChangedAction(null));
       } else {
         store.dispatch(
-            UserChangedAction(await QEDStore.instance.getUserData(user.uid)));
+            UserChangedAction(await QEDStore.instance.getUserData(user)));
       }
     },
   );

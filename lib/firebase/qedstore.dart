@@ -40,21 +40,37 @@ class QEDStore {
       res = "unknown";
     }
     if (user != null) {
-      await FirebaseFirestore.instance
-          .collection("Users")
-          .doc(user!.uid)
-          .set({"Name": name, "profilePicture": "Users/.jpeg", "role": "user"});
+      await FirebaseFirestore.instance.collection("Users").doc(user!.uid).set({
+        "name": name,
+        "profilePicture": "Users/DefaultProfilePicture.jpeg",
+        "role": "user"
+      });
     }
     return res;
   }
 
   Future<void> singInWithGoogle() async {
     final GoogleSignInAccount? user = await GoogleSignIn().signIn();
+    if (user == null) return;
     final GoogleSignInAuthentication? auth = await user?.authentication;
     final cred = GoogleAuthProvider.credential(
         idToken: auth?.idToken, accessToken: auth?.accessToken);
-    var x = await FirebaseAuth.instance.signInWithCredential(cred);
-    print("d");
+    User u = (await FirebaseAuth.instance.signInWithCredential(cred)).user!;
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(u.uid)
+        .get()
+        .then((value) async {
+      if (!value.exists) {
+        await FirebaseFirestore.instance.collection("Users").doc(u.uid).set({
+          "name": u.displayName,
+          "profilePicture": u.photoURL,
+          "role": "user"
+        });
+      }
+    });
+    await FirebaseAuth.instance.signOut();
+    await FirebaseAuth.instance.signInWithCredential(cred);
   }
 
   Future<List<Contest>> getContests() async {
@@ -83,14 +99,24 @@ class QEDStore {
     return res;
   }
 
-  Future<String?> getStatementURL(int id) async {
-    String? res;
-
+  Future<QedUser> getUserData(User user) async {
+    late QedUser res;
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(user.uid)
+        .get()
+        .then((value) {
+      res = QedUser(
+          name: value.data()!["name"],
+          profilePictureURL: value.data()!["profilePicture"],
+          firebaseUser: user);
+    });
     return res;
   }
 
-  Future<QedUser> getUserData(String uid) async {
-    QedUser res = QedUser();
+  Future<String?> getStatementURL(int id) async {
+    String? res;
+
     return res;
   }
 }

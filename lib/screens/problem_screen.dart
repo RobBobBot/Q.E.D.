@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
@@ -26,12 +27,23 @@ class _ProblemScreenState extends State<ProblemScreen> {
     setState(() {});
   }
 
+  PDFDocument? doc;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    PDFDocument.fromURL('http://www.africau.edu/images/default/sample.pdf')
+        .then((value) => doc = value);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(widget.problem.name)),
       body: ListView(
         children: [
+          doc != null ? PDFViewer(document: doc!) : Container(),
           ElevatedButton(
             onPressed: uploadSolution,
             child: Text("Upload"),
