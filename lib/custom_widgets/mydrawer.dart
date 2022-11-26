@@ -35,11 +35,8 @@ class MyDrawer extends StatelessWidget {
           ...drawerScreens
               .map(
                 (e) => Container(
-                  margin: EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Theme.of(context).hintColor,
-                  ),
+                  color: Color.fromARGB(0, 0, 0, 0),
+                  margin: EdgeInsets.fromLTRB(5,5,5,0),
                   child: ListTileTheme(
                     data: drawerTile,
                     child: ListTile(

@@ -18,10 +18,8 @@ class PresentationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Column(
-        children: elements,
-      ),
+    return Column(
+      children: elements,
     );
   }
 }

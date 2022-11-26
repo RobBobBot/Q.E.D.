@@ -73,9 +73,7 @@ class _SignInState extends State<SignIn> {
                 decoration: InputDecoration(
                   labelText: "Email",
                   errorText: userError,
-                  labelStyle: TextStyle(
-                    color: Color.fromARGB(255, 164, 139, 233),
-                  ),
+                  labelStyle: Theme.of(context).inputDecorationTheme.labelStyle,
                 ),
                 controller: userController,
               ),
@@ -83,15 +81,13 @@ class _SignInState extends State<SignIn> {
                 decoration: InputDecoration(
                   labelText: "Password",
                   errorText: passError,
-                  labelStyle: TextStyle(
-                    color: Color.fromARGB(255, 164, 139, 233),
-                  ),
+                  labelStyle: Theme.of(context).inputDecorationTheme.labelStyle,
                 ),
                 controller: passController,
                 obscureText: true,
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.fromLTRB(8,20,8,8),
                 child: SignInButton(
                   Buttons.Email,
                   onPressed: () async {
@@ -105,6 +101,7 @@ class _SignInState extends State<SignIn> {
                       );
                     }
                   },
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                   padding: EdgeInsets.all(16.0),
                   elevation: 20.0,
                 ),
@@ -121,6 +118,7 @@ class _SignInState extends State<SignIn> {
                 },
                 padding: EdgeInsets.all(16.0),
                 elevation: 20.0,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
               ),
               Divider(),
               TextButton(
