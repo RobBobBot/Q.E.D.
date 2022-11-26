@@ -176,16 +176,16 @@ class QEDStore {
   }
 
   ///Returns links to all problem statements and if they're pdf or img
-  Future<List<Rfile>> getProblemStatements(int id) async {
-    List<Rfile> res = [];
+  Future<Rfile?> getProblemStatements(int id) async {
+    Rfile? res;
     await storeageref
         .child('/Problems/$id/Statement')
         .listAll()
         .then((value) async {
       for (var i in value.items) {
-        res.add(Rfile(
+        res = Rfile(
             url: await i.getDownloadURL(),
-            isPDF: lookupMimeType(i.fullPath) == "application/pdf"));
+            isPDF: lookupMimeType(i.fullPath) == "application/pdf");
       }
     });
     return res;

@@ -5,6 +5,7 @@ import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:qed/firebase/qedstore.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
@@ -69,12 +70,15 @@ class _ProblemScreenState extends State<ProblemScreen> {
           children: [
             // doc != null ? PDFViewer(document: doc!) : Container(),
             Flexible(
-              flex: 1,
-              child: SfPdfViewer.network(
-                widget.problem.statementLink,
-                key: _pdfViewerKey,
-              ),
-            ),
+                flex: 1,
+                child: widget.problem.statementLink!.isPDF
+                    ? SfPdfViewer.network(
+                        widget.problem.statementLink!.url,
+                        key: _pdfViewerKey,
+                      )
+                    : PhotoView(
+                        imageProvider:
+                            NetworkImage(widget.problem.statementLink!.url))),
             screenheight > initHeight + 83
                 ? Container(
                     child: Column(

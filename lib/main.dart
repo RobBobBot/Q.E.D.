@@ -45,7 +45,7 @@ void main() async {
       Problem(
         id: 1,
         name: "Bruh Problem",
-        statementLink: (await QEDStore.instance.getProblemStatements(1))[0].url,
+        statementLink: (await QEDStore.instance.getProblemStatements(1)),
         tags: {"bruh"},
       ),
     ));

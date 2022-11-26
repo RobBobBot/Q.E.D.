@@ -1,7 +1,9 @@
+import 'package:qed/firebase/rfile.dart';
+
 class Problem {
   final String name;
   final int id;
-  final String statementLink;
+  final Rfile? statementLink;
   final Set<String> tags;
   Problem(
       {required this.tags,
