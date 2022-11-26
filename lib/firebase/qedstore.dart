@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -189,10 +191,19 @@ class QEDStore {
     return res;
   }
 
+  ///Adds a request of the user to become teacher
   Future<void> addRequest(String uid, String name) async {
     await FirebaseFirestore.instance
         .collection("Requests")
         .doc(uid)
         .set({"name": name});
+  }
+
+  ///Uploads the solutions to a problem
+  Future<void> uploadSolution(
+      List<File> files, String problemID, String uid) async {
+    for (var file in files) {
+      storeageref.child("/Problems/$problemID/Solutions/$uid").putFile(file);
+    }
   }
 }

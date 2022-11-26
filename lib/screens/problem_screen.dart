@@ -4,13 +4,15 @@ import 'dart:math';
 import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:qed/firebase/qedstore.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import '../problem.dart';
+import '../redux/app_state.dart';
 
 class ProblemScreen extends StatefulWidget {
   Problem problem;
-
   ProblemScreen({required this.problem, super.key});
 
   @override
@@ -32,7 +34,10 @@ class _ProblemScreenState extends State<ProblemScreen> {
   PDFDocument? doc;
   final GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
 
-  void submitSolutions() {}
+  void submitSolutions(String uid) async {
+    await QEDStore.instance
+        .uploadSolution(uploadedFiles, widget.problem.id.toString(), uid);
+  }
 
   @override
   void initState() {
@@ -52,7 +57,11 @@ class _ProblemScreenState extends State<ProblemScreen> {
         appBar: AppBar(
           title: Text(widget.problem.name),
           actions: [
-            IconButton(onPressed: submitSolutions, icon: Icon(Icons.send))
+            StoreBuilder<AppState>(
+                builder: (context, vm) => IconButton(
+                    onPressed: () =>
+                        submitSolutions(vm.state.currentUser!.firebaseUser.uid),
+                    icon: Icon(Icons.send)))
           ],
         ),
         body: Column(
@@ -61,7 +70,7 @@ class _ProblemScreenState extends State<ProblemScreen> {
             Flexible(
               flex: 1,
               child: SfPdfViewer.network(
-                'https://firebasestorage.googleapis.com/v0/b/unihackqed.appspot.com/o/Problems%2F1%2FStatement%2FStatement.pdf?alt=media&token=bfd51eb6-e226-428f-892a-2b669f72be39',
+                widget.problem.statementLink,
                 key: _pdfViewerKey,
               ),
             ),

@@ -40,12 +40,12 @@ void main() async {
   );
 
   ///dummy problem
-  Future.delayed(Duration(seconds: 3)).then((val) {
+  Future.delayed(Duration(seconds: 3)).then((val) async {
     store.dispatch(AddProblemAction(
       Problem(
         id: 1,
         name: "Bruh Problem",
-        statementLink: "statement",
+        statementLink: (await QEDStore.instance.getProblemStatements(1))[0].url,
         tags: {"bruh"},
       ),
     ));
