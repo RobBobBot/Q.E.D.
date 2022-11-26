@@ -8,18 +8,18 @@ import 'package:qed/problem.dart';
 import 'package:qed/redux/app_state.dart';
 import 'package:qed/screens/problem_screen.dart';
 
-class ActiveContestScreen extends StatefulWidget {
+class ContestScreen extends StatefulWidget {
   final Contest contest;
 
   ///Are NEVOIE de un Contest object, nu il genereaza el din Firebase.
   ///DAAAr genereaza problemele concursului din Firebase daca nu le gaseste in store.
-  const ActiveContestScreen({super.key, required this.contest});
+  const ContestScreen({super.key, required this.contest});
 
   @override
-  State<ActiveContestScreen> createState() => _ActiveContestScreenState();
+  State<ContestScreen> createState() => _ContestScreenState();
 }
 
-class _ActiveContestScreenState extends State<ActiveContestScreen>
+class _ContestScreenState extends State<ContestScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController ticker;
   @override
@@ -116,7 +116,10 @@ class ActiveContestProblemListTile extends StatelessWidget {
               builder: (context) => ProblemScreen(problem: problem)),
         );
       },
-      leading: Icon(Icons.picture_as_pdf),
+      leading: Image.asset(
+        'assets/images/symbols.png',
+        width: 40,
+      ),
       title: Text(problem.name),
       subtitle: Wrap(
         children: problem.tags.map((e) => QedTag(name: e)).toList(),

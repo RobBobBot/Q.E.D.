@@ -8,7 +8,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:qed/theme_data.dart';
 
-import '../contest_screens/active_contest_screen.dart';
+import '../contest_screens/contest_screen.dart';
 import '../custom_widgets/mydrawer.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -65,11 +65,11 @@ class _HomeScreenState extends State<HomeScreen> {
               upcomingContests = [];
           Timestamp currentTime = Timestamp.fromDate(DateTime.now());
           for (var contest in store.state.contests.values) {
-            if (contest.timeEnd.compareTo(currentTime) < 0) {
+            if (contest.isFinished()) {
               pastContests.add(contest);
               continue;
             }
-            if (contest.timeBegin.compareTo(currentTime) > 0) {
+            if (contest.isUpcoming()) {
               upcomingContests.add(contest);
               continue;
             }
