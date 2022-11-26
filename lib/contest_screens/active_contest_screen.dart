@@ -30,7 +30,6 @@ class _ActiveContestScreenState extends State<ActiveContestScreen>
       ..forward()
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
-          print("da da da");
           ticker
             ..reset()
             ..forward();
