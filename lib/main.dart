@@ -69,7 +69,7 @@ class App extends StatelessWidget {
             if (vm.state.currentUser != null) {
               return HomeScreen();
             }
-            return SignUp();
+            return SignIn();
           })),
           routes: {
             '/home': (context) => HomeScreen(),
