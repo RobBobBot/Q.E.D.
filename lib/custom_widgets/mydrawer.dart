@@ -27,7 +27,11 @@ class MyDrawer extends StatelessWidget {
           return ListTile(
             title: Text(nameToString[drawerScreens[index]]!),
             onTap: () {
-              Navigator.popAndPushNamed(context, '/${drawerScreens[index]}');
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/${drawerScreens[index]}',
+                (route) => false,
+              );
             },
           );
         }),
