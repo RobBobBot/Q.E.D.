@@ -47,7 +47,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             SizedBox(width: 10),
             Text(
-              "QED",
+              "Q.E.D.",
+              style: TextStyle(fontFamily: 'Roboto'),
               //style: Theme.of(context).appBarTheme.titleTextStyle,
             ),
           ],

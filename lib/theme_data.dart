@@ -12,7 +12,7 @@ ThemeData myTheme = ThemeData(
   appBarTheme: const AppBarTheme(
     backgroundColor: Color.fromARGB(255, 42, 15, 116),
     titleTextStyle: TextStyle(
-      fontSize: 32.0,
+      fontSize: 30.0,
       fontWeight: FontWeight.bold,
       fontFamily: 'Roboto',
     ),
@@ -22,11 +22,12 @@ ThemeData myTheme = ThemeData(
   ),
   textTheme: const TextTheme(
     headline1: TextStyle(
-      fontSize: 56.0,
+      fontSize: 30.0,
       fontWeight: FontWeight.bold,
       fontFamily: 'Roboto',
     ),
     headline2: TextStyle(
+      fontSize: 15.0,
       color: Color.fromARGB(255, 255, 240, 225),
       fontFamily: 'Roboto',
     ),

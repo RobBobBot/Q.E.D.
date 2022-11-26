@@ -208,4 +208,9 @@ class QEDStore {
           .putFile(file);
     }
   }
+
+  Future<bool> hasSubmitted(String uid, String problemID) async {
+    bool res = true;
+    return res;
+  }
 }
