@@ -74,7 +74,7 @@ class _SignInState extends State<SignIn> {
               TextField(
                 decoration: InputDecoration(
                   labelText: "Email",
-                  errorText: userError,
+                  errorText: emailError,
                   labelStyle: TextStyle(
                     color: Color.fromARGB(255, 164, 139, 233),
                   ),
