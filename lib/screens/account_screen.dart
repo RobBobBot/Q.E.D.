@@ -19,7 +19,7 @@ class _AccountScreenState extends State<AccountScreen> {
           title: const Text('Profile'),
           centerTitle: true,
           actions: [
-            store.state.currentUser!.role == 'admin'
+            store.state.currentUser!.role == 2
                 ? IconButton(
                     onPressed: () {},
                     icon: const Icon(Icons.admin_panel_settings))
