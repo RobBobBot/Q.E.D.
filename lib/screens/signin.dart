@@ -74,12 +74,14 @@ class _SignInState extends State<SignIn> {
                 decoration:
                     InputDecoration(hintText: "Email", errorText: emailError),
                 controller: emailController,
+                keyboardType: TextInputType.emailAddress,
               ),
               TextField(
                 decoration:
                     InputDecoration(hintText: "Password", errorText: passError),
                 controller: passController,
                 obscureText: true,
+                keyboardType: TextInputType.visiblePassword,
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
