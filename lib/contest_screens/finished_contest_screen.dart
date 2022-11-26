@@ -1,140 +1,67 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:qed/contest.dart';
+import 'package:qed/custom_widgets/loading_list_tile.dart';
+import 'package:qed/custom_widgets/tag_widget.dart';
+import 'package:qed/problem.dart';
+import 'package:qed/redux/app_state.dart';
+import 'package:qed/screens/problem_screen.dart';
+import 'package:qed/theme_data.dart';
 
-import '../contest.dart';
-import 'leaderboard_screen.dart';
+import '../custom_widgets/problem_list_tile.dart';
 
-class FinishedContestScreen extends StatelessWidget {
-  FinishedContestScreen({required this.contest, Key? key}) : super(key: key);
-  Contest contest;
+class FinishedContestScreen extends StatefulWidget {
+  final Contest contest;
+
+  const FinishedContestScreen({super.key, required this.contest});
+
+  @override
+  State<FinishedContestScreen> createState() => _FinishedContestScreenState();
+}
+
+class _FinishedContestScreenState extends State<FinishedContestScreen> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Finished Contest Name'),
-          centerTitle: true,
-          backgroundColor: Color(0xFF3B22A1),
-        ),
-        backgroundColor: Color(0xFFE8F3FF),
-        body: Column(
-          children: [
-            Spacer(),
-            Text('Give scores to submissions:'),
-            Stack(
-              clipBehavior: Clip.none,
-              children: [
-                Card(
-                  child: ListTile(
-                    leading: Image.asset('assets/realAD.png'),
-                    title: Text('realAD'),
-                    subtitle: Text('Who is this person?'),
-                  ),
-                ),
-                Positioned(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.amber,
-                    ),
-                    child: Text("Vote"),
-                    onPressed: () {},
-                  ),
-                  right: 10.0,
-                  left: 340.0,
-                  bottom: 0,
-                )
-              ],
-            ),
-            Stack(
-              clipBehavior: Clip.none,
-              children: [
-                Card(
-                  child: ListTile(
-                    leading: Image.network(
-                        'https://static.vecteezy.com/system/resources/previews/006/892/625/original/discord-logo-icon-editorial-free-vector.jpg'),
-                    title: Text('Discord'),
-                    subtitle: Text('Joins the game!'),
-                  ),
-                ),
-                Positioned(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.amber,
-                    ),
-                    child: Text("Vote"),
-                    onPressed: () {},
-                  ),
-                  right: 10.0,
-                  left: 340.0,
-                  bottom: 0,
-                )
-              ],
-            ),
-            Stack(
-              clipBehavior: Clip.none,
-              children: [
-                Card(
-                  child: ListTile(
-                    leading: Image.network(
-                        'https://pretty-chic.ro/wp-content/uploads/2021/04/tunsoare-scurta.jpg'),
-                    title: Text('Alice'),
-                    subtitle: Text('My babe is Joey'),
-                  ),
-                ),
-                Positioned(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.amber,
-                    ),
-                    child: Text("Vote"),
-                    onPressed: () {},
-                  ),
-                  right: 10.0,
-                  left: 340.0,
-                  bottom: 0,
-                )
-              ],
-            ),
-            Spacer(),
-            Text('Current Leaderboard:'),
-            Text('1st: '),
-            Text('2nd: '),
-            Text('3rd: '),
-            Spacer(),
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => LeaderboardScreen()));
-              },
-              child: Text(
-                'SEE FINAL SCORES',
-                style: TextStyle(color: Colors.black),
-              ),
-            ),
-            Spacer(),
-          ],
-        ),
-        bottomNavigationBar: BottomAppBar(
-            child: Container(
-          height: 60.0,
-          color: Color(0xFF3B22A1),
-          child: Row(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.contest.name),
+        centerTitle: true,
+      ),
+      body: StoreBuilder<AppState>(builder: (context, store) {
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListView(
             children: [
-              Spacer(),
-              Text(
-                'Time Left: HH:MM:SS',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20.0,
-                  color: Colors.white,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text("Tags:", style: presentationTitle),
+              ),
+              Container(
+                margin: EdgeInsets.all(8),
+                child: Wrap(
+                  children:
+                      widget.contest.tags.map((e) => QedTag(name: e)).toList(),
+                  runSpacing: 8.0,
+                  spacing: 8.0,
                 ),
               ),
-              Spacer()
+              Divider(),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text("Contest Problems:", style: presentationTitle),
+              ),
+              ...widget.contest.problemIDs.map((value) {
+                if (store.state.problems[value] != null) {
+                  return ProblemListTile(
+                      type: 'finished', problem: store.state.problems[value]!);
+                }
+                return LoadingListTile();
+              }).toList()
             ],
           ),
-        )),
-      ),
+        );
+      }),
     );
   }
 }

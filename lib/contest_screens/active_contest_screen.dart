@@ -8,18 +8,20 @@ import 'package:qed/problem.dart';
 import 'package:qed/redux/app_state.dart';
 import 'package:qed/screens/problem_screen.dart';
 
-class ContestScreen extends StatefulWidget {
+import '../custom_widgets/problem_list_tile.dart';
+
+class ActiveContestScreen extends StatefulWidget {
   final Contest contest;
 
   ///Are NEVOIE de un Contest object, nu il genereaza el din Firebase.
   ///DAAAr genereaza problemele concursului din Firebase daca nu le gaseste in store.
-  const ContestScreen({super.key, required this.contest});
+  const ActiveContestScreen({super.key, required this.contest});
 
   @override
-  State<ContestScreen> createState() => _ContestScreenState();
+  State<ActiveContestScreen> createState() => _ActiveContestScreenState();
 }
 
-class _ContestScreenState extends State<ContestScreen>
+class _ActiveContestScreenState extends State<ActiveContestScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController ticker;
   @override
@@ -65,26 +67,25 @@ class _ContestScreenState extends State<ContestScreen>
       body: StoreBuilder<AppState>(builder: (context, store) {
         return ListView(
           children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Wrap(
-                    children: widget.contest.tags
-                        .map((e) => QedTag(name: e))
-                        .toList(),
-                    runSpacing: 8.0,
-                    spacing: 8.0,
-                  ),
-                ),
-                Divider(),
-                Text("Contest Problems:"),
-              ] +
-              widget.contest.problemIDs.map((value) {
-                if (store.state.problems[value] != null) {
-                  return ActiveContestProblemListTile(
-                      problem: store.state.problems[value]!);
-                }
-                return LoadingListTile();
-              }).toList(),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Wrap(
+                children:
+                    widget.contest.tags.map((e) => QedTag(name: e)).toList(),
+                runSpacing: 8.0,
+                spacing: 8.0,
+              ),
+            ),
+            Divider(),
+            Text("Contest Problems:"),
+            ...widget.contest.problemIDs.map((value) {
+              if (store.state.problems[value] != null) {
+                return ProblemListTile(
+                    type: 'active', problem: store.state.problems[value]!);
+              }
+              return LoadingListTile();
+            }).toList()
+          ],
         );
       }),
       bottomNavigationBar: BottomAppBar(
@@ -97,43 +98,6 @@ class _ContestScreenState extends State<ContestScreen>
                 textAlign: TextAlign.center),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class ActiveContestProblemListTile extends StatelessWidget {
-  final Problem problem;
-  const ActiveContestProblemListTile({super.key, required this.problem});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => ProblemScreen(problem: problem)),
-        );
-      },
-      leading: Image.asset(
-        'assets/images/symbols.png',
-        width: 40,
-      ),
-      title: Text(problem.name),
-      subtitle: Wrap(
-        children: problem.tags.map((e) => QedTag(name: e)).toList(),
-        runSpacing: 8.0,
-        spacing: 8.0,
-      ),
-      trailing: ElevatedButton(
-        child: Text("Upload"),
-        onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ProblemScreen(problem: problem)));
-        },
       ),
     );
   }

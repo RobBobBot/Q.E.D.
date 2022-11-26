@@ -8,7 +8,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:qed/theme_data.dart';
 
-import '../contest_screens/contest_screen.dart';
+import '../contest_screens/active_contest_screen.dart';
 import '../custom_widgets/mydrawer.dart';
 
 class HomeScreen extends StatefulWidget {
