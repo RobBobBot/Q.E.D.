@@ -90,7 +90,7 @@ class _SignInState extends State<SignIn> {
                 keyboardType: TextInputType.visiblePassword,
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(8,20,8,8),
+                padding: const EdgeInsets.fromLTRB(8, 20, 8, 8),
                 child: SignInButton(
                   Buttons.Email,
                   onPressed: () async {
@@ -109,7 +109,8 @@ class _SignInState extends State<SignIn> {
                       print(error);
                     }
                   },
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
                   padding: EdgeInsets.all(16.0),
                   elevation: 20.0,
                 ),
@@ -126,7 +127,8 @@ class _SignInState extends State<SignIn> {
                 },
                 padding: EdgeInsets.all(16.0),
                 elevation: 20.0,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
               ),
               Divider(),
               TextButton(
