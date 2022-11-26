@@ -6,9 +6,9 @@ ThemeData myTheme = ThemeData(
     primary: Color.fromARGB(255, 194, 171, 255),
   ),
   drawerTheme: const DrawerThemeData(
-    backgroundColor: Color.fromARGB(255, 42, 15, 116),
+    backgroundColor: Color(0xFF341390),
   ),
-  scaffoldBackgroundColor: Color.fromARGB(255, 15, 12, 35),
+  scaffoldBackgroundColor: Color(0x0C0F0A),
   appBarTheme: const AppBarTheme(
     backgroundColor: Color.fromARGB(255, 42, 15, 116),
     titleTextStyle: TextStyle(
@@ -39,8 +39,9 @@ ThemeData myTheme = ThemeData(
 );
 
 ListTileThemeData drawerTile = ListTileThemeData(
-  textColor: Color.fromARGB(255, 254, 168, 0),
-  tileColor: Color.fromARGB(255, 21, 17, 48),
+  textColor: Color(0xFFFFB319),
+  tileColor: Color(0xFF03000F),
+  style: ListTileStyle.drawer,
   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
 );
 TextStyle presentationTitle = const TextStyle(
@@ -49,5 +50,8 @@ TextStyle presentationTitle = const TextStyle(
   fontWeight: FontWeight.bold,
 );
 ListTileThemeData presentationContent = ListTileThemeData(
+    style: ListTileStyle.list,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-    tileColor: Color.fromARGB(255, 21, 17, 48));
+    tileColor: Color(0xFF341390),
+    textColor: Colors.white,
+    iconColor: Color.fromARGB(255, 255, 186, 10));

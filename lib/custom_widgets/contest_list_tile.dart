@@ -16,19 +16,22 @@ class ContestListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTileTheme(
       data: presentationContent,
-      child: ListTile(
-        title: Text(contest.name),
-        leading: Icon(
-          Icons.leaderboard,
-        ),
-        onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => contest.isFinished()
-                  ? FinishedContestScreen(contest: contest)
-                  : contest.isUpcoming()
-                      ? UpcomingContestScreen(contest: contest)
-                      : ActiveContestScreen(contest: contest)),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ListTile(
+          title: Text(contest.name),
+          leading: Icon(
+            Icons.leaderboard,
+          ),
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => contest.isFinished()
+                    ? FinishedContestScreen(contest: contest)
+                    : contest.isUpcoming()
+                        ? UpcomingContestScreen(contest: contest)
+                        : ActiveContestScreen(contest: contest)),
+          ),
         ),
       ),
     );
