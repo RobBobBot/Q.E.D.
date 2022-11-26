@@ -27,14 +27,14 @@ class _ProblemScreenState extends State<ProblemScreen> {
     setState(() {});
   }
 
-  late PDFDocument doc;
+  PDFDocument? doc;
 
   @override
-  void initState() async {
+  void initState() {
     // TODO: implement initState
     super.initState();
-    doc = await PDFDocument.fromURL(
-        'http://www.africau.edu/images/default/sample.pdf');
+    PDFDocument.fromURL('http://www.africau.edu/images/default/sample.pdf')
+        .then((value) => doc = value);
   }
 
   @override
@@ -43,7 +43,7 @@ class _ProblemScreenState extends State<ProblemScreen> {
       appBar: AppBar(title: Text(widget.problem.name)),
       body: ListView(
         children: [
-          PDFViewer(document: doc),
+          doc != null ? PDFViewer(document: doc!) : Container(),
           ElevatedButton(
             onPressed: uploadSolution,
             child: Text("Upload"),
