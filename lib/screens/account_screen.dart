@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:qed/custom_widgets/mydrawer.dart';
+import 'package:qed/redux/app_state.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
@@ -11,59 +13,60 @@ class AccountScreen extends StatefulWidget {
 class _AccountScreenState extends State<AccountScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('User'),
-        centerTitle: true,
-        actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.admin_panel_settings)),
-          IconButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/edituser');
-              },
-              icon: Icon(Icons.settings)),
-        ],
-      ),
-      drawer: MyDrawer(),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  CircleAvatar(
-                    backgroundColor: Colors.black,
-                    radius: 50,
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Username'),
-                      Text('Real Name'),
-                    ],
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 32,
-              ),
-              Text(
-                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse lobortis at neque nec interdum. Maecenas bibendum lacus urna, sit amet vulputate nisl mattis a. Nulla pulvinar consectetur malesuada. Cras sed lorem nec tellus aliquam sagittis. '),
-              SizedBox(
-                height: 10,
-              ),
-              Text('Status: elev'),
-              Text('rating: 4.5'),
-              Text('solved problems: 12'),
-            ],
+    return StoreBuilder<AppState>(builder: (context, store) {
+      print(store.state.currentUser);
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Profile'),
+          centerTitle: true,
+          actions: [
+            IconButton(
+                onPressed: () {}, icon: Icon(Icons.admin_panel_settings)),
+            IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/edituser');
+                },
+                icon: Icon(Icons.settings)),
+          ],
+        ),
+        drawer: MyDrawer(),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: Colors.black,
+                      radius: 50,
+                      backgroundImage: NetworkImage(store.state.currentUser!.profilePictureURL),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(store.state.currentUser!.nickname),
+                        Text(store.state.currentUser!.name),
+                      ],
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 32),
+                Text(store.state.currentUser!.description),
+                const SizedBox(height: 10),
+                Text('Role: ${store.state.currentUser!.role}'),
+                Text('Rating: ${store.state.currentUser!.rating}'),
+                Text(
+                    'Solved problems: ${store.state.currentUser!.problemsSolved}'),
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
