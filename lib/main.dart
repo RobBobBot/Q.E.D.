@@ -20,6 +20,7 @@ import 'package:qed/firebase/qedstore.dart';
 import 'package:qed/redux/app_actions.dart';
 import 'package:qed/redux/app_reducer.dart';
 import 'package:qed/redux/app_state.dart';
+import 'package:qed/theme_data.dart';
 import 'package:redux/redux.dart';
 
 void main() async {
@@ -65,18 +66,7 @@ class App extends StatelessWidget {
     return StoreProvider<AppState>(
         store: store,
         child: MaterialApp(
-          theme: ThemeData(
-            bannerTheme: MaterialBannerThemeData(
-                backgroundColor: Color.fromARGB(255, 59, 22, 161)),
-            colorScheme: ColorScheme.dark(),
-            primaryColor: Color.fromARGB(255, 42, 15, 116),
-            hintColor: Color.fromARGB(255, 92, 60, 180),
-            textTheme: const TextTheme(
-              headline1: TextStyle(fontSize: 56.0, fontWeight: FontWeight.bold),
-              headline6: TextStyle(fontSize: 32.0, fontStyle: FontStyle.italic),
-              bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
-            ),
-          ),
+          theme: myTheme,
           home: StoreBuilder<AppState>(builder: ((context, vm) {
             if (vm.state.currentUser != null) {
               return HomeScreen();
@@ -84,16 +74,16 @@ class App extends StatelessWidget {
             return SignIn();
           })),
           routes: {
-            '/home': (context) => HomeScreen(),
+            '/home': (context) => const HomeScreen(),
             '/upcominglist': (context) => ContestListScreen(type: 'upcoming'),
             '/pastlist': (context) => ContestListScreen(type: 'past'),
-            '/probarchive': (context) => ProbArchiveScreen(),
-            '/signin': (context) => SignIn(),
-            '/signup': (context) => SignUp(),
-            '/account': (context) => AccountScreen(),
-            '/edituser': (context) => EditUserScreen(),
+            '/probarchive': (context) => const ProbArchiveScreen(),
+            '/signin': (context) => const SignIn(),
+            '/signup': (context) => const SignUp(),
+            '/account': (context) => const AccountScreen(),
+            '/edituser': (context) => const EditUserScreen(),
             '/activelist': (context) => ContestListScreen(type: 'active'),
-            '/loading': (context) => LoadingScreen(),
+            '/loading': (context) => const LoadingScreen(),
           },
         ));
   }

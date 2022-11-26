@@ -59,7 +59,7 @@ class _SignInState extends State<SignIn> {
     return Scaffold(
       //appBar: AppBar(),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(24.0),
         child: Form(
           key: _formKey,
           child: Column(
@@ -67,16 +67,26 @@ class _SignInState extends State<SignIn> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               FittedBox(
-                  child: Text("Welcome to QED!",
+                  child: Text("Welcome to Q.E.D.!",
                       style: Theme.of(context).textTheme.headline2)),
               TextField(
-                decoration:
-                    InputDecoration(hintText: "Username", errorText: userError),
+                decoration: InputDecoration(
+                  labelText: "Email",
+                  errorText: userError,
+                  labelStyle: TextStyle(
+                    color: Color.fromARGB(255, 164, 139, 233),
+                  ),
+                ),
                 controller: userController,
               ),
               TextField(
-                decoration:
-                    InputDecoration(hintText: "Password", errorText: passError),
+                decoration: InputDecoration(
+                  labelText: "Password",
+                  errorText: passError,
+                  labelStyle: TextStyle(
+                    color: Color.fromARGB(255, 164, 139, 233),
+                  ),
+                ),
                 controller: passController,
                 obscureText: true,
               ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qed/theme_data.dart';
 
 class MyDrawer extends StatelessWidget {
   MyDrawer({super.key});
@@ -39,11 +40,17 @@ class MyDrawer extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                     color: Theme.of(context).hintColor,
                   ),
-                  child: ListTile(
-                    title: Text(nameToString[e]!),
-                    onTap: () {
-                      Navigator.popAndPushNamed(context, '/$e');
-                    },
+                  child: ListTileTheme(
+                    data: drawerTile,
+                    child: ListTile(
+                      title: Text(
+                        nameToString[e]!,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      onTap: () {
+                        Navigator.popAndPushNamed(context, '/$e');
+                      },
+                    ),
                   ),
                 ),
               )

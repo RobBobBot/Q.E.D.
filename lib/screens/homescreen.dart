@@ -6,6 +6,7 @@ import 'package:qed/custom_widgets/presentation_widget.dart';
 import 'package:qed/redux/app_state.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:qed/theme_data.dart';
 
 import '../contest_screens/active_contest_screen.dart';
 import '../custom_widgets/mydrawer.dart';
@@ -25,7 +26,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget TitleWidget(String title) {
     return ListTile(
-      title: Text(title[0].toUpperCase() + title.substring(1) + ' Contests'),
+      title: Text(
+        '${title[0].toUpperCase()}${title.substring(1)} Contests',
+        style: presentationTitle,
+      ),
       onTap: () => Navigator.pushNamed(context, '/${title}list'),
     );
   }
