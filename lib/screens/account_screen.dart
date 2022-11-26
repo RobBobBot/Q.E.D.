@@ -11,6 +11,8 @@ class AccountScreen extends StatefulWidget {
 }
 
 class _AccountScreenState extends State<AccountScreen> {
+  var toRoleName = ['Student', 'Teacher', 'Admin'];
+
   @override
   Widget build(BuildContext context) {
     return StoreBuilder<AppState>(builder: (context, store) {
@@ -50,7 +52,13 @@ class _AccountScreenState extends State<AccountScreen> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(store.state.currentUser!.nickname),
+                        Text(
+                          store.state.currentUser!.nickname,
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline4
+                              ?.copyWith(color: Colors.white),
+                        ),
                         Text(store.state.currentUser!.name),
                       ],
                     ),
@@ -59,7 +67,7 @@ class _AccountScreenState extends State<AccountScreen> {
                 const SizedBox(height: 32),
                 Text(store.state.currentUser!.description),
                 const SizedBox(height: 10),
-                Text('Role: ${store.state.currentUser!.role}'),
+                Text('Role: ${toRoleName[store.state.currentUser!.role]}'),
                 Text('Rating: ${store.state.currentUser!.rating}'),
                 Text(
                     'Solved problems: ${store.state.currentUser!.problemsSolved}'),
