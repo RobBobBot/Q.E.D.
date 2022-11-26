@@ -14,12 +14,12 @@ class MyDrawer extends StatelessWidget {
   MyDrawer({super.key});
 
   final drawerScreens = [
-    _drawerScreenData('home', '/home', 0),
-    _drawerScreenData('active contest list', '/activelist', 0),
-    _drawerScreenData('upcoming contest list', '/upcominglist', 0),
-    _drawerScreenData('past contest list', '/pastlist', 0),
-    _drawerScreenData('problem archive', '/probarchive', 0),
-    _drawerScreenData('make a contest', '/createcontest', 2),
+    _drawerScreenData('Home', '/home', 0),
+    _drawerScreenData('Active Contest List', '/activelist', 0),
+    _drawerScreenData('Upcoming Contest List', '/upcominglist', 0),
+    _drawerScreenData('Past Contest List', '/pastlist', 0),
+    _drawerScreenData('Problem Archive', '/probarchive', 0),
+    _drawerScreenData('Make a Contest', '/createcontest', 2),
   ];
 
   @override

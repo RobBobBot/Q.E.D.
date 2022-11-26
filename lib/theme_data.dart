@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 ThemeData myTheme = ThemeData(
   colorScheme: ColorScheme.dark().copyWith(
     secondary: Color.fromARGB(255, 254, 168, 0),
-    primary: Color.fromARGB(255, 42, 15, 116),
+    primary: Color.fromARGB(255, 194, 171, 255),
   ),
   drawerTheme: const DrawerThemeData(
     backgroundColor: Color.fromARGB(255, 42, 15, 116),
@@ -11,17 +11,29 @@ ThemeData myTheme = ThemeData(
   scaffoldBackgroundColor: Color.fromARGB(255, 15, 12, 35),
   appBarTheme: const AppBarTheme(
     backgroundColor: Color.fromARGB(255, 42, 15, 116),
-    titleTextStyle: TextStyle(fontSize: 32.0, fontStyle: FontStyle.italic),
+    titleTextStyle: TextStyle(
+      fontSize: 32.0,
+      fontWeight: FontWeight.bold,
+      fontFamily: 'Roboto',
+    ),
   ),
   inputDecorationTheme: const InputDecorationTheme(
     labelStyle: TextStyle(color: Color.fromARGB(255, 255, 240, 225)),
   ),
   textTheme: const TextTheme(
-    headline1: TextStyle(fontSize: 56.0, fontWeight: FontWeight.bold),
+    headline1: TextStyle(
+      fontSize: 56.0,
+      fontWeight: FontWeight.bold,
+      fontFamily: 'Roboto',
+    ),
     headline2: TextStyle(
       color: Color.fromARGB(255, 255, 240, 225),
+      fontFamily: 'Roboto',
     ),
-    bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+    bodyText2: TextStyle(
+      fontSize: 14.0,
+      fontFamily: 'Roboto',
+    ),
   ),
 );
 

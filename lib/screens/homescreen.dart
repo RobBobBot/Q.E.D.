@@ -46,7 +46,10 @@ class _HomeScreenState extends State<HomeScreen> {
               width: 40,
             ),
             SizedBox(width: 10),
-            Text("QED"),
+            Text(
+              "QED",
+              //style: Theme.of(context).appBarTheme.titleTextStyle,
+            ),
           ],
         ),
         actions: [
