@@ -59,8 +59,6 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //appBar: AppBar(),
-
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Form(
@@ -75,7 +73,7 @@ class _SignInState extends State<SignIn> {
               TextField(
                 decoration: InputDecoration(
                   labelText: "Email",
-                  errorText: userError,
+                  errorText: emailError,
                   labelStyle: TextStyle(
                     color: Color.fromARGB(255, 164, 139, 233),
                   ),

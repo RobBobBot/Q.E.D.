@@ -7,8 +7,9 @@ import 'package:qed/redux/app_actions.dart';
 import 'package:qed/redux/app_state.dart';
 
 class RoleInfo extends StatelessWidget {
-  final String role;
-  const RoleInfo({super.key, required this.role});
+  final String role, uid, name;
+  const RoleInfo(
+      {super.key, required this.role, required this.name, required this.uid});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class RoleInfo extends StatelessWidget {
             const Text('Request teacher role?'),
             SizedBox(width: 32),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () => QEDStore.instance.addRequest(uid, name),
               child: Text('Request'),
             )
           ],
@@ -75,7 +76,11 @@ class _EditUserScreenState extends State<EditUserScreen> {
                     controller: descriptionController,
                     decoration: const InputDecoration(labelText: 'Description'),
                   ),
-                  RoleInfo(role: store.state.currentUser!.role),
+                  RoleInfo(
+                    role: store.state.currentUser!.role,
+                    name: store.state.currentUser!.name,
+                    uid: store.state.currentUser!.firebaseUser.uid,
+                  ),
                   Divider(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
