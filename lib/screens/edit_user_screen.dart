@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:qed/firebase/qedstore.dart';
+import 'package:qed/redux/app_actions.dart';
 import 'package:qed/redux/app_state.dart';
 
 class EditUserScreen extends StatefulWidget {
@@ -75,7 +76,20 @@ class _EditUserScreenState extends State<EditUserScreen> {
                             Navigator.pop(context);
                           },
                           child: Text('Cancel')),
-                      ElevatedButton(onPressed: () {}, child: Text('Save')),
+                      ElevatedButton(
+                          onPressed: () {
+                            QEDStore.instance.updateUser(
+                                nickname: usernameController.text,
+                                name: realNameController.text,
+                                desc: descriptionController.text,
+                                uid: store.state.currentUser!.firebaseUser.uid);
+
+                            store.dispatch(UserUpdateAction(
+                                realNameController.text,
+                                usernameController.text,
+                                descriptionController.text));
+                          },
+                          child: Text('Save')),
                     ],
                   )
                 ],

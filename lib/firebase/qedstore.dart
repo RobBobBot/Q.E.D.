@@ -163,4 +163,16 @@ class QEDStore {
   Future<void> signOutUser() async {
     await FirebaseAuth.instance.signOut();
   }
+
+  Future<void> updateUser(
+      {required String nickname,
+      required String name,
+      required String desc,
+      required String uid}) async {
+    FirebaseFirestore.instance.collection("Users").doc(uid).update({
+      "description": desc,
+      "name": name,
+      "nickname": nickname,
+    });
+  }
 }
