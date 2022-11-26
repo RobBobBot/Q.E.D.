@@ -24,8 +24,8 @@ class _ProblemScreenState extends State<ProblemScreen> {
   List<File> uploadedFiles = [];
 
   Future<void> uploadSolution() async {
-    FilePickerResult? result =
-        await FilePicker.platform.pickFiles(type: FileType.any);
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom, allowedExtensions: ['pdf', 'jpg', 'png']);
     if (result != null) {
       uploadedFiles.add(File(result.files.first.path!));
     }
