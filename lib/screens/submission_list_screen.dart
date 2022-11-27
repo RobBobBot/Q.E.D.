@@ -23,6 +23,10 @@ class _SubmissionListScreenState extends State<SubmissionListScreen> {
   @override
   Widget build(BuildContext context) {
     return StoreBuilder<AppState>(builder: (context, store) {
+      widget.problem.submissions.sort((a, b) {
+        if (a.score == b.score) return a.upvotes - b.upvotes;
+        return a.score - b.score;
+      });
       return Scaffold(
         appBar: AppBar(
           title: Text('Submissions'),

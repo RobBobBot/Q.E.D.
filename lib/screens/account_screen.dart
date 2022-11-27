@@ -60,6 +60,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         FittedBox(
                           fit: BoxFit.cover,
                           child: Text(
+                            store.state.currentUser == null ? 'error' :
                             store.state.currentUser!.nickname,
                             style: Theme.of(context)
                                 .textTheme
