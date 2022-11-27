@@ -35,8 +35,8 @@ class _SubmissionListScreenState extends State<SubmissionListScreen> {
   Widget build(BuildContext context) {
     return StoreBuilder<AppState>(builder: (context, store) {
       widget.problem.submissions.sort((a, b) {
-        if (a.score == b.score) return a.upvotes - b.upvotes;
-        return a.score - b.score;
+        if (a.score == b.score) return -a.upvotes + b.upvotes;
+        return -a.score + b.score;
       });
       return Scaffold(
         appBar: AppBar(
@@ -47,8 +47,6 @@ class _SubmissionListScreenState extends State<SubmissionListScreen> {
           child: ListView(
               children: widget.problem.submissions.map(
             (e) {
-              bool upvoted = false;
-              double graded = -1;
               return ListTile(
                 onTap: () {
                   Navigator.push(
@@ -61,26 +59,49 @@ class _SubmissionListScreenState extends State<SubmissionListScreen> {
                 subtitle:
                     Text('upvotes: ${e.upvotes}, score: ${e.getFinalScore()}'),
                 trailing: store.state.currentUser!.role == 0
-                    ? IconButton(
-                        onPressed: () {
-                          setState(() {
-                            upvoted = !upvoted;
-                            e.upvotes += upvoted ? 1 : -1;
-                          });
+                    ? FutureBuilder(
+                        builder: (context, snapshot) {
+                          bool upvoted = false;
+                          if (snapshot.connectionState == ConnectionState.done)
+                            upvoted = snapshot.data!;
+                          return IconButton(
+                            onPressed: () {
+                              setState(() {
+                                if (upvoted) {
+                                  QEDStore.instance.userUnUpvote(
+                                      store.state.currentUser!.firebaseUser.uid,
+                                      e.id);
+                                } else {
+                                  QEDStore.instance.userUpvote(
+                                      store.state.currentUser!.firebaseUser.uid,
+                                      e.id);
+                                }
+
+                                upvoted = !upvoted;
+                                e.upvotes += upvoted ? 1 : -1;
+                              });
+                            },
+                            icon: upvoted
+                                ? Icon(Icons.favorite)
+                                : Icon(Icons.favorite_border),
+                          );
                         },
-                        icon: upvoted
-                            ? Icon(Icons.favorite)
-                            : Icon(Icons.favorite_border),
+                        future: QEDStore.instance.userHasUpvoted(
+                            store.state.currentUser!.firebaseUser.uid, e.id),
                       )
-                    : IconButton(
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) => GradeDialog(
-                                  grade: graded == -1 ? 0 : graded));
-                        },
-                        icon: Icon((graded == -1) ? Icons.edit : Icons.numbers),
-                      ),
+                    : FutureBuilder(builder: (context, snapshot) {
+                        double graded = -1;
+                        return IconButton(
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) => GradeDialog(
+                                    grade: graded == -1 ? 0 : graded));
+                          },
+                          icon:
+                              Icon((graded == -1) ? Icons.edit : Icons.numbers),
+                        );
+                      }),
                 title: FutureBuilder(
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
