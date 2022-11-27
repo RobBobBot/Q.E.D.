@@ -22,21 +22,24 @@ class _TeacherRequestsScreenState extends State<TeacherRequestsScreen> {
             body: ListView(
                 children: snapshot.data!
                     .map((e) => ListTile(
-                          title: Text(e),
+                          title: Text(e.name),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               ElevatedButton(
                                 child: Text('Reject'),
-                                onPressed: () {
-                                  ///TODO: Sterge din lista si rejecteaza userul ca admin
+                                onPressed: () async {
+                                  await QEDStore.instance.deleteRequest(e.uid);
+                                  setState(() {});
                                 },
                               ),
                               SizedBox(width: 5),
                               ElevatedButton(
                                 child: Text('Accept'),
-                                onPressed: () {
-                                  ///TODO: Sterge din lista si accepta userul ca admin
+                                onPressed: () async {
+                                  await QEDStore.instance.maketeacher(e.uid);
+                                  await QEDStore.instance.deleteRequest(e.uid);
+                                  setState(() {});
                                 },
                               ),
                             ],
