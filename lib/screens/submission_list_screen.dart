@@ -50,16 +50,14 @@ class _SubmissionListScreenState extends State<SubmissionListScreen> {
               bool upvoted = false;
               double graded = -1;
               return ListTile(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SubmissionScreen(
-                                  submission: e,
-                                )));
-                  },
-                  future: e.getUploaderName(),
-                ),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SubmissionScreen(
+                                submission: e,
+                              )));
+                },
                 subtitle:
                     Text('upvotes: ${e.upvotes}, score: ${e.getFinalScore()}'),
                 trailing: store.state.currentUser!.role == 0
@@ -81,19 +79,18 @@ class _SubmissionListScreenState extends State<SubmissionListScreen> {
                               builder: (BuildContext context) => GradeDialog(
                                   grade: graded == -1 ? 0 : graded));
                         },
-                        icon:
-                            Icon( (graded == -1) ? Icons.edit : Icons.numbers),
-                        ),
-                  title: FutureBuilder(
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        return Text(snapshot.data!);
-                      }
-                      return Text("Loading...");
-                    },
-                    future: e.getUploaderName(),
-                  ),
-                 
+                        icon: Icon((graded == -1) ? Icons.edit : Icons.numbers),
+                      ),
+                title: FutureBuilder(
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return Text(snapshot.data!);
+                    }
+                    return Text("Loading...");
+                  },
+                  future: e.getUploaderName(),
+                ),
+              );
             },
           ).toList()),
         ),
