@@ -39,9 +39,6 @@ void main() async {
       }
     },
   );
-  QEDStore.instance
-      .getContests()
-      .then((value) => store.dispatch(AddContestActions(value)));
   runApp(App(store: store));
 }
 
@@ -71,7 +68,7 @@ class App extends StatelessWidget {
             '/activelist': (context) => ContestListScreen(type: 'active'),
             '/loading': (context) => const LoadingScreen(),
             '/createcontest': (context) => const CreateContestScreen(),
-            '/teacherrequests':(context) => const TeacherRequestsScreen(),
+            '/teacherrequests': (context) => const TeacherRequestsScreen(),
           },
         ));
   }

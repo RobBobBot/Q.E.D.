@@ -47,6 +47,8 @@ class _CreateContestScreenState extends State<CreateContestScreen> {
             ),
           ),
           Divider(),
+          Text("Add tags..."),
+
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -155,6 +157,7 @@ class _CreateContestScreenState extends State<CreateContestScreen> {
               var finishedBar = const SnackBar(content: Text("Uploaded!"));
               if (timeStart == null || timeEnd == null) {
                 ScaffoldMessenger.of(context).showSnackBar(timeErrorBar);
+                return;
               }
               if (contestTitle.text == "") {
                 ScaffoldMessenger.of(context).showSnackBar(errorBar);
