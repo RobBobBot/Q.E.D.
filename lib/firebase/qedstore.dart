@@ -488,6 +488,20 @@ class QEDStore {
         .then((value) => res = value.data()!["name"]);
     return res;
   }
+
+  Future<List<Problem>> getAllProblems() async {
+    List<Problem> res = [];
+    await FirebaseFirestore.instance
+        .collection("Data")
+        .doc("Problems")
+        .get()
+        .then((value) async {
+      for (var i in value.data()!["problems"].keys) {
+        res.add(await getProblem(i));
+      }
+    });
+    return res;
+  }
 }
 
 class BasicUserInfo {
