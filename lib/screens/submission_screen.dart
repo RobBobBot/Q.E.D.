@@ -9,8 +9,33 @@ class SubmissionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${submission.getUploaderName}\'s submission'),
+        title: FutureBuilder(
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return FittedBox(child: Text('${snapshot.data}\'s submission'));
+            }
+            return Text("Loading...");
+          },
+          future: submission.getUploaderName(),
+        ),
       ),
+      body: ListView(
+            children: submission.uploadedFiles.map<Widget>((e) {
+              if (e.substring(e.length-3) == 'pdf') return Text('pdf');
+              return Image.network(e);
+            }).toList(),
+          ),
+      // body: FutureBuilder(
+      //   builder: (context, snapshot) {
+      //     return ListView(
+      //       children: submission.uploadedFiles.map((e) {
+      //         if (e.substring(-3) == 'pdf') return Text('pdf');
+      //         return NetworkImage(e);
+      //       }).toList(),
+      //     );
+      //   },
+      //   // future: ,
+      // ),
     );
   }
 }

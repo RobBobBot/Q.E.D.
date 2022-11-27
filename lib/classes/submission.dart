@@ -18,6 +18,6 @@ class Submission {
       required this.uploaderID,
       required this.uploadedFiles});
   Future<String> getUploaderName() async {
-    return QEDStore.instance.getName(uploaderID);
+    return await QEDStore.instance.getName(uploaderID);
   }
 }
