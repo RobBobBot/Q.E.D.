@@ -53,7 +53,8 @@ class QEDStore {
       await FirebaseFirestore.instance.collection("Users").doc(user!.uid).set({
         "name": name,
         "nickname": nickname,
-        "profilePicture": "Users/DefaultProfilePicture.jpeg",
+        "profilePicture":
+            "https://firebasestorage.googleapis.com/v0/b/unihackqed.appspot.com/o/Users%2FDefaultProfilePicture.jpeg?alt=media&token=21040947-0dab-469f-874a-847d2800c588",
         "role": 0,
         "description": "",
         "rating": 0.0,
@@ -241,7 +242,9 @@ class QEDStore {
       List<PlatformFile> files, String problemID, String uid) async {
     if (files.isEmpty) return;
 
-    storeageref.child("/Problems/$problemID/Submissions/$uid").delete();
+    try {
+      storeageref.child("/Problems/$problemID/Submissions/$uid");
+    } catch (e) {}
 
     for (var file in files) {
       await storeageref
@@ -392,7 +395,7 @@ class QEDStore {
           noOfTeacherGrades: i["grades"],
           id: id,
           uploaderID: uid,
-          uploadedFiles: []);
+          uploadedFiles: await getSubmissionFiles(pid, uid));
     });
     return sub;
   }
@@ -411,16 +414,25 @@ class QEDStore {
         statementLink: null,
         solutionLink: null,
       );
-      /*for (var i in value.data()!["submissions"][id.toString()]) {
-        prob.submissions.add(
-            await getSubmissions(i.key, i.value.toString(), id.toString()));
-      }*/
+      Map<String, dynamic>? data = value.data()!["submissions"][id.toString()];
+      if (data != null)
+        for (var i in data.keys) {
+          prob.submissions
+              .add(await getSubmissions(i, data[i].toString(), id.toString()));
+        }
     });
 
     prob.statementLink = await getProblemStatements(id);
     prob.solutionLink = await getProblemSolution(id);
 
     return prob;
+  }
+
+  Future<List<String>> getRequests() async {
+    List<String> cereri = ['eu', 'tu', 'el', 'ea'];
+
+    ///TODO: de luat UID-urile celor care au dat request.
+    return cereri;
   }
 }
 

@@ -21,6 +21,7 @@ import 'package:qed/firebase/qedstore.dart';
 import 'package:qed/redux/app_actions.dart';
 import 'package:qed/redux/app_reducer.dart';
 import 'package:qed/redux/app_state.dart';
+import 'package:qed/screens/teacher_requests_screen.dart';
 import 'package:qed/theme_data.dart';
 import 'package:redux/redux.dart';
 
@@ -38,11 +39,6 @@ void main() async {
       }
     },
   );
-
-  ///dummy problem
-  Future.delayed(Duration(seconds: 3)).then((val) async {
-    store.dispatch(AddProblemAction(await QEDStore.instance.getProblem(1)));
-  });
   QEDStore.instance
       .getContests()
       .then((value) => store.dispatch(AddContestActions(value)));
@@ -75,6 +71,7 @@ class App extends StatelessWidget {
             '/activelist': (context) => ContestListScreen(type: 'active'),
             '/loading': (context) => const LoadingScreen(),
             '/createcontest': (context) => const CreateContestScreen(),
+            '/teacherrequests':(context) => const TeacherRequestsScreen(),
           },
         ));
   }
