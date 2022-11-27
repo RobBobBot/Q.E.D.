@@ -489,16 +489,26 @@ class QEDStore {
     return res;
   }
 
-  // Future<void> userUpvote(String uid, String sid)
-  // {
-  //   //updateaza in firebase ca uid a dat upvote la sid
-  //   FirebaseFirestore.instance
-  // }
+  Future<void> userUpvote(String uid, String sid) async {
+    await FirebaseFirestore.instance.collection("Users").doc(uid).update({
+      "upvoted": FieldValue.arrayUnion([sid])
+    });
+  }
 
-  // Future<bool> userHasUpvoted(String uid, String sid)
-  // {
-  //   //returneaza daca userul uid a dat upvote la sid
-  // }
+  Future<bool> userHasUpvoted(String uid, String sid) async {
+    bool res = false;
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(uid)
+        .get()
+        .then((value) {
+      for (var i in value.data()!["upvoted"] ?? []) {
+        if (i == sid) res = true;
+      }
+    });
+    return res;
+  }
+
   Future<List<Problem>> getAllProblems() async {
     List<Problem> res = [];
     await FirebaseFirestore.instance
