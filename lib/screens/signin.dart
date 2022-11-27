@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
 import 'package:qed/main.dart';
+import 'package:qed/redux/app_state.dart';
 import 'package:qed/screens/signup.dart';
 
 import '../firebase/qedstore.dart';
@@ -33,7 +35,7 @@ class _SignInState extends State<SignIn> {
       return;
     }
     await QEDStore.instance
-        .signInUser(email: emailController.text, password: emailController.text)
+        .signInUser(email: emailController.text, password: passController.text)
         .then((value) {
       if (value != null) {
         hasError = true;
@@ -120,16 +122,18 @@ class _SignInState extends State<SignIn> {
                 padding: const EdgeInsets.all(8.0),
                 child: Text("Or sign with an external platform:"),
               ),
-              SignInButton(
-                Buttons.GoogleDark,
-                onPressed: () {
-                  QEDStore.instance.singInWithGoogle();
-                },
-                padding: EdgeInsets.all(16.0),
-                elevation: 20.0,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-              ),
+              StoreBuilder<AppState>(builder: (context, st) {
+                return SignInButton(
+                  Buttons.GoogleDark,
+                  onPressed: () {
+                    QEDStore.instance.singInWithGoogle();
+                  },
+                  padding: EdgeInsets.all(16.0),
+                  elevation: 20.0,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                );
+              }),
               Divider(),
               TextButton(
                 child: Text(" New user? Sign up here!"),
