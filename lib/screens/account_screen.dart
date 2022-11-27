@@ -52,12 +52,15 @@ class _AccountScreenState extends State<AccountScreen> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          store.state.currentUser!.nickname,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline4
-                              ?.copyWith(color: Colors.white),
+                        FittedBox(
+                          fit: BoxFit.cover,
+                          child: Text(
+                            store.state.currentUser!.nickname,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline5
+                                ?.copyWith(color: Colors.white),
+                          ),
                         ),
                         Text(store.state.currentUser!.name),
                       ],

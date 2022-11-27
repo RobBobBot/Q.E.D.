@@ -49,7 +49,6 @@ class _HomeScreenState extends State<HomeScreen> {
             Text(
               "Q.E.D.",
               style: TextStyle(fontFamily: 'Roboto'),
-              //style: Theme.of(context).appBarTheme.titleTextStyle,
             ),
           ],
         ),

@@ -1,3 +1,4 @@
+import 'package:qed/classes/submission.dart';
 import 'package:qed/firebase/rfile.dart';
 
 class Problem {
@@ -5,6 +6,7 @@ class Problem {
   final int id;
   final Rfile? statementLink;
   final Set<String> tags;
+  List<Submission> submissions = [];
   Problem(
       {required this.tags,
       required this.name,

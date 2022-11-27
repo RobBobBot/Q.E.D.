@@ -65,6 +65,7 @@ class App extends StatelessWidget {
     return StoreProvider<AppState>(
         store: store,
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           theme: myTheme,
           darkTheme: myTheme,
           home: ScreenRouter(),
