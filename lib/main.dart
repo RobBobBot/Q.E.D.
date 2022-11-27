@@ -38,11 +38,6 @@ void main() async {
       }
     },
   );
-
-  ///dummy problem
-  Future.delayed(Duration(seconds: 3)).then((val) async {
-    store.dispatch(AddProblemAction(await QEDStore.instance.getProblem(1)));
-  });
   QEDStore.instance
       .getContests()
       .then((value) => store.dispatch(AddContestActions(value)));

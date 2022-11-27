@@ -242,7 +242,9 @@ class QEDStore {
       List<PlatformFile> files, String problemID, String uid) async {
     if (files.isEmpty) return;
 
-    storeageref.child("/Problems/$problemID/Submissions/$uid").delete();
+    try {
+      storeageref.child("/Problems/$problemID/Submissions/$uid");
+    } catch (e) {}
 
     for (var file in files) {
       await storeageref
@@ -401,7 +403,7 @@ class QEDStore {
   ///gets info of a problem
   Future<Problem> getProblem(int id) async {
     late Problem prob;
-    FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection("Data")
         .doc("Problems")
         .get()
@@ -412,10 +414,12 @@ class QEDStore {
         statementLink: null,
         solutionLink: null,
       );
-      for (var i in value.data()!["submissions"][id.toString()]) {
-        prob.submissions.add(
-            await getSubmissions(i.key, i.value.toString(), id.toString()));
-      }
+      Map<String, dynamic>? data = value.data()!["submissions"][id.toString()];
+      if (data != null)
+        for (var i in data.keys) {
+          prob.submissions
+              .add(await getSubmissions(i, data[i].toString(), id.toString()));
+        }
     });
 
     prob.statementLink = await getProblemStatements(id);
