@@ -265,14 +265,41 @@ class QEDStore {
       ind = value.data()!["ind"];
     });
 
+    ind++;
+    Map<String, dynamic> n = {};
+
     await FirebaseFirestore.instance
         .collection("Data")
         .doc("Submissions")
-        .update({
-      "stats": {
-        "$ind": {"problem": problemID, "uid": uid, "upvotes": 0, "score": 0}
-      }
+        .get()
+        .then((value) {
+      n = value.data()!["stats"];
     });
+    n[ind.toString()] = {
+      "problem": problemID,
+      "uid": uid,
+      "upvotes": 0,
+      "score": 0,
+      "grades": 0,
+    };
+    await FirebaseFirestore.instance
+        .collection("Data")
+        .doc("Submissions")
+        .update(n);
+    Map<String, dynamic> m = {};
+    await FirebaseFirestore.instance
+        .collection("Data")
+        .doc("Problems")
+        .get()
+        .then((value) {
+      m = value.data()!["submissions"];
+      if (m[problemID] == null) m[problemID] = {};
+      m[problemID][uid] = ind;
+    });
+    await FirebaseFirestore.instance
+        .collection("Data")
+        .doc("Problems")
+        .update({"submissions": m});
   }
 
   ///Return true is a user has submitted a
@@ -433,6 +460,16 @@ class QEDStore {
 
     ///TODO: de luat UID-urile celor care au dat request.
     return cereri;
+  }
+
+  Future<String> getName(String uid) async {
+    String res = "";
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(uid)
+        .get()
+        .then((value) => res = value.data()!["name"]);
+    return res;
   }
 }
 
