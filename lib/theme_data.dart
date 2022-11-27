@@ -52,6 +52,6 @@ TextStyle presentationTitle = const TextStyle(
 ListTileThemeData presentationContent = ListTileThemeData(
     style: ListTileStyle.list,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-    tileColor: Color(0xFF341390),
-    textColor: Colors.white,
+    tileColor: Color.fromARGB(255, 35, 35, 42),
+    textColor: Color.fromARGB(255, 255, 255, 255),
     iconColor: Color.fromARGB(255, 255, 186, 10));

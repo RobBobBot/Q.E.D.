@@ -36,9 +36,12 @@ class _ProblemScreenState extends State<ProblemScreen> {
   final GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
 
   void submitSolutions(String uid) async {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text("Uploading...")));
     await QEDStore.instance
         .uploadSolution(uploadedFiles, widget.problem.id.toString(), uid);
-    Navigator.pop(context);
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text("Uploaded!")));
   }
 
   @override

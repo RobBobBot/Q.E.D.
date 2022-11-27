@@ -430,6 +430,7 @@ class QEDStore {
 
   Future<List<String>> getRequests() async {
     List<String> cereri = ['eu', 'tu', 'el', 'ea'];
+
     ///TODO: de luat UID-urile celor care au dat request.
     return cereri;
   }

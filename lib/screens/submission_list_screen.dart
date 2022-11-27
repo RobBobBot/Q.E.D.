@@ -14,6 +14,13 @@ class SubmissionListScreen extends StatefulWidget {
 
 class _SubmissionListScreenState extends State<SubmissionListScreen> {
   @override
+  void initState() {
+    // TODO: implement initState
+    print(widget.problem.submissions);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return StoreBuilder<AppState>(builder: (context, store) {
       return Scaffold(

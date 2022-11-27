@@ -17,25 +17,31 @@ class ProblemListTile extends StatelessWidget {
     return StoreBuilder<AppState>(builder: (context, store) {
       return ListTile(
         contentPadding: EdgeInsets.all(12),
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => type == 'finished'
-                    ? SubmissionListScreen(problem: problem)
-                    : ProblemScreen(problem: problem)),
-          );
-        },
+        onTap: problem.statementLink == null
+            ? null
+            : () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => type == 'finished'
+                          ? SubmissionListScreen(problem: problem)
+                          : ProblemScreen(problem: problem)),
+                );
+              },
         leading: Image.asset(
           'assets/images/symbols.png',
           width: 40,
         ),
         title: Text(problem.name),
-        subtitle: Wrap(
-          runSpacing: 8.0,
-          spacing: 8.0,
-          children: problem.tags.map((e) => QedTag(name: e)).take(3).toList(),
-        ),
+        subtitle: problem.tags.length > 0
+            ? Wrap(
+                runSpacing: 8.0,
+                spacing: 8.0,
+                children:
+                    problem.tags.map((e) => QedTag(name: e)).take(3).toList(),
+              )
+            : Text("originally by Proposer",
+                style: TextStyle(fontWeight: FontWeight.w300)),
         trailing: (type == 'finished' || store.state.currentUser!.role >= 1)
             ? SubmissionsButton(problem: problem)
             : UploadButton(problem: problem),
