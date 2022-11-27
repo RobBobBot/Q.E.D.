@@ -24,7 +24,9 @@ class _AccountScreenState extends State<AccountScreen> {
             store.state.currentUser != null &&
                     store.state.currentUser!.role == 2
                 ? IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/teacherrequests');
+                    },
                     icon: const Icon(Icons.admin_panel_settings))
                 : Container(),
             IconButton(

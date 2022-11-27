@@ -6,22 +6,36 @@ import 'package:qed/firebase/qedstore.dart';
 import 'package:qed/redux/app_actions.dart';
 import 'package:qed/redux/app_state.dart';
 
-class RoleInfo extends StatelessWidget {
+class RoleInfo extends StatefulWidget {
   final String uid, name;
   final int role;
   const RoleInfo(
       {super.key, required this.role, required this.name, required this.uid});
 
   @override
+  State<RoleInfo> createState() => _RoleInfoState();
+}
+
+class _RoleInfoState extends State<RoleInfo> {
+  @override
   Widget build(BuildContext context) {
-    switch (role) {
+    bool requested = false;
+
+    switch (widget.role) {
       case 0:
         return Row(
           children: [
             const Text('Request teacher role?'),
             SizedBox(width: 32),
             ElevatedButton(
-              onPressed: () => QEDStore.instance.addRequest(uid, name),
+              onPressed: requested
+                  ? null
+                  : () {
+                      QEDStore.instance.addRequest(widget.uid, widget.name);
+                      setState(() {
+                        requested = true;
+                      });
+                    },
               child: Text('Request'),
             )
           ],
