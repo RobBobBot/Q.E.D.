@@ -11,6 +11,7 @@ import 'package:qed/screens/problem_screen.dart';
 import 'package:qed/theme_data.dart';
 
 import '../custom_widgets/problem_list_tile.dart';
+import '../firebase/qedstore.dart';
 
 class FinishedContestScreen extends StatefulWidget {
   final Contest contest;
@@ -22,6 +23,19 @@ class FinishedContestScreen extends StatefulWidget {
 }
 
 class _FinishedContestScreenState extends State<FinishedContestScreen> {
+  late List<Problem?> problems = [null];
+
+  @override
+  initState() {
+    for (var id in widget.contest.problemIDs) {
+      QEDStore.instance.getProblem(id).then((value) => setState(
+            () {
+              problems.add(value);
+            },
+          ));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,49 +43,46 @@ class _FinishedContestScreenState extends State<FinishedContestScreen> {
         title: Text(widget.contest.name),
         centerTitle: true,
       ),
-      body: StoreBuilder<AppState>(builder: (context, store) {
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ListView(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text("Tags:", style: presentationTitle),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ListView(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text("Tags:", style: presentationTitle),
+            ),
+            Container(
+              margin: EdgeInsets.all(8),
+              child: Wrap(
+                children:
+                    widget.contest.tags.map((e) => QedTag(name: e)).toList(),
+                runSpacing: 8.0,
+                spacing: 8.0,
               ),
-              Container(
-                margin: EdgeInsets.all(8),
-                child: Wrap(
-                  children:
-                      widget.contest.tags.map((e) => QedTag(name: e)).toList(),
-                  runSpacing: 8.0,
-                  spacing: 8.0,
-                ),
-              ),
-              Divider(),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text("Contest Problems:", style: presentationTitle),
-              ),
-              ...widget.contest.problemIDs.map((value) {
-                if (store.state.problems[value] != null) {
-                  return ProblemListTile(
-                      type: 'finished', problem: store.state.problems[value]!);
-                }
-                return LoadingListTile();
-              }).toList(),
-              ListTile(
-                title: Text('Leaderboard'),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => LeaderboardScreen()));
-                },
-              )
-            ],
-          ),
-        );
-      }),
+            ),
+            Divider(),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text("Contest Problems:", style: presentationTitle),
+            ),
+            ...problems.map((value) {
+              if (value != null) {
+                return ProblemListTile(type: 'finished', problem: value);
+              }
+              return LoadingListTile();
+            }).toList(),
+            ListTile(
+              title: Text('Leaderboard'),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => LeaderboardScreen()));
+              },
+            )
+          ],
+        ),
+      ),
     );
   }
 }

@@ -411,10 +411,10 @@ class QEDStore {
         statementLink: null,
         solutionLink: null,
       );
-      for (var i in value.data()!["submissions"][id.toString()]) {
+      /*for (var i in value.data()!["submissions"][id.toString()]) {
         prob.submissions.add(
             await getSubmissions(i.key, i.value.toString(), id.toString()));
-      }
+      }*/
     });
 
     prob.statementLink = await getProblemStatements(id);
