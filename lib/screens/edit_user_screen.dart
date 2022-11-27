@@ -51,8 +51,11 @@ class _EditUserScreenState extends State<EditUserScreen> {
   @override
   Widget build(BuildContext context) {
     return StoreBuilder<AppState>(builder: (context, store) {
-      usernameController.text = store.state.currentUser!.nickname;
-      realNameController.text = store.state.currentUser!.name;
+      usernameController.text = store.state.currentUser == null
+          ? ""
+          : store.state.currentUser!.nickname;
+      realNameController.text =
+          store.state.currentUser == null ? "" : store.state.currentUser!.name;
       descriptionController.text = store.state.currentUser!.description;
       return Scaffold(
         appBar: AppBar(
@@ -142,10 +145,10 @@ class LogOutWarning extends StatelessWidget {
           child: const Text('Cancel'),
         ),
         TextButton(
-          onPressed: () {
-            Navigator.pushNamedAndRemoveUntil(
+          onPressed: () async {
+            await Navigator.pushNamedAndRemoveUntil(
                 context, '/signin', (route) => false);
-            QEDStore.instance.signOutUser();
+            await QEDStore.instance.signOutUser();
           },
           child: const Text('OK'),
         ),
