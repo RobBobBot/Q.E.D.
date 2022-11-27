@@ -41,14 +41,7 @@ void main() async {
 
   ///dummy problem
   Future.delayed(Duration(seconds: 3)).then((val) async {
-    store.dispatch(AddProblemAction(
-      Problem(
-        id: 1,
-        name: "Bruh Problem",
-        statementLink: (await QEDStore.instance.getProblemStatements(1)),
-        tags: {"bruh"},
-      ),
-    ));
+    store.dispatch(AddProblemAction(await QEDStore.instance.getProblem(1)));
   });
   QEDStore.instance
       .getContests()

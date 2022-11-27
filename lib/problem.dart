@@ -4,12 +4,13 @@ import 'package:qed/firebase/rfile.dart';
 class Problem {
   final String name;
   final int id;
-  final Rfile? statementLink;
+  Rfile? statementLink, solutionLink;
   final Set<String> tags;
   List<Submission> submissions = [];
   Problem(
-      {required this.tags,
+      {this.tags = const {},
       required this.name,
       required this.id,
-      required this.statementLink});
+      required this.statementLink,
+      required this.solutionLink});
 }

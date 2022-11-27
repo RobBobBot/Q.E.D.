@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mime/mime.dart';
+import 'package:qed/classes/submission.dart';
 import 'package:qed/contest.dart';
 import 'package:qed/firebase/rfile.dart';
 import 'package:qed/qed_user.dart';
@@ -161,6 +162,7 @@ class QEDStore {
     return res;
   }
 
+  ///Returns basic info about an user
   Future<BasicUserInfo> getBasicUserInfo(String uid) async {
     var data =
         (await FirebaseFirestore.instance.collection("Users").doc(uid).get())
@@ -193,6 +195,7 @@ class QEDStore {
     });
   }
 
+  ///Returns  a link to the problem statement which is a pdf or a img
   Future<Rfile?> getProblemStatements(int id) async {
     Rfile? res;
     await storeageref
@@ -208,8 +211,25 @@ class QEDStore {
     return res;
   }
 
+  ///Returns  a link to the problem solution which is a pdf
+  Future<Rfile?> getProblemSolution(int id) async {
+    Rfile? res;
+    await storeageref
+        .child('/Problems/$id/Solution')
+        .listAll()
+        .then((value) async {
+      for (var i in value.items) {
+        res = Rfile(
+            url: await i.getDownloadURL(),
+            isPDF: lookupMimeType(i.fullPath) == "application/pdf");
+      }
+    });
+    return res;
+  }
+
   ///Adds a request of the user to become teacher
   Future<void> addRequest(String uid, String name) async {
+    //TODO
     await FirebaseFirestore.instance
         .collection("Requests")
         .doc(uid)
@@ -252,6 +272,7 @@ class QEDStore {
     });
   }
 
+  ///Return true is a user has submitted a
   Future<bool> hasSubmitted(String uid, String problemID) async {
     int id = int.parse(problemID);
     await FirebaseFirestore.instance
@@ -266,6 +287,7 @@ class QEDStore {
     return false;
   }
 
+  ///Adds a problem to firebase
   Future<int> createProblem(problemInfo prob) async {
     int ind = 0;
 
@@ -305,6 +327,7 @@ class QEDStore {
     return ind;
   }
 
+  ///Adds a contest to firebases
   Future<void> createContest(String name, List<problemInfo> problems,
       Timestamp begin, Timestamp end) async {
     int ind = 0;
@@ -340,9 +363,52 @@ class QEDStore {
       "tags": [],
     });
   }
-}
 
-//Future<Problem> getProblem(int id) async {}
+  ///gets a submisiion of a user to a problem
+  Future<Submission> getSubmissions(String uid, String id) async {
+    late Submission sub;
+    await FirebaseFirestore.instance
+        .collection("Data")
+        .doc("Submissions")
+        .get()
+        .then((value) async {
+      var i = value.data()!["stats"][id];
+      sub = new Submission(
+          upvotes: i["upvotes"],
+          score: i["score"],
+          noOfTeacherGrades: i["grades"],
+          id: id,
+          uploaderID: uid,
+          uploadedFiles: []);
+    });
+    return sub;
+  }
+
+  ///gets info of a problem
+  Future<Problem> getProblem(int id) async {
+    late Problem prob;
+    FirebaseFirestore.instance
+        .collection("Data")
+        .doc("Problems")
+        .get()
+        .then((value) async {
+      prob = Problem(
+        name: value.data()!["problems"][id.toString()],
+        id: id,
+        statementLink: null,
+        solutionLink: null,
+      );
+      for (var i in value.data()!["submissions"][id.toString()]) {
+        prob.submissions.add(await getSubmissions(i.key, i.value.toString()));
+      }
+    });
+
+    prob.statementLink = await getProblemStatements(id);
+    prob.solutionLink = await getProblemSolution(id);
+
+    return prob;
+  }
+}
 
 class BasicUserInfo {
   final int problemsSolved;
