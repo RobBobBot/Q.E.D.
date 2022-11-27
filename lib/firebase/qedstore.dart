@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -191,7 +192,6 @@ class QEDStore {
     });
   }
 
-  ///Returns links to all problem statements and if they're pdf or img
   Future<Rfile?> getProblemStatements(int id) async {
     Rfile? res;
     await storeageref
@@ -217,21 +217,121 @@ class QEDStore {
 
   ///Uploads the solutions to a problem
   Future<void> uploadSolution(
-      List<File> files, String problemID, String uid) async {
+      List<PlatformFile> files, String problemID, String uid) async {
+    if (files.isEmpty) return;
+
+    storeageref.child("/Problems/$problemID/Submissions/$uid").delete();
+
     for (var file in files) {
-      storeageref
-          .child("/Problems/$problemID/Submissions/$uid/${file.hashCode}")
-          .putFile(file);
+      await storeageref
+          .child("/Problems/$problemID/Submissions/$uid/${file.name}")
+          .putFile(File(file.path!));
     }
+
+    await FirebaseFirestore.instance.collection("Users").doc(uid).update({
+      "triedProblems": FieldValue.arrayUnion([int.parse(problemID)]),
+    });
+
+    int ind = 0;
+    await FirebaseFirestore.instance
+        .collection("Data")
+        .doc("Submissions")
+        .get()
+        .then((value) {
+      ind = value.data()!["ind"];
+    });
+
+    await FirebaseFirestore.instance
+        .collection("Data")
+        .doc("Submissions")
+        .update({
+      "stats": {
+        "$ind": {"problem": problemID, "uid": uid, "upvotes": 0, "score": 0}
+      }
+    });
   }
 
   Future<bool> hasSubmitted(String uid, String problemID) async {
-    bool res = true;
-    return res;
+    int id = int.parse(problemID);
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(uid)
+        .get()
+        .then((value) {
+      for (var i in value.data()!["triedProblems"]) {
+        if (i == id) return true;
+      }
+    });
+    return false;
   }
 
+  Future<int> createProblem(problemInfo prob) async {
+    int ind = 0;
+
+    await FirebaseFirestore.instance
+        .collection("Data")
+        .doc("Problems")
+        .get()
+        .then((value) {
+      ind = value.data()!["ind"];
+    });
+
+    await FirebaseFirestore.instance
+        .collection("Data")
+        .doc("Problems")
+        .update({"ind": ind + 1});
+
+    ind++;
+
+    await storeageref
+        .child("Problems/$ind/Statement/${prob.statement!.name}")
+        .putFile(File(prob.statement!.path!));
+
+    await storeageref
+        .child("Problems/$ind/Solution/${prob.solution!.name}")
+        .putFile(File(prob.solution!.path!));
+
+    await FirebaseFirestore.instance.collection("Data").doc("Problems").update({
+      "problems": {ind.toString(): prob.name}
+    });
+
+    return ind;
+  }
   Future<void> createContest(String name, List<problemInfo> problems,
-      Timestamp begin, Timestamp end) async {}
+      Timestamp begin, Timestamp end) async {
+    int ind = 0;
+
+    await FirebaseFirestore.instance
+        .collection("Data")
+        .doc("Contests")
+        .get()
+        .then((value) {
+      ind = value.data()!["ind"];
+    });
+
+    await FirebaseFirestore.instance.collection("Data").doc("Contests").update({
+      "ind": ind + 1,
+    });
+
+    ind++;
+
+    List<int> l = [];
+
+    for (var i in problems) {
+      l.add(await createProblem(i));
+    }
+
+    await FirebaseFirestore.instance
+        .collection("Contests")
+        .doc((ind).toString())
+        .set({
+      "begin": begin,
+      "end": end,
+      "name": name,
+      "problemIDs": l,
+      "tags": [],
+    });
+  }
 }
 
 class BasicUserInfo {
