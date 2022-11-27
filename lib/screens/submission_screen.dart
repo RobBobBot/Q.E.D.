@@ -21,8 +21,8 @@ class SubmissionScreen extends StatelessWidget {
       ),
       body: ListView(
             children: submission.uploadedFiles.map<Widget>((e) {
-              if (e.substring(e.length-3) == 'pdf') return Text('pdf');
-              return Image.network(e);
+              if (e.isPDF) return Text('pdf');
+              return Image.network(e.url);
             }).toList(),
           ),
       // body: FutureBuilder(
