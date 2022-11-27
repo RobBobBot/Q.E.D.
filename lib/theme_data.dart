@@ -46,7 +46,8 @@ ListTileThemeData drawerTile = ListTileThemeData(
 );
 TextStyle presentationTitle = const TextStyle(
   fontSize: 24,
-  fontStyle: FontStyle.italic,
+  fontFamily: 'Roboto',
+  fontStyle: FontStyle.normal,
   fontWeight: FontWeight.bold,
 );
 ListTileThemeData presentationContent = ListTileThemeData(
