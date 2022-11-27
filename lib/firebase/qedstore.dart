@@ -489,6 +489,16 @@ class QEDStore {
     return res;
   }
 
+  // Future<void> userUpvote(String uid, String sid)
+  // {
+  //   //updateaza in firebase ca uid a dat upvote la sid
+  //   FirebaseFirestore.instance
+  // }
+
+  // Future<bool> userHasUpvoted(String uid, String sid)
+  // {
+  //   //returneaza daca userul uid a dat upvote la sid
+  // }
   Future<List<Problem>> getAllProblems() async {
     List<Problem> res = [];
     await FirebaseFirestore.instance

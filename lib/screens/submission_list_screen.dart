@@ -58,6 +58,32 @@ class _SubmissionListScreenState extends State<SubmissionListScreen> {
                                   submission: e,
                                 )));
                   },
+                  future: e.getUploaderName(),
+                ),
+                subtitle:
+                    Text('upvotes: ${e.upvotes}, score: ${e.getFinalScore()}'),
+                trailing: store.state.currentUser!.role == 0
+                    ? IconButton(
+                        onPressed: () {
+                          setState(() {
+                            upvoted = !upvoted;
+                            e.upvotes += upvoted ? 1 : -1;
+                          });
+                        },
+                        icon: upvoted
+                            ? Icon(Icons.favorite)
+                            : Icon(Icons.favorite_border),
+                      )
+                    : IconButton(
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) => GradeDialog(
+                                  grade: graded == -1 ? 0 : graded));
+                        },
+                        icon:
+                            Icon( (graded == -1) ? Icons.edit : Icons.numbers),
+                        ),
                   title: FutureBuilder(
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.done) {
@@ -67,27 +93,7 @@ class _SubmissionListScreenState extends State<SubmissionListScreen> {
                     },
                     future: e.getUploaderName(),
                   ),
-                  subtitle: Text('upvotes: ${e.upvotes}, score: ${e.score}'),
-                  trailing: store.state.currentUser!.role == 0
-                      ? IconButton(
-                          onPressed: () {
-                            setState(() {
-                              upvoted = !upvoted;
-                            });
-                          },
-                          icon: upvoted
-                              ? Icon(Icons.favorite)
-                              : Icon(Icons.favorite_border),
-                        )
-                      : IconButton(
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) => GradeDialog(
-                                    grade: graded == -1 ? 0 : graded));
-                          },
-                          icon: Icon(
-                              (graded == -1) ? Icons.edit : Icons.numbers)));
+                 
             },
           ).toList()),
         ),
@@ -107,39 +113,44 @@ class GradeDialog extends StatefulWidget {
 class _GradeDialogState extends State<GradeDialog> {
   final _formKey = GlobalKey<FormState>();
   var gradeController = TextEditingController();
-  bool isNumeric(String s) {
-    if (s == null) {
-      return false;
-    }
-    return double.tryParse(s) != null;
-  }
+  double gradeValue = 0;
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: const Text('Grading'),
-      content: const Text(
-          'Please enter the grade you want to give this submission (0-7):'),
-      actions: <Widget>[
-        Form(
-          key: _formKey,
-          child: Row(
+    return Form(
+      key: _formKey,
+      child: AlertDialog(
+        title: const Text('Grading'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+                'Please enter the grade you want to give this submission (0-7):'),
+            Slider(
+                label: '$gradeValue',
+                min: 0,
+                max: 7,
+                divisions: 14,
+                value: gradeValue,
+                onChanged: (e) {
+                  setState(() {
+                    gradeValue = e;
+                  });
+                }),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: const [
+                Text('0'),
+                Text('3.5'),
+                Text('7'),
+              ],
+            )
+          ],
+        ),
+        actions: <Widget>[
+          Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              TextFormField(
-                validator: (value) {
-                  if (value == null) return 'Please enter a value';
-                  if (double.tryParse(value) == null) {
-                    return 'Enter a number from 0 to 7';
-                  }
-                  if (double.tryParse(value)! < 0) {
-                    return 'Enter a number from 0 to 7';
-                  }
-                  if (double.tryParse(value)! > 7) {
-                    return 'Enter a number from 0 to 7';
-                  }
-                  return null;
-                },
-              ),
               TextButton(
                 onPressed: () => Navigator.pop(context, 'Cancel'),
                 child: const Text('Cancel'),
@@ -155,9 +166,9 @@ class _GradeDialogState extends State<GradeDialog> {
                 child: const Text('Grade'),
               ),
             ],
-          ),
-        )
-      ],
+          )
+        ],
+      ),
     );
   }
 }
