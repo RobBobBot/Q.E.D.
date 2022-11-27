@@ -21,11 +21,12 @@ class _AccountScreenState extends State<AccountScreen> {
           title: const Text('Profile'),
           centerTitle: true,
           actions: [
-            store.state.currentUser!.role == 2
+            store.state.currentUser != null &&
+                    store.state.currentUser!.role == 2
                 ? IconButton(
                     onPressed: () {},
                     icon: const Icon(Icons.admin_panel_settings))
-                : const Text(""),
+                : Container(),
             IconButton(
                 onPressed: () {
                   Navigator.pushNamed(context, '/edituser');
@@ -45,8 +46,10 @@ class _AccountScreenState extends State<AccountScreen> {
                     CircleAvatar(
                       backgroundColor: Colors.black,
                       radius: 50,
-                      backgroundImage: NetworkImage(
-                          store.state.currentUser!.profilePictureURL),
+                      backgroundImage: NetworkImage(store.state.currentUser ==
+                              null
+                          ? "https://firebasestorage.googleapis.com/v0/b/unihackqed.appspot.com/o/Users%2FDefaultProfilePicture.jpeg?alt=media&token=21040947-0dab-469f-874a-847d2800c588"
+                          : store.state.currentUser!.profilePictureURL),
                     ),
                     const SizedBox(width: 20),
                     Column(

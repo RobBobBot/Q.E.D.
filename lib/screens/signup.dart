@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:qed/firebase/qedstore.dart';
@@ -106,8 +107,9 @@ class _SignUpState extends State<SignUp> {
                   Text("or"),
                   SignInButton(
                     Buttons.GoogleDark,
-                    onPressed: () {
-                      QEDStore.instance.singInWithGoogle();
+                    onPressed: () async {
+                      await QEDStore.instance.singInWithGoogle().then((value) =>
+                          print(FirebaseAuth.instance.currentUser?.email));
                     },
                     padding: EdgeInsets.all(16.0),
                     elevation: 20.0,
