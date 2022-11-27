@@ -23,6 +23,7 @@ class ContestListTile extends StatelessWidget {
           leading: Icon(
             Icons.leaderboard,
           ),
+          subtitle: Text("by Organizer"),
           onTap: () => Navigator.push(
             context,
             MaterialPageRoute(
