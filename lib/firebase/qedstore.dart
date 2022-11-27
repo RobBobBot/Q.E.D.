@@ -53,7 +53,8 @@ class QEDStore {
       await FirebaseFirestore.instance.collection("Users").doc(user!.uid).set({
         "name": name,
         "nickname": nickname,
-        "profilePicture": "Users/DefaultProfilePicture.jpeg",
+        "profilePicture":
+            "https://firebasestorage.googleapis.com/v0/b/unihackqed.appspot.com/o/Users%2FDefaultProfilePicture.jpeg?alt=media&token=21040947-0dab-469f-874a-847d2800c588",
         "role": "student",
         "description": "",
         "rating": 0.0,
@@ -392,7 +393,7 @@ class QEDStore {
           noOfTeacherGrades: i["grades"],
           id: id,
           uploaderID: uid,
-          uploadedFiles: []);
+          uploadedFiles: await getSubmissionFiles(pid, uid));
     });
     return sub;
   }
@@ -400,7 +401,7 @@ class QEDStore {
   ///gets info of a problem
   Future<Problem> getProblem(int id) async {
     late Problem prob;
-    FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection("Data")
         .doc("Problems")
         .get()
