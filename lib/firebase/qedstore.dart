@@ -364,8 +364,21 @@ class QEDStore {
     });
   }
 
-  ///gets a submisiion of a user to a problem
-  Future<Submission> getSubmissions(String uid, String id) async {
+  Future<List<String>> getSubmissionFiles(String pid, String uid) async {
+    List<String> res = [];
+    await storeageref
+        .child("Problems/$pid/Submissions/$uid")
+        .listAll()
+        .then((value) async {
+      for (var i in value.items) {
+        res.add(await i.getDownloadURL());
+      }
+    });
+    return res;
+  }
+
+  ///gets a submisiion(id) of a user(uid) to a problem
+  Future<Submission> getSubmissions(String uid, String id, String pid) async {
     late Submission sub;
     await FirebaseFirestore.instance
         .collection("Data")
@@ -399,7 +412,8 @@ class QEDStore {
         solutionLink: null,
       );
       for (var i in value.data()!["submissions"][id.toString()]) {
-        prob.submissions.add(await getSubmissions(i.key, i.value.toString()));
+        prob.submissions.add(
+            await getSubmissions(i.key, i.value.toString(), id.toString()));
       }
     });
 
