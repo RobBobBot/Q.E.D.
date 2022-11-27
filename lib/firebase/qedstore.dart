@@ -55,7 +55,7 @@ class QEDStore {
         "nickname": nickname,
         "profilePicture":
             "https://firebasestorage.googleapis.com/v0/b/unihackqed.appspot.com/o/Users%2FDefaultProfilePicture.jpeg?alt=media&token=21040947-0dab-469f-874a-847d2800c588",
-        "role": "student",
+        "role": 0,
         "description": "",
         "rating": 0.0,
         "problemsSolved": 0
