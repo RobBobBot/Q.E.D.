@@ -510,15 +510,6 @@ class QEDStore {
         .collection("Data")
         .doc("Submissions")
         .update(m);
-
-    // await FirebaseFirestore.instance
-    //     .collection("Data")
-    //     .doc("Submissions")
-    //     .update({
-    //   "stats": {
-    //     sid: {"upvotes": FieldValue.increment(1)}
-    //   }
-    // });
   }
 
   Future<void> userUnUpvote(String uid, String sid) async {
@@ -542,14 +533,6 @@ class QEDStore {
         .collection("Data")
         .doc("Submissions")
         .update(m);
-    // await FirebaseFirestore.instance
-    //     .collection("Data")
-    //     .doc("Submissions")
-    //     .update({
-    //   "stats": {
-    //     sid: {"upvotes": FieldValue.increment(-1)}
-    //   }
-    // });
   }
 
   Future<bool> userHasUpvoted(String uid, String sid) async {
