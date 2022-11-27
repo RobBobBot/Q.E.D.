@@ -12,6 +12,7 @@ import 'package:qed/contest.dart';
 import 'package:qed/firebase/rfile.dart';
 import 'package:qed/qed_user.dart';
 
+import '../problem.dart';
 import '../probleminfo.dart';
 
 class QEDStore {
@@ -107,11 +108,11 @@ class QEDStore {
         });
       }
     });
-    await FirebaseAuth.instance.signOut();
-    await FirebaseAuth.instance.signInWithCredential(cred);
+    // await FirebaseAuth.instance.signOut();
+    // await FirebaseAuth.instance.signInWithCredential(cred);
   }
 
-  //Returns all contests in firebase
+  ///Returns all contests in firebase
   Future<List<Contest>> getContests() async {
     List<Contest> res = [];
     await FirebaseFirestore.instance.collection("Contests").get().then((value) {
@@ -138,7 +139,7 @@ class QEDStore {
     return res;
   }
 
-  //Gets the data of a given user
+  ///Gets the data of a given user
   Future<QedUser> getUserData(User user) async {
     late QedUser res;
     await FirebaseFirestore.instance
@@ -268,12 +269,15 @@ class QEDStore {
   Future<int> createProblem(problemInfo prob) async {
     int ind = 0;
 
+    Map<String, dynamic> m = {};
+
     await FirebaseFirestore.instance
         .collection("Data")
         .doc("Problems")
         .get()
         .then((value) {
       ind = value.data()!["ind"];
+      m = value.data()!["problems"];
     });
 
     await FirebaseFirestore.instance
@@ -283,6 +287,8 @@ class QEDStore {
 
     ind++;
 
+    m[ind.toString()] = prob.name!;
+
     await storeageref
         .child("Problems/$ind/Statement/${prob.statement!.name}")
         .putFile(File(prob.statement!.path!));
@@ -291,12 +297,14 @@ class QEDStore {
         .child("Problems/$ind/Solution/${prob.solution!.name}")
         .putFile(File(prob.solution!.path!));
 
-    await FirebaseFirestore.instance.collection("Data").doc("Problems").update({
-      "problems": {ind.toString(): prob.name}
-    });
+    await FirebaseFirestore.instance
+        .collection("Data")
+        .doc("Problems")
+        .update({"problems": m});
 
     return ind;
   }
+
   Future<void> createContest(String name, List<problemInfo> problems,
       Timestamp begin, Timestamp end) async {
     int ind = 0;
@@ -333,6 +341,8 @@ class QEDStore {
     });
   }
 }
+
+//Future<Problem> getProblem(int id) async {}
 
 class BasicUserInfo {
   final int problemsSolved;

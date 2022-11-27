@@ -85,15 +85,16 @@ class _SignUpState extends State<SignUp> {
                     ),
                   ),
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        QEDStore.instance
+                        await QEDStore.instance
                             .signUpUser(
                                 name: controllers[0].text,
                                 nickname: controllers[1].text,
                                 email: controllers[2].text,
                                 password: controllers[3].text)
-                            .then((value) => print(value));
+                            .then((value) =>
+                                Navigator.popAndPushNamed(context, '/'));
                       }
                     },
                     child: Text("Sign up"),
@@ -108,8 +109,8 @@ class _SignUpState extends State<SignUp> {
                   SignInButton(
                     Buttons.GoogleDark,
                     onPressed: () async {
-                      await QEDStore.instance.singInWithGoogle().then((value) =>
-                          print(FirebaseAuth.instance.currentUser?.email));
+                      await QEDStore.instance.singInWithGoogle().then(
+                          (value) => Navigator.popAndPushNamed(context, '/'));
                     },
                     padding: EdgeInsets.all(16.0),
                     elevation: 20.0,

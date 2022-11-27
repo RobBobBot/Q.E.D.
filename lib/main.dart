@@ -68,8 +68,9 @@ class App extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           theme: myTheme,
           darkTheme: myTheme,
-          home: ScreenRouter(),
+          initialRoute: '/',
           routes: {
+            '/': (context) => ScreenRouter(),
             '/home': (context) => const HomeScreen(),
             '/upcominglist': (context) => ContestListScreen(type: 'upcoming'),
             '/pastlist': (context) => ContestListScreen(type: 'past'),
