@@ -160,6 +160,20 @@ class QEDStore {
     return res;
   }
 
+  Future<BasicUserInfo> getBasicUserInfo(String uid) async {
+    var data =
+        (await FirebaseFirestore.instance.collection("Users").doc(uid).get())
+            .data();
+    if (data == null) throw ("Funk you");
+    var res = BasicUserInfo(
+        profilePictureURL: data["profilePicture"],
+        problemsSolved: data["problemsSolved"],
+        nick: data["nickname"],
+        rating: data["rating"],
+        role: data["res"]);
+    return res;
+  }
+
   ///Signs out a user
   Future<void> signOutUser() async {
     await FirebaseAuth.instance.signOut();
@@ -283,7 +297,6 @@ class QEDStore {
 
     return ind;
   }
-
   Future<void> createContest(String name, List<problemInfo> problems,
       Timestamp begin, Timestamp end) async {
     int ind = 0;
@@ -319,4 +332,19 @@ class QEDStore {
       "tags": [],
     });
   }
+}
+
+class BasicUserInfo {
+  final int problemsSolved;
+  final String nick;
+  final String profilePictureURL;
+  final int rating;
+  final int role;
+  BasicUserInfo({
+    required this.profilePictureURL,
+    required this.problemsSolved,
+    required this.nick,
+    required this.rating,
+    required this.role,
+  });
 }
