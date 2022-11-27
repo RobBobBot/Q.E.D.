@@ -9,3 +9,6 @@ The lack of math olympiad training websites proves how unappreciated a collectiv
 
 ## Used Technologies
 Flutter by Google, Firebase by Google
+
+## Documentation
+https://docs.google.com/document/d/16v1ZWwKjSvBeipaGP3W24KAJioZxC7qakPlEls-64HU/edit#
