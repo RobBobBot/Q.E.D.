@@ -35,6 +35,9 @@ class _ActiveContestScreenState extends State<ActiveContestScreen>
       QEDStore.instance.getProblem(id).then((value) => setState(
             () {
               problems.add(value);
+              if (problems.length > widget.contest.problemIDs.length) {
+                problems.removeAt(0);
+              }
             },
           ));
     }

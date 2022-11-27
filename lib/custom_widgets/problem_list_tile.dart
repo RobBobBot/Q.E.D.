@@ -54,7 +54,7 @@ class ProblemListTile extends StatelessWidget {
                 ? SubmissionsButton(problem: problem)
                 : type == ProblemType.active
                     ? UploadButton(canSubmit: true, problem: problem)
-                    : Container(),
+                    : null,
       );
     });
   }

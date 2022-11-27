@@ -27,12 +27,13 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
   }
 
-  Widget TitleWidget(String title) {
+  Widget _TitleWidget(String title) {
     return ListTile(
       title: Text(
         '${title[0].toUpperCase()}${title.substring(1)} Contests',
         style: presentationTitle,
       ),
+      trailing: Text("more..."),
       onTap: () => Navigator.pushNamed(context, '/${title}list'),
     );
   }
@@ -90,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
           onRefresh: updateContests,
           child: ListView(
             children: [
-              TitleWidget('active'),
+              _TitleWidget('active'),
               PresentationWidget(
                 title: 'Active Contests',
                 onTap: () {
@@ -101,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     .take(3)
                     .toList(),
               ),
-              TitleWidget('upcoming'),
+              _TitleWidget('upcoming'),
               PresentationWidget(
                 title: 'Upcoming contests',
                 onTap: () {
@@ -112,7 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     .take(3)
                     .toList(),
               ),
-              TitleWidget('past'),
+              _TitleWidget('past'),
               PresentationWidget(
                 title: 'Past contests',
                 onTap: () {

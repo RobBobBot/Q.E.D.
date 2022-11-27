@@ -6,6 +6,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:qed/classes/submission.dart';
 import 'package:qed/firebase/qedstore.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
@@ -62,13 +63,6 @@ class _ProblemScreenState extends State<ProblemScreen> {
       return Scaffold(
         appBar: AppBar(
           title: Text(widget.problem.name),
-          actions: [
-            StoreBuilder<AppState>(
-                builder: (context, vm) => IconButton(
-                    onPressed: () =>
-                        submitSolutions(vm.state.currentUser!.firebaseUser.uid),
-                    icon: Icon(Icons.send)))
-          ],
         ),
         body: Column(
           children: [
@@ -83,30 +77,36 @@ class _ProblemScreenState extends State<ProblemScreen> {
                     : PhotoView(
                         imageProvider:
                             NetworkImage(widget.problem.statementLink!.url))),
-            screenheight > initHeight + 83 && widget.canSubmit
-                ? Container(
-                    child: Column(
-                      children: [
-                        ElevatedButton(
-                          onPressed: uploadSolution,
-                          child: Text("Upload"),
-                        ),
-                        ...uploadedFiles.map(
-                          (f) => ListTile(
-                            title: Text(f.path!
-                                .substring(f.path!.lastIndexOf('/') + 1)),
-                            trailing: IconButton(
-                              icon: Icon(Icons.delete),
-                              onPressed: () {},
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                : Container(),
+            ...uploadedFiles.map(
+              (f) => ListTile(
+                title: Text(f.path!.substring(f.path!.lastIndexOf('/') + 1)),
+                trailing: IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () {},
+                ),
+              ),
+            ),
           ],
         ),
+        bottomNavigationBar: !widget.canSubmit
+            ? null
+            : BottomAppBar(
+                child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ElevatedButton(
+                    onPressed: uploadSolution,
+                    child: Text("Upload solution"),
+                  ),
+                  StoreBuilder<AppState>(
+                      builder: (context, vm) => ElevatedButton(
+                          onPressed: uploadedFiles.length > 0
+                              ? () => submitSolutions(
+                                  vm.state.currentUser!.firebaseUser.uid)
+                              : null,
+                          child: Text("Submit solution")))
+                ],
+              )),
       );
     });
   }
