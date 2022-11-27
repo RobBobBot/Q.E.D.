@@ -1,16 +1,11 @@
-# qed
+# Q.E.D.
 
-A new Flutter project.
+## What is QED?
 
-## Getting Started
+Quod Erat Demonstrandum (Q.E.D. for short) is a mobile platform dedicated to students who want to become advanced in math and train for competitions. They can participate in weekly public contests, or other more frequent private ones, hosted on this app. Their submissions are both graded by teachers, and voted by other students as the best solution, and for that both students and teachers earn points. 
 
-This project is a starting point for a Flutter application.
+## Why QED?
+The lack of math olympiad training websites proves how unappreciated a collective working dynamic can be for math students. Since there are a lot of Computer Science training websites (like InfoArena, CodeForces, CodeChef etc), we discovereed that there are no significant such platforms for Mathematics 
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Used Technologies
+Flutter by Google, Firebase by Google
