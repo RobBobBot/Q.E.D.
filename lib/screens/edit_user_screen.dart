@@ -5,6 +5,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:qed/firebase/qedstore.dart';
 import 'package:qed/redux/app_actions.dart';
 import 'package:qed/redux/app_state.dart';
+import 'package:qed/screens/loading_screen.dart';
 
 class RoleInfo extends StatefulWidget {
   final String uid, name;
@@ -70,75 +71,88 @@ class _EditUserScreenState extends State<EditUserScreen> {
           : store.state.currentUser!.nickname;
       realNameController.text =
           store.state.currentUser == null ? "" : store.state.currentUser!.name;
-      descriptionController.text = store.state.currentUser!.description;
+      descriptionController.text = store.state.currentUser == null
+          ? ""
+          : store.state.currentUser!.description;
       return Scaffold(
         appBar: AppBar(
           title: const Text('Profile Settings'),
           centerTitle: true,
         ),
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Form(
-              child: ListView(
-                children: [
-                  TextFormField(
-                    controller: usernameController,
-                    decoration: const InputDecoration(labelText: 'Username'),
-                  ),
-                  TextFormField(
-                    controller: realNameController,
-                    decoration: const InputDecoration(labelText: 'Real Name'),
-                  ),
-                  TextFormField(
-                    controller: descriptionController,
-                    decoration: const InputDecoration(labelText: 'Description'),
-                  ),
-                  RoleInfo(
-                    role: store.state.currentUser!.role,
-                    name: store.state.currentUser!.name,
-                    uid: store.state.currentUser!.firebaseUser.uid,
-                  ),
-                  Divider(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ElevatedButton(
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) =>
-                                    LogOutWarning());
-                          },
-                          child: Text('Log Out')),
-                      ElevatedButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Text('Cancel')),
-                      ElevatedButton(
-                          onPressed: () {
-                            QEDStore.instance.updateUser(
-                                nickname: usernameController.text,
-                                name: realNameController.text,
-                                desc: descriptionController.text,
-                                uid: store.state.currentUser!.firebaseUser.uid);
+        body: AnimatedSwitcher(
+          duration: Duration(milliseconds: 500),
+          child: store.state.currentUser == null
+              ? LoadingScreen()
+              : SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Form(
+                      child: ListView(
+                        children: [
+                          TextFormField(
+                            controller: usernameController,
+                            decoration:
+                                const InputDecoration(labelText: 'Username'),
+                          ),
+                          TextFormField(
+                            controller: realNameController,
+                            decoration:
+                                const InputDecoration(labelText: 'Real Name'),
+                          ),
+                          TextFormField(
+                            controller: descriptionController,
+                            decoration:
+                                const InputDecoration(labelText: 'Description'),
+                          ),
+                          RoleInfo(
+                            role: store.state.currentUser!.role,
+                            name: store.state.currentUser!.name,
+                            uid: store.state.currentUser!.firebaseUser.uid,
+                          ),
+                          Divider(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              ElevatedButton(
+                                  onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            LogOutWarning());
+                                  },
+                                  child: Text('Log Out')),
+                              ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text('Cancel')),
+                              ElevatedButton(
+                                  onPressed: () {
+                                    QEDStore.instance.updateUser(
+                                        nickname: usernameController.text,
+                                        name: realNameController.text,
+                                        desc: descriptionController.text,
+                                        uid: store.state.currentUser!
+                                            .firebaseUser.uid);
 
-                            store.dispatch(UserUpdateAction(
-                                realNameController.text,
-                                usernameController.text,
-                                descriptionController.text));
+                                    store.dispatch(UserUpdateAction(
+                                        realNameController.text,
+                                        usernameController.text,
+                                        descriptionController.text));
 
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: const Text('Saved Changes!')));
-                          },
-                          child: Text('Save')),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ),
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content:
+                                                const Text('Saved Changes!')));
+                                  },
+                                  child: Text('Save')),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
         ),
       );
     });

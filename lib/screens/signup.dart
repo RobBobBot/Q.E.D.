@@ -51,79 +51,76 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Row(
-        children: [
-          Expanded(
-            child: Container(),
-            flex: 1,
-          ),
-          Expanded(
-            flex: 2,
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ...List.generate(
-                    fieldNum,
-                    (index) => TextFormField(
-                      controller: controllers[index],
-                      decoration: InputDecoration(
-                        hintText: hintMap[index],
-                      ),
-                      validator: index == 2
-                          ? emailValidator
-                          : index == 3
-                              ? passwordValidator
-                              : (value) => null,
-                      obscureText: (index == 3 || index == 4) ? true : false,
-                      keyboardType: index == 2
-                          ? TextInputType.emailAddress
-                          : index == 3 || index == 4
-                              ? TextInputType.visiblePassword
-                              : TextInputType.name,
-                    ),
+      body: Padding(
+        padding: EdgeInsets.all(32.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ...List.generate(
+                fieldNum,
+                (index) => TextFormField(
+                  controller: controllers[index],
+                  decoration: InputDecoration(
+                    hintText: hintMap[index],
                   ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        await QEDStore.instance
-                            .signUpUser(
-                                name: controllers[0].text,
-                                nickname: controllers[1].text,
-                                email: controllers[2].text,
-                                password: controllers[3].text)
-                            .then((value) =>
-                                Navigator.popAndPushNamed(context, '/'));
-                      }
-                    },
-                    child: Text("Sign up"),
-                  ),
-                  ElevatedButton(
-                    onPressed: () => Navigator.pop(
-                      context,
-                    ),
-                    child: Text("Return"),
-                  ),
-                  Text("or"),
-                  SignInButton(
-                    Buttons.GoogleDark,
-                    onPressed: () async {
-                      await QEDStore.instance.singInWithGoogle().then(
-                          (value) => Navigator.popAndPushNamed(context, '/'));
-                    },
-                    padding: EdgeInsets.all(16.0),
-                    elevation: 20.0,
-                  ),
-                ],
+                  validator: index == 2
+                      ? emailValidator
+                      : index == 3
+                          ? passwordValidator
+                          : (value) => null,
+                  obscureText: (index == 3 || index == 4) ? true : false,
+                  keyboardType: index == 2
+                      ? TextInputType.emailAddress
+                      : index == 3 || index == 4
+                          ? TextInputType.visiblePassword
+                          : TextInputType.name,
+                ),
               ),
-            ),
+              SizedBox(
+                height: 20,
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    await QEDStore.instance
+                        .signUpUser(
+                            name: controllers[0].text,
+                            nickname: controllers[1].text,
+                            email: controllers[2].text,
+                            password: controllers[3].text)
+                        .then(
+                            (value) => Navigator.popAndPushNamed(context, '/'));
+                  }
+                },
+                child: Text("Sign up"),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(
+                  context,
+                ),
+                child: Text("Return"),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text("or"),
+              ),
+              SignInButton(
+                Buttons.GoogleDark,
+                onPressed: () async {
+                  await QEDStore.instance
+                      .singInWithGoogle()
+                      .then((value) => Navigator.popAndPushNamed(context, '/'));
+                },
+                padding: EdgeInsets.all(16.0),
+                elevation: 20.0,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+              ),
+            ],
           ),
-          Expanded(
-            child: Container(),
-            flex: 1,
-          ),
-        ],
+        ),
       ),
     );
   }
