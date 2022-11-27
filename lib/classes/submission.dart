@@ -21,4 +21,8 @@ class Submission {
   Future<String> getUploaderName() async {
     return await QEDStore.instance.getName(uploaderID);
   }
+
+  double getFinalScore() {
+    return score / noOfTeacherGrades;
+  }
 }

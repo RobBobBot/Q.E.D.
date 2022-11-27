@@ -488,6 +488,17 @@ class QEDStore {
         .then((value) => res = value.data()!["name"]);
     return res;
   }
+
+  // Future<void> userUpvote(String uid, String sid)
+  // {
+  //   //updateaza in firebase ca uid a dat upvote la sid
+  //   FirebaseFirestore.instance
+  // }
+
+  // Future<bool> userHasUpvoted(String uid, String sid)
+  // {
+  //   //returneaza daca userul uid a dat upvote la sid
+  // }
 }
 
 class BasicUserInfo {
