@@ -92,7 +92,7 @@ class _ActiveContestScreenState extends State<ActiveContestScreen>
             ...problems.map((value) {
               return value == null
                   ? LoadingListTile()
-                  : ProblemListTile(type: 'active', problem: value);
+                  : ProblemListTile(type: ProblemType.active, problem: value);
             }).toList()
           ],
         );
