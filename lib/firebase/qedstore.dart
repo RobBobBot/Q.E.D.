@@ -286,7 +286,7 @@ class QEDStore {
     await FirebaseFirestore.instance
         .collection("Data")
         .doc("Submissions")
-        .update(n);
+        .update({"stats": n});
     Map<String, dynamic> m = {};
     await FirebaseFirestore.instance
         .collection("Data")
