@@ -67,7 +67,7 @@ class _FinishedContestScreenState extends State<FinishedContestScreen> {
             ),
             ...problems.map((value) {
               if (value != null) {
-                return ProblemListTile(type: 'finished', problem: value);
+                return ProblemListTile(type: ProblemType.past, problem: value);
               }
               return LoadingListTile();
             }).toList(),

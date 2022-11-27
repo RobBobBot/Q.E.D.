@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:qed/classes/submission.dart';
+import 'package:qed/firebase/qedstore.dart';
 import 'package:qed/redux/app_state.dart';
 import 'package:qed/screens/submission_screen.dart';
 
@@ -18,6 +20,15 @@ class _SubmissionListScreenState extends State<SubmissionListScreen> {
     // TODO: implement initState
     print(widget.problem.submissions);
     super.initState();
+    submissions = widget.problem.submissions;
+  }
+
+  List<Submission> submissions = [];
+  Future<void> reload() async {
+    var value = await QEDStore.instance.getProblem(widget.problem.id);
+    setState(() {
+      submissions = value.submissions;
+    });
   }
 
   @override
@@ -31,26 +42,21 @@ class _SubmissionListScreenState extends State<SubmissionListScreen> {
         appBar: AppBar(
           title: Text('Submissions'),
         ),
-        body: ListView(
-            children: widget.problem.submissions.map(
-          (e) {
-            bool upvoted = false;
-            double graded = -1;
-            return ListTile(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SubmissionScreen(
-                                submission: e,
-                              )));
-                },
-                title: FutureBuilder(
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      return Text(snapshot.data!);
-                    }
-                    return Text("Loading...");
+        body: RefreshIndicator(
+          onRefresh: reload,
+          child: ListView(
+              children: widget.problem.submissions.map(
+            (e) {
+              bool upvoted = false;
+              double graded = -1;
+              return ListTile(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SubmissionScreen(
+                                  submission: e,
+                                )));
                   },
                   future: e.getUploaderName(),
                 ),
@@ -76,9 +82,21 @@ class _SubmissionListScreenState extends State<SubmissionListScreen> {
                                   grade: graded == -1 ? 0 : graded));
                         },
                         icon:
-                            Icon((graded == -1) ? Icons.edit : Icons.numbers)));
-          },
-        ).toList()),
+                            Icon( (graded == -1) ? Icons.edit : Icons.numbers),
+                        ),
+                  title: FutureBuilder(
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        return Text(snapshot.data!);
+                      }
+                      return Text("Loading...");
+                    },
+                    future: e.getUploaderName(),
+                  ),
+                 
+            },
+          ).toList()),
+        ),
       );
     });
   }

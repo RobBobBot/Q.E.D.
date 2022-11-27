@@ -10,6 +10,7 @@ import 'package:qed/theme_data.dart';
 
 import '../contest_screens/active_contest_screen.dart';
 import '../custom_widgets/mydrawer.dart';
+import '../firebase/qedstore.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,8 +20,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  List<Contest> contests = [];
   @override
   void initState() {
+    updateContests();
     super.initState();
   }
 
@@ -34,8 +37,29 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Future<void> updateContests() async {
+    var value = await QEDStore.instance.getContests();
+    setState(() {
+      contests = value;
+      print(contests);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    List<Contest> pastContests = [], activeContests = [], upcomingContests = [];
+    Timestamp currentTime = Timestamp.fromDate(DateTime.now());
+    for (var contest in contests) {
+      if (contest.isFinished()) {
+        pastContests.add(contest);
+        continue;
+      }
+      if (contest.isUpcoming()) {
+        upcomingContests.add(contest);
+        continue;
+      }
+      activeContests.add(contest);
+    }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
@@ -62,24 +86,9 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: SafeArea(
-        child: StoreBuilder<AppState>(builder: (context, store) {
-          List<Contest> pastContests = [],
-              activeContests = [],
-              upcomingContests = [];
-          Timestamp currentTime = Timestamp.fromDate(DateTime.now());
-          for (var contest in store.state.contests.values) {
-            if (contest.isFinished()) {
-              pastContests.add(contest);
-              continue;
-            }
-            if (contest.isUpcoming()) {
-              upcomingContests.add(contest);
-              continue;
-            }
-            activeContests.add(contest);
-          }
-
-          return ListView(
+        child: RefreshIndicator(
+          onRefresh: updateContests,
+          child: ListView(
             children: [
               TitleWidget('active'),
               PresentationWidget(
@@ -115,8 +124,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     .toList(),
               ),
             ],
-          );
-        }),
+          ),
+        ),
       ),
       drawer: MyDrawer(),
     );
