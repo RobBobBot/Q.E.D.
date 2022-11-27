@@ -544,6 +544,18 @@ class QEDStore {
     });
     return res;
   }
+
+  Future<void> gradeSubmission(String uid, String sid, double grade) async {
+    Map<String, dynamic> m = {};
+    FirebaseFirestore.instance.collection("Users").doc(uid).get().then((value) {
+      m = value.data()!["grades"] ?? {};
+    });
+    m[sid] = grade;
+    FirebaseFirestore.instance
+        .collection("Users")
+        .doc(uid)
+        .update({"grades": m});
+  }
 }
 
 class BasicUserInfo {
