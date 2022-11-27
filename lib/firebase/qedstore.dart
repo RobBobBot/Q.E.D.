@@ -493,6 +493,24 @@ class QEDStore {
     await FirebaseFirestore.instance.collection("Users").doc(uid).update({
       "upvoted": FieldValue.arrayUnion([sid])
     });
+
+    Map<String, dynamic> m = {};
+
+    await FirebaseFirestore.instance
+        .collection("Data")
+        .doc("Submissions")
+        .get()
+        .then((value) {
+      m = value.data()!;
+    });
+
+    m["stats"][sid]["upvotes"]++;
+
+    await FirebaseFirestore.instance
+        .collection("Data")
+        .doc("Submissions")
+        .update(m);
+
     // await FirebaseFirestore.instance
     //     .collection("Data")
     //     .doc("Submissions")
@@ -507,6 +525,23 @@ class QEDStore {
     await FirebaseFirestore.instance.collection("Users").doc(uid).update({
       "upvoted": FieldValue.arrayRemove([sid])
     });
+
+    Map<String, dynamic> m = {};
+
+    await FirebaseFirestore.instance
+        .collection("Data")
+        .doc("Submissions")
+        .get()
+        .then((value) {
+      m = value.data()!;
+    });
+
+    m["stats"][sid]["upvotes"]--;
+
+    await FirebaseFirestore.instance
+        .collection("Data")
+        .doc("Submissions")
+        .update(m);
     // await FirebaseFirestore.instance
     //     .collection("Data")
     //     .doc("Submissions")
@@ -547,11 +582,18 @@ class QEDStore {
 
   Future<void> gradeSubmission(String uid, String sid, double grade) async {
     Map<String, dynamic> m = {};
-    FirebaseFirestore.instance.collection("Users").doc(uid).get().then((value) {
+
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(uid)
+        .get()
+        .then((value) {
       m = value.data()!["grades"] ?? {};
     });
+
     m[sid] = grade;
-    FirebaseFirestore.instance
+
+    await FirebaseFirestore.instance
         .collection("Users")
         .doc(uid)
         .update({"grades": m});
