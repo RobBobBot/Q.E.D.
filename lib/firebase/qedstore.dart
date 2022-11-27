@@ -54,7 +54,7 @@ class QEDStore {
         "name": name,
         "nickname": nickname,
         "profilePicture": "Users/DefaultProfilePicture.jpeg",
-        "role": "student",
+        "role": 0,
         "description": "",
         "rating": 0.0,
         "problemsSolved": 0
@@ -387,20 +387,20 @@ class QEDStore {
   ///gets info of a problem
   Future<Problem> getProblem(int id) async {
     late Problem prob;
-    FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection("Data")
         .doc("Problems")
         .get()
         .then((value) async {
       prob = Problem(
-        name: value.data()!["problems"][id.toString()],
+        name: value.data()!["problems"][id.toString()] ?? "noname",
         id: id,
         statementLink: null,
         solutionLink: null,
       );
-      for (var i in value.data()!["submissions"][id.toString()]) {
+      /*for (var i in value.data()!["submissions"][id.toString()]) {
         prob.submissions.add(await getSubmissions(i.key, i.value.toString()));
-      }
+      }*/
     });
 
     prob.statementLink = await getProblemStatements(id);

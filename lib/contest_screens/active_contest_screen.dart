@@ -4,6 +4,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:qed/contest.dart';
 import 'package:qed/custom_widgets/loading_list_tile.dart';
 import 'package:qed/custom_widgets/tag_widget.dart';
+import 'package:qed/firebase/qedstore.dart';
 import 'package:qed/problem.dart';
 import 'package:qed/redux/app_state.dart';
 import 'package:qed/screens/problem_screen.dart';
@@ -24,9 +25,19 @@ class ActiveContestScreen extends StatefulWidget {
 class _ActiveContestScreenState extends State<ActiveContestScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController ticker;
+
+  late List<Problem?> problems = [null];
+
   @override
   initState() {
     ticker = AnimationController(vsync: this, duration: Duration(seconds: 1));
+    for (var id in widget.contest.problemIDs) {
+      QEDStore.instance.getProblem(id).then((value) => setState(
+            () {
+              problems.add(value);
+            },
+          ));
+    }
     print("here");
     ticker
       ..forward()
@@ -78,12 +89,10 @@ class _ActiveContestScreenState extends State<ActiveContestScreen>
             ),
             Divider(),
             Text("Contest Problems:"),
-            ...widget.contest.problemIDs.map((value) {
-              if (store.state.problems[value] != null) {
-                return ProblemListTile(
-                    type: 'active', problem: store.state.problems[value]!);
-              }
-              return LoadingListTile();
+            ...problems.map((value) {
+              return value == null
+                  ? LoadingListTile()
+                  : ProblemListTile(type: 'active', problem: value);
             }).toList()
           ],
         );
