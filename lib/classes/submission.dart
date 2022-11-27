@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:qed/firebase/qedstore.dart';
+import 'package:qed/firebase/rfile.dart';
 
 class Submission {
   int upvotes;
@@ -9,7 +10,7 @@ class Submission {
   int noOfTeacherGrades;
   String uploaderID;
   String id;
-  List<String> uploadedFiles;
+  List<Rfile> uploadedFiles;
   Submission(
       {required this.upvotes,
       required this.score,
