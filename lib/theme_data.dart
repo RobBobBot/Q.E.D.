@@ -6,9 +6,13 @@ ThemeData myTheme = ThemeData(
     primary: Color.fromARGB(255, 194, 171, 255),
   ),
   drawerTheme: const DrawerThemeData(
-    backgroundColor: Color(0xFF341390),
+    backgroundColor: Color.fromARGB(255, 42, 15, 116),
   ),
   scaffoldBackgroundColor: Color(0x0C0F0A),
+  bottomAppBarColor: Color.fromARGB(255, 42, 15, 116),
+  bottomAppBarTheme: BottomAppBarTheme(
+    color: Color.fromARGB(255, 42, 15, 116),
+  ),
   appBarTheme: const AppBarTheme(
     backgroundColor: Color.fromARGB(255, 42, 15, 116),
     titleTextStyle: TextStyle(
@@ -39,7 +43,7 @@ ThemeData myTheme = ThemeData(
 );
 
 ListTileThemeData drawerTile = ListTileThemeData(
-  textColor: Color(0xFFFFB319),
+  textColor: Color.fromARGB(255, 255, 240, 225),
   tileColor: Color(0xFF03000F),
   style: ListTileStyle.drawer,
   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
