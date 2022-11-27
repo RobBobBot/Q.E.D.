@@ -7,9 +7,16 @@ import '../redux/app_state.dart';
 import '../screens/problem_screen.dart';
 import '../screens/submission_list_screen.dart';
 
+enum ProblemType {
+  past,
+  active,
+  upcoming,
+  archived,
+}
+
 class ProblemListTile extends StatelessWidget {
   final Problem problem;
-  final String type;
+  final ProblemType type;
   const ProblemListTile({required this.type, super.key, required this.problem});
 
   @override
@@ -23,9 +30,11 @@ class ProblemListTile extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => type == 'finished'
+                      builder: (context) => type == ProblemType.active
                           ? SubmissionListScreen(problem: problem)
-                          : ProblemScreen(problem: problem)),
+                          : ProblemScreen(
+                              canSubmit: ProblemType.active == type,
+                              problem: problem)),
                 );
               },
         leading: Image.asset(
@@ -42,16 +51,20 @@ class ProblemListTile extends StatelessWidget {
               )
             : Text("originally by Proposer",
                 style: TextStyle(fontWeight: FontWeight.w300)),
-        trailing: (type == 'finished' || store.state.currentUser!.role >= 1)
-            ? SubmissionsButton(problem: problem)
-            : UploadButton(problem: problem),
+        trailing:
+            (type == ProblemType.past || store.state.currentUser!.role >= 1)
+                ? SubmissionsButton(problem: problem)
+                : type == ProblemType.active
+                    ? UploadButton(canSubmit: true, problem: problem)
+                    : Container(),
       );
     });
   }
 }
 
 class UploadButton extends StatelessWidget {
-  UploadButton({required this.problem, super.key});
+  final bool canSubmit;
+  UploadButton({required this.problem, super.key, required this.canSubmit});
   Problem problem;
 
   @override
@@ -62,7 +75,10 @@ class UploadButton extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ProblemScreen(problem: problem)));
+                builder: (context) => ProblemScreen(
+                      problem: problem,
+                      canSubmit: canSubmit,
+                    )));
       },
     );
   }

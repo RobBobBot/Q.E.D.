@@ -14,7 +14,8 @@ import '../redux/app_state.dart';
 
 class ProblemScreen extends StatefulWidget {
   Problem problem;
-  ProblemScreen({required this.problem, super.key});
+  final bool canSubmit;
+  ProblemScreen({required this.problem, super.key, required this.canSubmit});
 
   @override
   State<ProblemScreen> createState() => _ProblemScreenState();
@@ -82,7 +83,7 @@ class _ProblemScreenState extends State<ProblemScreen> {
                     : PhotoView(
                         imageProvider:
                             NetworkImage(widget.problem.statementLink!.url))),
-            screenheight > initHeight + 83
+            screenheight > initHeight + 83 && widget.canSubmit
                 ? Container(
                     child: Column(
                       children: [
