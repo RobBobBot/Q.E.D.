@@ -146,9 +146,9 @@ class LogOutWarning extends StatelessWidget {
         ),
         TextButton(
           onPressed: () async {
-            await Navigator.pushNamedAndRemoveUntil(
-                context, '/signin', (route) => false);
             await QEDStore.instance.signOutUser();
+            await Navigator.pushNamedAndRemoveUntil(
+                context, '/', (route) => false);
           },
           child: const Text('OK'),
         ),

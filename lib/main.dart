@@ -41,14 +41,7 @@ void main() async {
 
   ///dummy problem
   Future.delayed(Duration(seconds: 3)).then((val) async {
-    store.dispatch(AddProblemAction(
-      Problem(
-        id: 1,
-        name: "Bruh Problem",
-        statementLink: (await QEDStore.instance.getProblemStatements(1)),
-        tags: {"bruh"},
-      ),
-    ));
+    store.dispatch(AddProblemAction(await QEDStore.instance.getProblem(1)));
   });
   QEDStore.instance
       .getContests()
@@ -68,8 +61,9 @@ class App extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           theme: myTheme,
           darkTheme: myTheme,
-          home: ScreenRouter(),
+          initialRoute: '/',
           routes: {
+            '/': (context) => ScreenRouter(),
             '/home': (context) => const HomeScreen(),
             '/upcominglist': (context) => ContestListScreen(type: 'upcoming'),
             '/pastlist': (context) => ContestListScreen(type: 'past'),
