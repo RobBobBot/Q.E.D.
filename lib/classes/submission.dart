@@ -1,10 +1,11 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:qed/firebase/qedstore.dart';
 
 class Submission {
   int upvotes;
-  double score;
+  dynamic score;
   int noOfTeacherGrades;
   String uploaderID;
   String id;
@@ -16,8 +17,7 @@ class Submission {
       required this.id,
       required this.uploaderID,
       required this.uploadedFiles});
-  String getUploaderName() {
-    ///TODO ceva
-    return 'Uploader name';
+  Future<String> getUploaderName() async {
+    return QEDStore.instance.getName(uploaderID);
   }
 }

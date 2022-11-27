@@ -34,7 +34,15 @@ class _SubmissionListScreenState extends State<SubmissionListScreen> {
                                 submission: e,
                               )));
                 },
-                title: Text(e.getUploaderName()),
+                title: FutureBuilder(
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return Text(snapshot.data!);
+                    }
+                    return Text("Loading...");
+                  },
+                  future: e.getUploaderName(),
+                ),
                 subtitle: Text('upvotes: ${e.upvotes}, score: ${e.score}'),
                 trailing: store.state.currentUser!.role == 0
                     ? IconButton(
