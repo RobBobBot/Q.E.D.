@@ -33,7 +33,7 @@ class _CreateContestScreenState extends State<CreateContestScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Create a new contest:")),
+      appBar: AppBar(title: FittedBox(child: Text("Create a new contest"))),
       drawer: MyDrawer(),
       body: ListView(
         children: [
@@ -50,35 +50,45 @@ class _CreateContestScreenState extends State<CreateContestScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              TextButton(
-                onPressed: () async {
-                  timeStart = await DatePicker.showDatePicker(
-                    context,
-                    showTitleActions: true,
-                    onConfirm: (date) {
-                      print('confirm $date');
-                    },
-                    currentTime: DateTime.now(),
-                    locale: LocaleType.en,
-                  );
-                  setState(() {});
-                },
-                child: Text("${timeStart ?? "Start Time"}"),
+              Expanded(
+                child: TextButton(
+                  onPressed: () async {
+                    timeStart = await DatePicker.showDateTimePicker(
+                      context,
+                      showTitleActions: true,
+                      onConfirm: (date) {
+                        print('confirm $date');
+                      },
+                      currentTime: DateTime.now(),
+                      locale: LocaleType.en,
+                    );
+                    setState(() {});
+                  },
+                  child: Text(
+                    "${timeStart ?? "Start Time"}",
+                    textAlign: TextAlign.center,
+                  ),
+                ),
               ),
-              TextButton(
-                onPressed: () async {
-                  timeEnd = await DatePicker.showDatePicker(
-                    context,
-                    showTitleActions: true,
-                    onConfirm: (date) {
-                      print('confirm $date');
-                    },
-                    currentTime: DateTime.now(),
-                    locale: LocaleType.en,
-                  );
-                  setState(() {});
-                },
-                child: Text("${timeEnd ?? "End Time"}"),
+              Expanded(
+                child: TextButton(
+                  onPressed: () async {
+                    timeEnd = await DatePicker.showDateTimePicker(
+                      context,
+                      showTitleActions: true,
+                      onConfirm: (date) {
+                        print('confirm $date');
+                      },
+                      currentTime: DateTime.now(),
+                      locale: LocaleType.en,
+                    );
+                    setState(() {});
+                  },
+                  child: Text(
+                    "${timeEnd ?? "End Time"}",
+                    textAlign: TextAlign.center,
+                  ),
+                ),
               ),
             ],
           ),
@@ -135,15 +145,39 @@ class _CreateContestScreenState extends State<CreateContestScreen> {
               child: Text("Upload"),
             ),
             onPressed: () async {
+              var timeErrorBar = const SnackBar(
+                  content:
+                      Text("Please enter your contest start and end times."));
+              var errorBar = const SnackBar(
+                  content: Text(
+                      "Please upload all submissions/statements and give your contest a title."));
+              var uploadingBar = const SnackBar(content: Text("Uploading..."));
+              var finishedBar = const SnackBar(content: Text("Uploaded!"));
+              if (timeStart == null || timeEnd == null) {
+                ScaffoldMessenger.of(context).showSnackBar(timeErrorBar);
+              }
+              if (contestTitle.text == "") {
+                ScaffoldMessenger.of(context).showSnackBar(errorBar);
+                return;
+              }
               for (int index = 0; index < problemControllers.length; index++) {
+                if (problemInfos[index].solution == null ||
+                    problemInfos[index].statement == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(errorBar);
+                  return;
+                }
                 problemInfos[index].name = problemControllers[index].text;
               }
-              await QEDStore.instance.createContest(
-                contestTitle.text,
-                problemInfos,
-                Timestamp.fromDate(timeStart!),
-                Timestamp.fromDate(timeEnd!),
-              );
+              ScaffoldMessenger.of(context).showSnackBar(uploadingBar);
+              await QEDStore.instance
+                  .createContest(
+                    contestTitle.text,
+                    problemInfos,
+                    Timestamp.fromDate(timeStart!),
+                    Timestamp.fromDate(timeEnd!),
+                  )
+                  .then((value) =>
+                      ScaffoldMessenger.of(context).showSnackBar(finishedBar));
             },
           ),
         ),
@@ -198,6 +232,7 @@ class _ProblemCreatorListTileState extends State<_ProblemCreatorListTile> {
             ),
           ),
           Flexible(
+            flex: 2,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
@@ -210,23 +245,34 @@ class _ProblemCreatorListTileState extends State<_ProblemCreatorListTile> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                ElevatedButton(
-                  child: Text(widget.info.statement == null
-                      ? "Choose statement"
-                      : widget.info.statement!.name),
-                  onPressed: widget.onStatementSelectTap,
-                ),
-                ElevatedButton(
-                  child: Text(widget.info.solution == null
-                      ? "Choose solution"
-                      : widget.info.solution!.name),
-                  onPressed: widget.onSolutionSelectTap,
-                ),
-              ],
+          Flexible(
+            flex: 3,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  ElevatedButton(
+                    child: Text(
+                      widget.info.statement == null
+                          ? "Choose statement"
+                          : widget.info.statement!.name,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    onPressed: widget.onStatementSelectTap,
+                  ),
+                  ElevatedButton(
+                    child: Text(
+                      widget.info.solution == null
+                          ? "Choose solution"
+                          : widget.info.solution!.name,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    onPressed: widget.onSolutionSelectTap,
+                  ),
+                ],
+              ),
             ),
           ),
         ],

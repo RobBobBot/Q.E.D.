@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mime/mime.dart';
+import 'package:qed/classes/requester.dart';
 import 'package:qed/classes/submission.dart';
 import 'package:qed/contest.dart';
 import 'package:qed/firebase/rfile.dart';
@@ -394,14 +395,16 @@ class QEDStore {
     });
   }
 
-  Future<List<String>> getSubmissionFiles(String pid, String uid) async {
-    List<String> res = [];
+  Future<List<Rfile>> getSubmissionFiles(String pid, String uid) async {
+    List<Rfile> res = [];
     await storeageref
         .child("Problems/$pid/Submissions/$uid")
         .listAll()
         .then((value) async {
       for (var i in value.items) {
-        res.add(await i.getDownloadURL());
+        res.add(Rfile(
+            url: await i.getDownloadURL(),
+            isPDF: lookupMimeType(i.fullPath) == "application/pdf"));
       }
     });
     return res;
@@ -455,11 +458,25 @@ class QEDStore {
     return prob;
   }
 
-  Future<List<String>> getRequests() async {
-    List<String> cereri = ['eu', 'tu', 'el', 'ea'];
-
-    ///TODO: de luat UID-urile celor care au dat request.
+  Future<List<Requester>> getRequests() async {
+    List<Requester> cereri = [];
+    await FirebaseFirestore.instance.collection("Requests").get().then((value) {
+      for (var doc in value.docs) {
+        cereri.add(Requester(uid: doc.id, name: doc.data()["name"]));
+      }
+    });
     return cereri;
+  }
+
+  Future<void> deleteRequest(String uid) async {
+    await FirebaseFirestore.instance.collection("Requests").doc(uid).delete();
+  }
+
+  Future<void> maketeacher(String uid) async {
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(uid)
+        .update({"role": 1});
   }
 
   Future<String> getName(String uid) async {
