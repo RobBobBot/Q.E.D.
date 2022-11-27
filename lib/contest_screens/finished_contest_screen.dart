@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:qed/contest.dart';
+import 'package:qed/contest_screens/leaderboard_screen.dart';
 import 'package:qed/custom_widgets/loading_list_tile.dart';
 import 'package:qed/custom_widgets/tag_widget.dart';
 import 'package:qed/problem.dart';
@@ -57,7 +58,16 @@ class _FinishedContestScreenState extends State<FinishedContestScreen> {
                       type: 'finished', problem: store.state.problems[value]!);
                 }
                 return LoadingListTile();
-              }).toList()
+              }).toList(),
+              ListTile(
+                title: Text('Leaderboard'),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => LeaderboardScreen()));
+                },
+              )
             ],
           ),
         );

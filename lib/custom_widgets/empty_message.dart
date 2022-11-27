@@ -6,7 +6,7 @@ class EmptyMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text("We're sorry, there are no ${name} available :("),
+      child: Text("Unfortunately, there are no ${name} available :("),
     );
   }
 }
