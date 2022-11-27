@@ -493,28 +493,28 @@ class QEDStore {
     await FirebaseFirestore.instance.collection("Users").doc(uid).update({
       "upvoted": FieldValue.arrayUnion([sid])
     });
-    await FirebaseFirestore.instance
-        .collection("Data")
-        .doc("Submissions")
-        .update({
-      "stats": {
-        sid: {"upvotes": FieldValue.increment(1)}
-      }
-    });
+    // await FirebaseFirestore.instance
+    //     .collection("Data")
+    //     .doc("Submissions")
+    //     .update({
+    //   "stats": {
+    //     sid: {"upvotes": FieldValue.increment(1)}
+    //   }
+    // });
   }
 
   Future<void> userUnUpvote(String uid, String sid) async {
     await FirebaseFirestore.instance.collection("Users").doc(uid).update({
       "upvoted": FieldValue.arrayRemove([sid])
     });
-    await FirebaseFirestore.instance
-        .collection("Data")
-        .doc("Submissions")
-        .update({
-      "stats": {
-        sid: {"upvotes": FieldValue.increment(-1)}
-      }
-    });
+    // await FirebaseFirestore.instance
+    //     .collection("Data")
+    //     .doc("Submissions")
+    //     .update({
+    //   "stats": {
+    //     sid: {"upvotes": FieldValue.increment(-1)}
+    //   }
+    // });
   }
 
   Future<bool> userHasUpvoted(String uid, String sid) async {
@@ -543,6 +543,18 @@ class QEDStore {
       }
     });
     return res;
+  }
+
+  Future<void> gradeSubmission(String uid, String sid, double grade) async {
+    Map<String, dynamic> m = {};
+    FirebaseFirestore.instance.collection("Users").doc(uid).get().then((value) {
+      m = value.data()!["grades"] ?? {};
+    });
+    m[sid] = grade;
+    FirebaseFirestore.instance
+        .collection("Users")
+        .doc(uid)
+        .update({"grades": m});
   }
 }
 
