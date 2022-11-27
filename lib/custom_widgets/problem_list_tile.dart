@@ -24,17 +24,15 @@ class ProblemListTile extends StatelessWidget {
     return StoreBuilder<AppState>(builder: (context, store) {
       return ListTile(
         contentPadding: EdgeInsets.all(12),
-        onTap: problem.statementLink == null
+        onTap: problem.statementLink == null && type == ProblemType.active
             ? null
             : () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => type == ProblemType.active
-                          ? SubmissionListScreen(problem: problem)
-                          : ProblemScreen(
-                              canSubmit: ProblemType.active == type,
-                              problem: problem)),
+                      builder: (context) => ProblemScreen(
+                          canSubmit: ProblemType.active == type,
+                          problem: problem)),
                 );
               },
         leading: Image.asset(
